@@ -10,7 +10,7 @@ export default function NotFound() {
       <main className="flex-grow container mx-auto px-4 py-16 flex flex-col items-center justify-center">
         <h1 className="text-4xl font-bold mb-4 text-gray-900 dark:text-white">404 - Not Found</h1>
         <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
-          The page or project you're looking for doesn't exist.
+          The page or project you&apos;re looking for doesn&apos;t exist.
         </p>
         <Link 
           href="/" 

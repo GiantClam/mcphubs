@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
 // 构建 Vertex AI 选项，根据环境添加代理
 function getVertexAIOptions() {

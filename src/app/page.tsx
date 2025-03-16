@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { searchMCPProjects } from "@/lib/github";
 import ProjectCard from "@/components/ProjectCard";
 import Header from "@/components/Header";
@@ -19,7 +18,7 @@ export default async function Home() {
             Model Context Protocol <span className="text-purple-600">Hub</span>
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            Discover projects related to Anthropic's Model Context Protocol (MCP) - 
+            Discover projects related to Anthropic&apos;s Model Context Protocol (MCP) - 
             a protocol for structuring context for large language models.
           </p>
         </section>

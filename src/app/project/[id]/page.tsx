@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { FaGithub, FaStar, FaCodeBranch, FaExternalLinkAlt, FaList } from 'react-icons/fa';
+import { FaGithub, FaStar, FaCodeBranch, FaList } from 'react-icons/fa';
 import { getRepositoryDetails } from '@/lib/github';
 import { analyzeProjectRelevance } from '@/lib/analysis';
 import Header from '@/components/Header';
@@ -246,11 +246,13 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                   components={{
                     img: (props) => (
                       <div className="flex justify-center my-4">
-                        <img 
-                          src={props.src} 
+                        <Image 
+                          src={props.src || ''} 
                           alt={props.alt || 'Project image'}
                           className="max-w-full h-auto rounded-lg shadow-md" 
                           style={{ maxHeight: '500px' }}
+                          width={800}
+                          height={500}
                           loading="lazy"
                         />
                       </div>
