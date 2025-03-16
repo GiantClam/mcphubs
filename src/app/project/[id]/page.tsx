@@ -17,9 +17,9 @@ import { ComponentPropsWithoutRef } from 'react';
 export const revalidate = 3600; // 每小时重新验证一次数据
 
 interface ProjectPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
