@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { ChatVertexAI } from "@langchain/google-vertexai";
 
 // 构建 Vertex AI 选项，根据环境添加代理
 function getVertexAIOptions() {
@@ -23,7 +22,7 @@ function getVertexAIOptions() {
   return baseOptions;
 }
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   const options = getVertexAIOptions();
   
   return NextResponse.json({

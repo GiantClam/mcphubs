@@ -9,6 +9,31 @@ interface AnalysisResult {
   useCases: string[];
 }
 
+// 从环境变量或文件获取Google凭据
+function getGoogleCredentials() {
+  // 优先使用环境变量中的JSON凭据（Vercel部署方式）
+  if (process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
+    try {
+      const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
+      console.log('Using Google credentials from environment variable');
+      return { credentials };
+    } catch (error) {
+      console.error("Failed to parse GOOGLE_APPLICATION_CREDENTIALS_JSON:", error);
+    }
+  }
+  
+  // 回退到文件路径方式（本地开发环境）
+  if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+    console.log('Using Google credentials from file path');
+    return {
+      keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS
+    };
+  }
+  
+  console.warn('No Google credentials found');
+  return {};
+}
+
 // 构建 Vertex AI 选项，根据环境添加代理和凭据
 function getVertexAIOptions() {
   // 基础配置
@@ -18,6 +43,7 @@ function getVertexAIOptions() {
     // Vertex AI 项目配置
     project: process.env.GOOGLE_CLOUD_PROJECT,
     location: process.env.VERTEX_LOCATION || process.env.GOOGLE_CLOUD_LOCATION || "us-central1",
+    ...getGoogleCredentials() // 添加凭据配置
   };
 
   // 在开发环境中添加代理配置
@@ -45,7 +71,8 @@ export async function analyzeProjectRelevance(
   repo: ProcessedRepo
 ): Promise<AnalysisResult> {
   // 检查是否有 Google Vertex AI 凭证
-  if (!process.env.GOOGLE_CLOUD_PROJECT || !process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+  if (!process.env.GOOGLE_CLOUD_PROJECT || 
+      (!process.env.GOOGLE_APPLICATION_CREDENTIALS && !process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON)) {
     console.warn("No Google Vertex AI credentials found. Skipping AI analysis.");
     return getDefaultAnalysis(repo);
   }
