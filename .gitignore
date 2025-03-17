@@ -46,3 +46,6 @@ next-env.d.ts
 !package-lock.json
 !tsconfig.json
 !postcss.config.json
+# 特别需要排除的敏感凭据文件
+*credentials*.json
+zippy-aurora-*.json

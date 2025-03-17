@@ -8,7 +8,7 @@
 
 ### 步骤1：准备凭据内容
 
-1. 打开您的Google Cloud服务账号JSON凭据文件：`zippy-aurora-444204-q2-458dbb8dd988.json`
+1. 打开您的Google Cloud服务账号JSON凭据文件：`google-credentials.json`
 2. 复制**整个文件内容**（包括所有大括号、引号和内部内容）
 
 ### 步骤2：在Vercel上配置项目
@@ -25,7 +25,7 @@
 
    | 名称 | 值 | 环境 |
    |------|-----|------|
-   | `GOOGLE_CLOUD_PROJECT` | `zippy-aurora-444204-q2` | Production, Preview |
+   | `GOOGLE_CLOUD_PROJECT` | `your-project-id` | Production, Preview |
    | `GOOGLE_CLOUD_LOCATION` | `us-central1` | Production, Preview |
    | `VERTEX_LOCATION` | `us-central1` | Production, Preview |
    | `GOOGLE_APPLICATION_CREDENTIALS_JSON` | *粘贴整个JSON凭据文件的内容* | Production, Preview |
@@ -56,7 +56,7 @@ https://your-vercel-domain.vercel.app/api/vertex
   "credentials": {
     "exists": true,
     "type": "environment-variable",
-    "project": "zippy-aurora-444204-q2",
+    "project": "your-project-id",
     "location": "us-central1"
   },
   "deploymentPlatform": "Vercel"

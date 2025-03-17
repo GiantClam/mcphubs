@@ -48,9 +48,9 @@ npm install
 GITHUB_TOKEN=your_github_token_here
 
 # Google Cloud Vertex AI 配置
-GOOGLE_CLOUD_PROJECT=zippy-aurora-444204-q2
+GOOGLE_CLOUD_PROJECT=your-project-id
 GOOGLE_CLOUD_LOCATION=us-central1
-GOOGLE_APPLICATION_CREDENTIALS=./zippy-aurora-444204-q2-a8b576f1c6e4.json
+GOOGLE_APPLICATION_CREDENTIALS=./google-credentials.json
 VERTEX_LOCATION=us-central1
 ```
 
