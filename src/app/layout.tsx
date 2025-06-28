@@ -17,6 +17,13 @@ export const metadata: Metadata = {
   title: "MCPHubs - Model Context Protocol Projects Hub",
   description: "Discover and explore projects related to Anthropic's Model Context Protocol (MCP)",
   keywords: ["MCP", "Model Context Protocol", "Anthropic", "Claude", "AI", "LLM"],
+  other: {
+    'google-adsense-account': 'ca-pub-7958390626430202',
+    'google-site-verification': 'adsense-verification'
+  },
+  robots: 'index, follow',
+  authors: [{ name: 'MCPHubs Team' }],
+  category: 'Technology'
 };
 
 export default function RootLayout({
@@ -26,16 +33,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full">
-      <Script
-        async
-        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7958390626430202"
-        crossOrigin="anonymous"
-        strategy="beforeInteractive"
-      />
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased h-full`}
       >
         {children}
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7958390626430202"
+          crossOrigin="anonymous"
+          strategy="lazyOnload"
+        />
       </body>
     </html>
   );
