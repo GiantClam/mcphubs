@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import SessionWrapper from "@/components/SessionWrapper";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import StructuredData from "./structured-data";
 import "./globals.css";
 
@@ -141,7 +143,13 @@ export default function RootLayout({
       >
         <StructuredData />
         <SessionWrapper>
-          {children}
+          <div className="flex flex-col min-h-screen">
+            <Header />
+            <main className="flex-grow">
+              {children}
+            </main>
+            <Footer />
+          </div>
         </SessionWrapper>
         
         {/* Google Analytics - 重点追踪高价值地区 */}

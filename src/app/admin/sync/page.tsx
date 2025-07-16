@@ -7,7 +7,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { 
   FaSync, FaDatabase, FaGithub, FaPlay, FaStop, FaClock, 
-  FaCheckCircle, FaExclamationTriangle, FaInfoCircle, FaChartBar
+  FaCheckCircle, FaExclamationTriangle, FaInfoCircle, FaChartBar, FaChartLine, FaCog
 } from 'react-icons/fa';
 
 interface SyncResult {
@@ -151,6 +151,21 @@ export default function SyncAdminPage() {
         <div className="text-center">
           <FaSync className="animate-spin text-4xl text-purple-600 mx-auto mb-4" />
           <p className="text-gray-600 dark:text-gray-300">加载同步状态...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (status === 'loading') {
+    return <div>Loading...</div>;
+  }
+
+  if (!session || !session.user?.email?.includes('admin')) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-red-600 mb-4">访问被拒绝</h1>
+          <p className="text-gray-600">您没有权限访问此页面。</p>
         </div>
       </div>
     );

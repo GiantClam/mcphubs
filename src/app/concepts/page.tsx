@@ -1,12 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import { FaCode, FaBook, FaUsers, FaTools, FaServer, FaDesktop, FaCopy, FaCheckCircle } from "react-icons/fa";
+import { FaCode, FaRocket, FaUsers, FaCogs, FaBook, FaLightbulb, FaNetworkWired, FaPlug } from 'react-icons/fa';
 
 export default function ConceptsPage() {
-  const [activeSection, setActiveSection] = useState('architecture');
+  const [activeSection, setActiveSection] = useState('overview');
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
 
   const copyToClipboard = (code: string, id: string) => {
@@ -15,13 +13,16 @@ export default function ConceptsPage() {
     setTimeout(() => setCopiedCode(null), 2000);
   };
 
+  // 侧边栏导航项目
   const sidebarItems = [
-    { id: 'architecture', label: 'MCP 架构设计', icon: FaServer },
-    { id: 'primitives', label: '核心原语详解', icon: FaCode },
-    { id: 'quickstart', label: '快速入门指南', icon: FaBook },
-    { id: 'server-dev', label: '服务器开发', icon: FaServer },
-    { id: 'client-dev', label: '客户端开发', icon: FaDesktop },
-    { id: 'examples', label: '实例演示', icon: FaTools },
+    { id: 'overview', label: 'MCP 概述', icon: FaBook },
+    { id: 'architecture', label: '架构设计', icon: FaNetworkWired },
+    { id: 'protocol', label: '协议详解', icon: FaCode },
+    { id: 'servers', label: 'MCP服务器', icon: FaCogs },
+    { id: 'clients', label: 'MCP客户端', icon: FaPlug },
+    { id: 'integration', label: '集成指南', icon: FaRocket },
+    { id: 'examples', label: '实际案例', icon: FaLightbulb },
+    { id: 'community', label: '社区资源', icon: FaUsers },
   ];
 
   const CodeBlock = ({ code, language = 'typescript', id }: { code: string; language?: string; id: string }) => (

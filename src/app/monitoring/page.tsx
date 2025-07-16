@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { FaServer, FaDatabase, FaGithub, FaExclamationTriangle, FaCheckCircle, FaTimesCircle, FaSpinner, FaClock, FaBug, FaTools, FaChartLine, FaMemory, FaHdd } from 'react-icons/fa';
 
 interface SystemStatus {
   service: string;
@@ -525,6 +526,19 @@ const MonitoringPage = () => {
     </div>
   );
 
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'dashboard':
+        return <DashboardView />;
+      case 'bugs':
+        return <BugsView />;
+      case 'logs':
+        return <LogsView />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Header />
@@ -574,10 +588,8 @@ const MonitoringPage = () => {
           </div>
         </div>
 
-        {/* 标签内容 */}
-        {activeTab === 'dashboard' && <DashboardView />}
-        {activeTab === 'bugs' && <BugsView />}
-        {activeTab === 'logs' && <LogsView />}
+        {/* 内容区域 */}
+        {renderTabContent()}
       </main>
       <Footer />
     </div>

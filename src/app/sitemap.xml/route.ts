@@ -4,7 +4,7 @@ export async function GET() {
   const baseUrl = 'https://mcphubs.com';
   const currentDate = new Date().toISOString();
 
-  // 高价值地区语言配置
+  // 支持的语言配置
   const highValueLanguages = [
     { code: 'zh-CN', prefix: '', region: 'CN' }, // 中文默认
     { code: 'en-US', prefix: '/en', region: 'US' }, // 美国英语

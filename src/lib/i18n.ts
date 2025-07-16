@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import { getRequestConfig } from 'next-intl/server';
 
-// 高价值地区语言配置
+// 支持的语言配置
 export const highValueLocales = {
   'zh-CN': {
     code: 'zh-CN',
@@ -373,6 +373,7 @@ export const regionConfig = {
 // 获取当前语言设置
 export function getCurrentLocale(): keyof typeof highValueLocales {
   if (typeof window !== 'undefined') {
+    // 优先使用用户手动设置的语言
     const stored = localStorage.getItem('preferred-locale');
     if (stored && stored in highValueLocales) {
       return stored as keyof typeof highValueLocales;
@@ -380,11 +381,13 @@ export function getCurrentLocale(): keyof typeof highValueLocales {
     
     // 基于浏览器语言检测
     const browserLang = navigator.language;
+    
+    // 精确匹配
     if (browserLang in highValueLocales) {
       return browserLang as keyof typeof highValueLocales;
     }
     
-    // 回退到最接近的语言
+    // 部分匹配（例如 zh 匹配 zh-CN）
     const langCode = browserLang.split('-')[0];
     const matchingLocale = Object.keys(highValueLocales).find(locale => 
       locale.startsWith(langCode)
@@ -392,9 +395,26 @@ export function getCurrentLocale(): keyof typeof highValueLocales {
     if (matchingLocale) {
       return matchingLocale as keyof typeof highValueLocales;
     }
+    
+    // 检查浏览器支持的所有语言（按优先级）
+    if (navigator.languages) {
+      for (const lang of navigator.languages) {
+        if (lang in highValueLocales) {
+          return lang as keyof typeof highValueLocales;
+        }
+        
+        const code = lang.split('-')[0];
+        const match = Object.keys(highValueLocales).find(locale => 
+          locale.startsWith(code)
+        );
+        if (match) {
+          return match as keyof typeof highValueLocales;
+        }
+      }
+    }
   }
   
-  return 'zh-CN'; // 默认语言
+  return 'en-US'; // 默认语言为英文
 }
 
 // 获取翻译文本

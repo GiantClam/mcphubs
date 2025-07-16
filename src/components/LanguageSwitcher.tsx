@@ -10,7 +10,7 @@ interface LanguageSwitcherProps {
 
 export default function LanguageSwitcher({ className = '' }: LanguageSwitcherProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [currentLocale, setCurrentLocale] = useState<keyof typeof highValueLocales>('zh-CN');
+  const [currentLocale, setCurrentLocale] = useState<keyof typeof highValueLocales>('en-US');
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -89,9 +89,6 @@ export default function LanguageSwitcher({ className = '' }: LanguageSwitcherPro
 
       {isOpen && (
         <div className="absolute right-0 mt-2 py-2 w-64 bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 z-50">
-          <div className="px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
-            🌐 高价值地区语言
-          </div>
           {sortedLocales.map((locale) => {
             const localeData = highValueLocales[locale];
             const isActive = locale === currentLocale;
