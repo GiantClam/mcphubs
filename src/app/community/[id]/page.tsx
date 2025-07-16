@@ -9,7 +9,7 @@ import CommunityComments from '@/components/CommunityComments';
 export default function CommunityDiscussionPage() {
   const params = useParams();
   const id = params?.id;
-  const [discussion, setDiscussion] = useState(null);
+  const [discussion, setDiscussion] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -101,7 +101,7 @@ export default function CommunityDiscussionPage() {
 
         {/* 标签 */}
         <div className="flex flex-wrap gap-2 mb-6">
-          {discussion.tags.map((tag, index) => (
+          {discussion.tags.map((tag: string, index: number) => (
             <span key={index} className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs rounded">
               #{tag}
             </span>
@@ -127,7 +127,63 @@ export default function CommunityDiscussionPage() {
       </div>
 
       {/* 评论组件 */}
-      <CommunityComments discussionId={id} />
+      <CommunityComments project={{
+        id: String(id),
+        name: 'Community Discussion',
+        description: discussion?.title || '',
+        url: '',
+        stars: 0,
+        forks: 0,
+        language: '',
+        topics: [],
+        createdAt: '',
+        updatedAt: '',
+        owner: '',
+        fullName: '',
+        hasIssues: true,
+        hasWiki: true,
+        openIssues: 0,
+        watchers: 0,
+        defaultBranch: 'main',
+        size: 0,
+        score: 0,
+        lastCommitSha: '',
+        lastCommitDate: '',
+        license: null,
+        hasDocumentation: false,
+        readmeContent: '',
+        contributorsCount: 0,
+        releaseCount: 0,
+        hasActions: false,
+        primaryLanguageColor: '',
+        languageStats: {},
+        weeklyCommits: 0,
+        monthlyCommits: 0,
+        yearlyCommits: 0,
+        averageCommitsPerWeek: 0,
+        lastActivityDays: 0,
+        healthScore: 0,
+        communityScore: 0,
+        trendingScore: 0,
+        qualityScore: 0,
+        category: 'discussion',
+        tags: [],
+        logoUrl: null,
+        screenshotUrl: null,
+        demoUrl: null,
+        tutorialUrl: null,
+        installationGuide: '',
+        usageExample: '',
+        dependencies: [],
+        devDependencies: [],
+        supportedPlatforms: [],
+        integrations: [],
+        features: [],
+        status: 'active',
+        maturityLevel: 'stable',
+        lastAnalyzed: '',
+        analysisVersion: 1
+      } as any} />
     </div>
   );
 } 

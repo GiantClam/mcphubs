@@ -1,7 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { FaCode, FaRocket, FaUsers, FaCogs, FaBook, FaLightbulb, FaNetworkWired, FaPlug } from 'react-icons/fa';
+import { FaCode, FaRocket, FaUsers, FaCogs, FaBook, FaLightbulb, FaNetworkWired, FaPlug, FaCheckCircle, FaCopy, FaDesktop, FaServer } from 'react-icons/fa';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 export default function ConceptsPage() {
   const [activeSection, setActiveSection] = useState('overview');

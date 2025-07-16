@@ -8,7 +8,39 @@ import CommunityComments from '@/components/CommunityComments';
 export default function CommunityPage() {
   const [activeTab, setActiveTab] = useState('discussions');
 
-  // ... existing discussions data ...
+  // 模拟讨论数据
+  const discussions = [
+    {
+      id: '1',
+      title: 'MCP 服务器开发最佳实践',
+      preview: '分享一些在开发 MCP 服务器过程中的经验和最佳实践...',
+      author: 'developer123',
+      replies: 15,
+      likes: 42,
+      time: '2小时前',
+      category: '技术讨论'
+    },
+    {
+      id: '2',
+      title: 'Claude Desktop 集成问题解决',
+      preview: '遇到 Claude Desktop 集成问题？这里有一些常见解决方案...',
+      author: 'mcphelper',
+      replies: 8,
+      likes: 23,
+      time: '4小时前',
+      category: '问题求助'
+    },
+    {
+      id: '3',
+      title: '新版本 MCP 协议更新解析',
+      preview: '详细解析最新版本的 MCP 协议变更和新特性...',
+      author: 'protocol_expert',
+      replies: 32,
+      likes: 67,
+      time: '1天前',
+      category: '协议讨论'
+    }
+  ];
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -113,7 +145,63 @@ export default function CommunityPage() {
 
       {/* Comments Component */}
       <div className="mt-12">
-        <CommunityComments />
+        <CommunityComments project={{
+          id: 'community',
+          name: 'MCP Community',
+          description: 'Model Context Protocol Community Forum',
+          url: '',
+          stars: 0,
+          forks: 0,
+          language: '',
+          topics: [],
+          createdAt: '',
+          updatedAt: '',
+          owner: '',
+          fullName: '',
+          hasIssues: true,
+          hasWiki: true,
+          openIssues: 0,
+          watchers: 0,
+          defaultBranch: 'main',
+          size: 0,
+          score: 0,
+          lastCommitSha: '',
+          lastCommitDate: '',
+          license: null,
+          hasDocumentation: false,
+          readmeContent: '',
+          contributorsCount: 0,
+          releaseCount: 0,
+          hasActions: false,
+          primaryLanguageColor: '',
+          languageStats: {},
+          weeklyCommits: 0,
+          monthlyCommits: 0,
+          yearlyCommits: 0,
+          averageCommitsPerWeek: 0,
+          lastActivityDays: 0,
+          healthScore: 0,
+          communityScore: 0,
+          trendingScore: 0,
+          qualityScore: 0,
+          category: 'community',
+          tags: [],
+          logoUrl: null,
+          screenshotUrl: null,
+          demoUrl: null,
+          tutorialUrl: null,
+          installationGuide: '',
+          usageExample: '',
+          dependencies: [],
+          devDependencies: [],
+          supportedPlatforms: [],
+          integrations: [],
+          features: [],
+          status: 'active',
+          maturityLevel: 'stable',
+          lastAnalyzed: '',
+          analysisVersion: 1
+        } as any} />
       </div>
     </div>
   );

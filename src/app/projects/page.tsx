@@ -15,7 +15,7 @@ export default function ProjectsPage() {
             探索最新的 Model Context Protocol 项目和工具
           </p>
         </div>
-        <ProjectShowcase />
+        <ProjectShowcase initialProjects={[]} />
       </div>
     </Suspense>
   );

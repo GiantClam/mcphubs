@@ -1,12 +1,25 @@
 'use client';
 
-import { getProviders, signIn, getSession, getCsrfToken } from 'next-auth/react';
+import { getProviders, signIn, getCsrfToken } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import { FaGithub } from 'react-icons/fa';
+import { useEffect, useState, Suspense } from 'react';
 
-export default function SignIn({ providers, csrfToken }) {
+function SignInContent() {
   const searchParams = useSearchParams();
   const error = searchParams?.get('error');
+  const [providers, setProviders] = useState<any>(null);
+  const [csrfToken, setCsrfToken] = useState('');
+
+  useEffect(() => {
+    async function fetchData() {
+      const providers = await getProviders();
+      const csrfToken = await getCsrfToken();
+      setProviders(providers);
+      setCsrfToken(csrfToken || '');
+    }
+    fetchData();
+  }, []);
 
   return (
     <div className="min-h-[60vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -32,7 +45,7 @@ export default function SignIn({ providers, csrfToken }) {
           <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
           
           {providers &&
-            Object.values(providers).map((provider) => (
+            Object.values(providers).map((provider: any) => (
               <div key={provider.name}>
                 <button
                   onClick={() => signIn(provider.id)}
@@ -51,11 +64,14 @@ export default function SignIn({ providers, csrfToken }) {
   );
 }
 
-export async function getServerSideProps(context) {
-  const providers = await getProviders();
-  const csrfToken = await getCsrfToken(context);
-  
-  return {
-    props: { providers, csrfToken },
-  };
+export default function SignIn() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-600"></div>
+      </div>
+    }>
+      <SignInContent />
+    </Suspense>
+  );
 } 
