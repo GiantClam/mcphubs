@@ -1,0 +1,40 @@
+
+> mcphubs@0.1.0 dev
+> next dev --turbopack
+
+   ▲ Next.js 15.2.2 (Turbopack)
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.2.56:3000
+   - Environments: .env.local, .env.development
+
+ ✓ Starting...
+Enabling API proxies for development environment
+ ✓ Ready in 838ms
+ ○ Compiling / ...
+ ✓ Compiled / in 1942ms
+Error fetching GitHub projects: Error [AxiosError]: Request failed with status code 502
+    at async searchMCPProjects (src/lib/github.ts:73:21)
+    at async Home (src/app/page.tsx:9:19)
+  71 |     
+  72 |     // 使用 GitHub 搜索 API 查找与 MCP 相关的项目
+> 73 |     const response = await client.get(url, {
+     |                     ^
+  74 |       params: {
+  75 |         q: 'model context protocol OR anthropic-mcp OR mcp-protocol language:python language:javascript',
+  76 |         sort: 'stars', {
+  code: 'ERR_BAD_RESPONSE',
+  config: [Object],
+  request: [ClientRequest],
+  response: [Object],
+  status: 502,
+  constructor: [Function],
+  toJSON: [Function: toJSON]
+}
+ GET / 200 in 2219ms
+ ✓ Compiled in 88ms
+ ✓ Compiled in 81ms
+ ✓ Compiled in 65ms
+ ✓ Compiled in 198ms
+ ✓ Compiled in 68ms
+ ✓ Compiled in 54ms
+[?25h

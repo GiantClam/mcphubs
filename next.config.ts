@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   images: {
-    domains: ['avatars.githubusercontent.com'],
+    domains: ['avatars.githubusercontent.com', 'opengraph.githubassets.com'],
     remotePatterns: [
       {
         protocol: 'https',
@@ -13,6 +13,11 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'github.com',
+        pathname: '**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'opengraph.githubassets.com',
         pathname: '**',
       },
     ],

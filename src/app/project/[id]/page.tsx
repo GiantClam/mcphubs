@@ -3,10 +3,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { FaGithub, FaStar, FaCodeBranch, FaList } from 'react-icons/fa';
-import { getRepositoryDetails } from '@/lib/github';
+import { getProjectDetails } from '@/lib/project-service';
 import { analyzeProjectRelevance } from '@/lib/analysis';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import ClientWrapper from '@/components/ClientWrapper';
+import ExpertAnalysis from '@/components/ExpertAnalysis';
+import TutorialGuide from '@/components/TutorialGuide';
+import CommunityComments from '@/components/CommunityComments';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import rehypeSanitize from 'rehype-sanitize';
@@ -24,7 +26,7 @@ interface ProjectPageProps {
 
 export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
   const resolvedParams = await params;
-  const project = await getRepositoryDetails(resolvedParams.id);
+  const project = await getProjectDetails(resolvedParams.id);
   
   if (!project) {
     return {
@@ -40,7 +42,7 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
 
 export default async function ProjectPage({ params }: ProjectPageProps) {
   const resolvedParams = await params;
-  const project = await getRepositoryDetails(resolvedParams.id);
+  const project = await getProjectDetails(resolvedParams.id);
   
   if (!project) {
     notFound();
@@ -70,15 +72,19 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   const hasTableOfContents = headings.length > 3; // 只有当有足够多的标题时才显示目录
   
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900">
-      <Header />
-      
+    <ClientWrapper>
       <main className="flex-grow container mx-auto px-4 py-8">
         <div className="mb-6">
           <Link href="/" className="text-purple-600 hover:text-purple-800 flex items-center">
             ← Back to projects
           </Link>
         </div>
+        
+        {/* 专家深度分析 */}
+        <ExpertAnalysis project={project} />
+        
+        {/* 实用教程指南 */}
+        <TutorialGuide project={project} />
         
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
           {/* 项目头部信息 */}
@@ -409,9 +415,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             </div>
           )}
         </div>
+        
+        {/* 社区评论 */}
+        <CommunityComments project={project} />
       </main>
-      
-      <Footer />
-    </div>
+    </ClientWrapper>
   );
 } 
