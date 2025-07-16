@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
 import { FaGithub, FaStar, FaCodeBranch, FaHeart, FaComment, FaRobot, FaCalendarAlt, FaUser, FaExternalLinkAlt, FaTags } from 'react-icons/fa';
+import { generateProjectSlug } from '@/lib/utils';
 
 interface ProjectCardProps {
   id: string;
@@ -133,7 +134,7 @@ export default function ProjectCard({
       {/* 项目信息 */}
       <div className="p-5 flex-grow">
         <div className="flex items-start justify-between mb-3">
-          <Link href={`/project/${id}`} className="flex-grow">
+          <Link href={`/project/${generateProjectSlug(owner, name)}`} className="flex-grow">
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2 hover:text-purple-600 dark:hover:text-purple-400 transition-colors line-clamp-1">
               {name}
             </h3>
@@ -232,8 +233,8 @@ export default function ProjectCard({
 
             {/* 评论按钮 */}
             <Link 
-              href={`/project/${id}#comments`}
-              className="flex items-center space-x-1 text-sm text-gray-500 dark:text-gray-400 hover:text-blue-500 transition-colors"
+              href={`/project/${generateProjectSlug(owner, name)}#comments`}
+              className="flex items-center text-gray-500 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
             >
               <FaComment className="w-4 h-4" />
               <span>{comments}</span>

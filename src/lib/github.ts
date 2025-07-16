@@ -221,14 +221,57 @@ export async function searchMCPProjects(): Promise<ProcessedRepo[]> {
 }
 
 // 获取单个仓库的详细信息
-export async function getRepositoryDetails(id: string): Promise<ProcessedRepo | null> {
+export async function getRepositoryDetails(identifier: string): Promise<ProcessedRepo | null> {
   try {
-    console.log(`获取项目详情: ${id}`);
+    console.log(`获取项目详情: ${identifier}`);
     
-    // 方法1: 首先尝试从搜索结果中找到项目
+    // 方法1: 如果identifier包含斜杠，认为是owner/name格式，直接API调用
+    if (identifier.includes('/')) {
+      console.log(`直接通过API获取仓库: ${identifier}`);
+      try {
+        const repoResponse = await githubClient.get(`/repos/${identifier}`);
+        const repo = repoResponse.data;
+        
+        // 转换为ProcessedRepo格式
+        const processedRepo: ProcessedRepo = {
+          id: repo.id.toString(),
+          name: repo.name,
+          fullName: repo.full_name,
+          owner: repo.owner.login,
+          ownerAvatar: repo.owner.avatar_url,
+          url: repo.html_url,
+          description: repo.description || '暂无描述',
+          stars: repo.stargazers_count,
+          forks: repo.forks_count,
+          language: repo.language || 'Unknown',
+          topics: repo.topics || [],
+          createdAt: repo.created_at,
+          updatedAt: repo.updated_at,
+          relevance: determineRelevance(repo),
+          imageUrl: generateProjectImage(repo),
+        };
+        
+        // 尝试获取README
+        try {
+          const readmeResponse = await githubClient.get(`/repos/${repo.full_name}/readme`);
+          const readmeContent = Buffer.from(readmeResponse.data.content, 'base64').toString('utf-8');
+          processedRepo.readmeContent = readmeContent;
+        } catch (readmeError) {
+          console.warn(`无法获取 ${repo.full_name} 的 README:`, readmeError);
+        }
+        
+        console.log(`✅ 直接API获取成功: ${processedRepo.name}`);
+        return processedRepo;
+        
+      } catch (apiError) {
+        console.warn(`直接API调用失败: ${apiError}`);
+      }
+    }
+    
+    // 方法2: 尝试从搜索结果中找到项目
     try {
       const allProjects = await searchMCPProjects();
-      const project = allProjects.find(p => p.id === id);
+      const project = allProjects.find(p => p.id === identifier);
       
       if (project) {
         console.log(`✅ 从搜索结果中找到项目: ${project.name}`);
@@ -246,28 +289,19 @@ export async function getRepositoryDetails(id: string): Promise<ProcessedRepo | 
         }
       }
     } catch (searchError) {
-      console.warn('从搜索结果获取项目失败，尝试直接API调用:', searchError);
+      console.warn('从搜索结果获取项目失败:', searchError);
     }
     
-    // 方法2: 如果搜索失败，尝试直接通过GitHub API获取
-    // 假设ID可能是 owner/repo 格式或者是数字ID
-    let repoResponse;
-    
-    if (id.includes('/')) {
-      // ID是 owner/repo 格式
-      console.log(`尝试直接获取仓库: ${id}`);
-      repoResponse = await githubClient.get(`/repos/${id}`);
-    } else {
-      // ID是数字，需要先尝试查找
-      console.log(`数字ID ${id}，使用模拟数据`);
-      // 对于数字ID，我们返回一个模拟项目，避免404
+    // 方法3: 如果是数字ID，生成演示项目
+    if (/^\d+$/.test(identifier)) {
+      console.log(`数字ID ${identifier}，使用模拟数据`);
       return {
-        id: id,
-        name: `项目-${id}`,
-        fullName: `mcp/project-${id}`,
+        id: identifier,
+        name: `项目-${identifier}`,
+        fullName: `mcp/project-${identifier}`,
         owner: 'mcp-community',
         ownerAvatar: 'https://avatars.githubusercontent.com/u/1?v=4',
-        url: `https://github.com/mcp/project-${id}`,
+        url: `https://github.com/mcp/project-${identifier}`,
         description: '这是一个MCP相关项目的演示页面。实际项目数据需要配置正确的GitHub Token。',
         stars: Math.floor(Math.random() * 1000),
         forks: Math.floor(Math.random() * 100),
@@ -277,7 +311,7 @@ export async function getRepositoryDetails(id: string): Promise<ProcessedRepo | 
         updatedAt: '2024-01-15T00:00:00Z',
         relevance: 'high',
         imageUrl: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&h=300&fit=crop',
-        readmeContent: `# 项目 ${id}
+        readmeContent: `# 项目 ${identifier}
 
 这是一个MCP (Model Context Protocol) 相关项目的演示页面。
 
@@ -290,7 +324,7 @@ export async function getRepositoryDetails(id: string): Promise<ProcessedRepo | 
 ## 快速开始
 
 \`\`\`bash
-npm install mcp-project-${id}
+npm install mcp-project-${identifier}
 \`\`\`
 
 ## 注意
@@ -305,47 +339,33 @@ npm install mcp-project-${id}
       };
     }
     
-    if (repoResponse) {
-      const repo = repoResponse.data;
-      
-      // 转换为ProcessedRepo格式
-      const processedRepo: ProcessedRepo = {
-        id: repo.id.toString(),
-        name: repo.name,
-        fullName: repo.full_name,
-        owner: repo.owner.login,
-        ownerAvatar: repo.owner.avatar_url,
-        url: repo.html_url,
-        description: repo.description || '暂无描述',
-        stars: repo.stargazers_count,
-        forks: repo.forks_count,
-        language: repo.language || 'Unknown',
-        topics: repo.topics || [],
-        createdAt: repo.created_at,
-        updatedAt: repo.updated_at,
-        relevance: determineRelevance(repo),
-        imageUrl: generateProjectImage(repo),
-      };
-      
-      // 尝试获取README
-      try {
-        const readmeResponse = await githubClient.get(`/repos/${repo.full_name}/readme`);
-        const readmeContent = Buffer.from(readmeResponse.data.content, 'base64').toString('utf-8');
-        processedRepo.readmeContent = readmeContent;
-      } catch (readmeError) {
-        console.warn(`无法获取 ${repo.full_name} 的 README:`, readmeError);
-      }
-      
-      return processedRepo;
-    }
+    // 方法4: 其他情况返回错误提示项目
+    console.log('所有获取方法都失败，返回错误提示');
+    return {
+      id: identifier,
+      name: '项目未找到',
+      fullName: 'unknown/unknown',
+      owner: 'unknown',
+      ownerAvatar: 'https://avatars.githubusercontent.com/u/1?v=4',
+      url: '#',
+      description: '抱歉，无法获取项目信息。可能是网络问题或项目不存在。',
+      stars: 0,
+      forks: 0,
+      language: 'Unknown',
+      topics: [],
+      createdAt: '2024-01-01T00:00:00Z',
+      updatedAt: '2024-01-01T00:00:00Z',
+      relevance: 'low',
+      imageUrl: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&h=300&fit=crop',
+      readmeContent: '# 项目未找到\n\n抱歉，无法获取项目信息。请检查项目ID是否正确，或稍后重试。'
+    };
     
-    return null;
   } catch (error) {
     console.error('获取项目详情时出错:', error);
     
     // 返回一个错误提示项目
     return {
-      id: id,
+      id: identifier,
       name: '项目未找到',
       fullName: 'unknown/unknown',
       owner: 'unknown',

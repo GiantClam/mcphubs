@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import { FaGithub, FaStar, FaCodeBranch, FaList } from 'react-icons/fa';
 import { getProjectDetails } from '@/lib/project-service';
 import { analyzeProjectRelevance } from '@/lib/analysis';
+import { parseProjectSlug, isValidProjectSlug } from '@/lib/utils';
 import ClientWrapper from '@/components/ClientWrapper';
 import ExpertAnalysis from '@/components/ExpertAnalysis';
 import TutorialGuide from '@/components/TutorialGuide';
@@ -26,7 +27,16 @@ interface ProjectPageProps {
 
 export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
   const resolvedParams = await params;
-  const project = await getProjectDetails(resolvedParams.id);
+  const slug = resolvedParams.id;
+  
+  // 验证slug格式
+  if (!isValidProjectSlug(slug)) {
+    return {
+      title: 'Invalid Project URL - MCPHubs',
+    };
+  }
+  
+  const project = await getProjectDetails(slug);
   
   if (!project) {
     return {
@@ -35,14 +45,33 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
   }
   
   return {
-    title: `${project.name} - MCPHubs`,
+    title: `${project.name} by ${project.owner} - MCPHubs`,
     description: project.description,
+    openGraph: {
+      title: `${project.name} - MCP项目`,
+      description: project.description,
+      images: [project.imageUrl],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${project.name} - MCP项目`,
+      description: project.description,
+      images: [project.imageUrl],
+    },
   };
 }
 
 export default async function ProjectPage({ params }: ProjectPageProps) {
   const resolvedParams = await params;
-  const project = await getProjectDetails(resolvedParams.id);
+  const slug = resolvedParams.id;
+  
+  // 验证slug格式
+  if (!isValidProjectSlug(slug)) {
+    console.error(`Invalid project slug format: ${slug}`);
+    notFound();
+  }
+  
+  const project = await getProjectDetails(slug);
   
   if (!project) {
     notFound();
