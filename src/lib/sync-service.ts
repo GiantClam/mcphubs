@@ -1,5 +1,5 @@
 import { searchMCPProjects } from './github';
-import { upsertProjects, getProjectStats, checkDatabaseConnection } from './supabase';
+import { upsertProjects, getProjectStats, checkDatabaseConnection, supabase, type GitHubProject, isSupabaseConfigured } from './supabase';
 import { ProcessedRepo } from './github';
 
 // 同步结果类型
@@ -172,8 +172,24 @@ class SyncManager {
 export const syncManager = SyncManager.getInstance();
 
 // 主要同步函数
-export async function syncGitHubProjects(force: boolean = false): Promise<SyncResult> {
-  return await syncManager.performSync(force);
+export async function syncGitHubProjects(
+  batchSize: number = 50, 
+  forceSync: boolean = false
+): Promise<SyncResult> {
+  // 检查Supabase是否已正确配置
+  if (!isSupabaseConfigured()) {
+    console.warn('⚠️ 警告: Supabase未配置，跳过数据库同步');
+    return {
+      success: false,
+      message: 'Supabase configuration missing',
+      stats: { totalFetched: 0, inserted: 0, updated: 0, skipped: 0, errors: 1 },
+      duration: 0,
+      timestamp: new Date().toISOString(),
+      errorDetails: ['Supabase configuration missing']
+    };
+  }
+
+  return await syncManager.performSync(forceSync);
 }
 
 // 获取同步状态

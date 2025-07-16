@@ -26,6 +26,19 @@ interface MarketSegment {
 function generateTrendInsights(projects: ProcessedRepo[]): TrendInsight[] {
   const insights: TrendInsight[] = [];
   
+  // 如果没有项目数据，返回默认洞察
+  if (!projects || projects.length === 0) {
+    return [
+      {
+        title: '等待数据加载',
+        description: '正在获取最新的MCP项目数据，请稍后查看趋势分析。',
+        icon: <FaChartLine className="text-2xl text-blue-500" />,
+        type: 'growth',
+        data: '0'
+      }
+    ];
+  }
+  
   // 计算基础统计数据
   const totalProjects = projects.length;
   const totalStars = projects.reduce((sum, p) => sum + p.stars, 0);
@@ -38,8 +51,10 @@ function generateTrendInsights(projects: ProcessedRepo[]): TrendInsight[] {
     return acc;
   }, {} as Record<string, number>);
   
-  const topLanguage = Object.entries(languageStats)
-    .sort(([,a], [,b]) => b - a)[0];
+  const languageEntries = Object.entries(languageStats);
+  const topLanguage = languageEntries.length > 0 
+    ? languageEntries.sort(([,a], [,b]) => b - a)[0]
+    : ['Unknown', 0];
   
   // 高关注度项目
   const highStarProjects = projects.filter(p => p.stars > 100);
@@ -66,7 +81,7 @@ function generateTrendInsights(projects: ProcessedRepo[]): TrendInsight[] {
 
   insights.push({
     title: "技术栈偏好",
-    description: `${topLanguage[0]}是最受欢迎的编程语言，占${Math.round((topLanguage[1] / totalProjects) * 100)}%的项目。这反映了MCP在AI/ML社区中的强劲发展势头。`,
+    description: `${topLanguage[0]}是最受欢迎的编程语言，占${Math.round((Number(topLanguage[1]) / totalProjects) * 100)}%的项目。这反映了MCP在AI/ML社区中的强劲发展势头。`,
     icon: <FaCode className="w-6 h-6" />,
     type: 'technology',
     data: topLanguage[0]

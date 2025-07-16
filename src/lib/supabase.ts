@@ -1,17 +1,35 @@
 import { createClient } from '@supabase/supabase-js';
 import { ProcessedRepo } from './github';
 
-// Supabase配置
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+// Supabase配置 - 添加安全检查
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+// 检查必需的环境变量
+if (!supabaseUrl || !supabaseServiceKey) {
+  console.warn('⚠️ 警告: Supabase环境变量未配置，某些功能可能不可用');
+  console.warn('请检查 NEXT_PUBLIC_SUPABASE_URL 和 SUPABASE_SERVICE_ROLE_KEY 环境变量');
+}
 
 // 创建Supabase客户端（使用服务角色密钥以绕过RLS）
-export const supabase = createClient(supabaseUrl, supabaseServiceKey, {
-  auth: {
-    autoRefreshToken: false,
-    persistSession: false
+// 如果环境变量不存在，使用占位符值避免构建失败
+export const supabase = createClient(
+  supabaseUrl || 'https://placeholder.supabase.co', 
+  supabaseServiceKey || 'placeholder-key',
+  {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false
+    }
   }
-});
+);
+
+// 检查Supabase是否已正确配置
+export const isSupabaseConfigured = (): boolean => {
+  return !!(supabaseUrl && supabaseServiceKey && 
+           !supabaseUrl.includes('placeholder') && 
+           !supabaseServiceKey.includes('placeholder'));
+};
 
 // 数据库表结构类型
 export interface GitHubProject {

@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
 
     // 执行同步
     console.log(`🚀 开始执行同步任务...`);
-    const result: SyncResult = await syncGitHubProjects(force);
+    const result: SyncResult = await syncGitHubProjects(50, force);
     
     // 格式化结果用于日志
     const logMessage = formatSyncResult(result);
