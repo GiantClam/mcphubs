@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 function getVertexAIOptions() {
   // 基础配置
   const baseOptions = {
-    modelName: "gemini-pro",
+    modelName: "emini-2.5-flash",
     temperature: 0,
     project: process.env.GOOGLE_CLOUD_PROJECT,
     location: process.env.VERTEX_LOCATION || process.env.GOOGLE_CLOUD_LOCATION || "us-central1",

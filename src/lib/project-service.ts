@@ -1,5 +1,5 @@
 import { ProcessedRepo } from './github';
-import { getAllProjects, getProjectById, checkDatabaseConnection } from './supabase';
+import { getAllProjects, getProjectById, checkDatabaseConnection, upsertProjects, isSupabaseConfigured } from './supabase';
 import { searchMCPProjects, getRepositoryDetails } from './github';
 import { parseProjectSlug } from './utils';
 
@@ -229,6 +229,20 @@ async function getGitHubFirstProjects(config: ProjectServiceConfig, timestamp: s
     if (githubProjects.length > 0) {
       console.log(`✅ 从GitHub获取到 ${githubProjects.length} 个项目`);
       
+      // 尝试自动入库到Supabase (与定时器逻辑一致)
+      let syncStats = { inserted: 0, updated: 0, skipped: 0 };
+      if (isSupabaseConfigured()) {
+        try {
+          console.log('💾 自动将GitHub数据同步到数据库...');
+          syncStats = await upsertProjects(githubProjects);
+          console.log(`📊 入库统计: 新增 ${syncStats.inserted}, 更新 ${syncStats.updated}, 跳过 ${syncStats.skipped}`);
+        } catch (syncError) {
+          console.warn('⚠️ 自动入库失败，仅使用缓存:', syncError);
+        }
+      } else {
+        console.log('⚠️ Supabase未配置，跳过自动入库');
+      }
+      
       // 缓存结果
       projectCache.set(githubProjects);
       
@@ -305,8 +319,22 @@ async function getGitHubOnlyProjects(timestamp: string): Promise<ProjectFetchRes
   
   const githubProjects = await searchMCPProjects();
   
-  // 缓存结果
   if (githubProjects.length > 0) {
+    // 尝试自动入库到Supabase (与定时器逻辑一致)
+    let syncStats = { inserted: 0, updated: 0, skipped: 0 };
+    if (isSupabaseConfigured()) {
+      try {
+        console.log('💾 自动将GitHub数据同步到数据库...');
+        syncStats = await upsertProjects(githubProjects);
+        console.log(`📊 入库统计: 新增 ${syncStats.inserted}, 更新 ${syncStats.updated}, 跳过 ${syncStats.skipped}`);
+      } catch (syncError) {
+        console.warn('⚠️ 自动入库失败，仅使用缓存:', syncError);
+      }
+    } else {
+      console.log('⚠️ Supabase未配置，跳过自动入库');
+    }
+    
+    // 缓存结果
     projectCache.set(githubProjects);
   }
   

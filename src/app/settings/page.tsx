@@ -1,303 +1,265 @@
 'use client';
 
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import ClientWrapper from '@/components/ClientWrapper';
-import { FaBell, FaEye, FaLanguage, FaPalette, FaLock, FaUser } from 'react-icons/fa';
+import { useSession, signIn } from 'next-auth/react';
+import { useState, useEffect } from 'react';
+import { FaUser, FaCog, FaBell, FaEye, FaSignInAlt, FaGithub } from 'react-icons/fa';
 
 export default function SettingsPage() {
   const { data: session, status } = useSession();
-  const router = useRouter();
-  const [activeTab, setActiveTab] = useState('general');
-
-  // 设置状态
+  const [isLoading, setIsLoading] = useState(true);
   const [settings, setSettings] = useState({
-    language: 'zh',
-    theme: 'system',
     notifications: {
       email: true,
       push: false,
-      community: true,
+      newProjects: true,
+      updates: false
+    },
+    display: {
+      theme: 'auto',
+      language: 'zh',
+      itemsPerPage: 20
     },
     privacy: {
-      profileVisible: true,
+      profilePublic: true,
       showEmail: false,
-      showActivity: true,
-    },
+      allowMessages: true
+    }
   });
 
   useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/');
+    if (status !== 'loading') {
+      setIsLoading(false);
     }
-  }, [status, router]);
+  }, [status]);
 
-  if (status === 'loading') {
+  const handleSettingChange = (category: string, key: string, value: any) => {
+    setSettings(prev => ({
+      ...prev,
+      [category]: {
+        ...prev[category as keyof typeof prev],
+        [key]: value
+      }
+    }));
+  };
+
+  if (isLoading) {
     return (
-      <ClientWrapper>
-        <main className="flex-grow container mx-auto px-4 py-8">
-          <div className="flex justify-center items-center py-20">
-            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-600"></div>
-          </div>
-        </main>
-      </ClientWrapper>
+      <main className="flex-grow container mx-auto px-4 py-8">
+        <div className="flex justify-center items-center min-h-[400px]">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+        </div>
+      </main>
     );
   }
 
   if (!session) {
-    return null;
+    return (
+      <main className="flex-grow container mx-auto px-4 py-8">
+        <div className="max-w-md mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 text-center">
+          <FaCog className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+            设置中心
+          </h1>
+          <p className="text-gray-600 dark:text-gray-300 mb-6">
+            请先登录以管理您的设置
+          </p>
+          <button
+            onClick={() => signIn('github')}
+            className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors inline-flex items-center gap-2"
+          >
+            <FaGithub className="w-5 h-5" />
+            使用 GitHub 登录
+            <FaSignInAlt className="w-4 h-4" />
+          </button>
+        </div>
+      </main>
+    );
   }
 
-  const handleSettingChange = (category: string, key: string, value: any) => {
-    setSettings(prev => {
-      if (category === 'language' || category === 'theme') {
-        return { ...prev, [category]: value };
-      }
-      if (category === 'notifications' || category === 'privacy') {
-        return {
-          ...prev,
-          [category]: { ...(prev[category] as any), [key]: value }
-        };
-      }
-      return prev;
-    });
-  };
-
-  const tabs = [
-    { id: 'general', label: '通用设置', icon: FaUser },
-    { id: 'appearance', label: '外观设置', icon: FaPalette },
-    { id: 'notifications', label: '通知设置', icon: FaBell },
-    { id: 'privacy', label: '隐私设置', icon: FaLock },
-  ];
-
   return (
-    <ClientWrapper>
-      <main className="flex-grow container mx-auto px-4 py-8">
-        <div className="max-w-6xl mx-auto">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
-            设置
+    <main className="flex-grow container mx-auto px-4 py-8">
+      <div className="max-w-4xl mx-auto">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+            设置中心
           </h1>
+          <p className="text-gray-600 dark:text-gray-300">
+            管理您的账户设置和偏好
+          </p>
+        </div>
 
-          <div className="flex flex-col lg:flex-row gap-8">
-            {/* 左侧导航 */}
-            <div className="lg:w-1/4">
-              <nav className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
-                <ul className="space-y-2">
-                  {tabs.map((tab) => (
-                    <li key={tab.id}>
-                      <button
-                        onClick={() => setActiveTab(tab.id)}
-                        className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors ${
-                          activeTab === tab.id
-                            ? 'bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300'
-                            : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
-                        }`}
-                      >
-                        <tab.icon className="w-5 h-5" />
-                        <span>{tab.label}</span>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
-            </div>
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          {/* 侧边导航 */}
+          <div className="lg:col-span-1">
+            <nav className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
+              <ul className="space-y-2">
+                <li>
+                  <a href="#notifications" className="flex items-center px-3 py-2 text-purple-600 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+                    <FaBell className="w-4 h-4 mr-3" />
+                    通知设置
+                  </a>
+                </li>
+                <li>
+                  <a href="#display" className="flex items-center px-3 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg">
+                    <FaEye className="w-4 h-4 mr-3" />
+                    显示设置
+                  </a>
+                </li>
+                <li>
+                  <a href="#privacy" className="flex items-center px-3 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg">
+                    <FaUser className="w-4 h-4 mr-3" />
+                    隐私设置
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
 
-            {/* 右侧内容 */}
-            <div className="lg:w-3/4">
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-                {/* 通用设置 */}
-                {activeTab === 'general' && (
+          {/* 设置内容 */}
+          <div className="lg:col-span-3 space-y-8">
+            {/* 通知设置 */}
+            <section id="notifications" className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+                <FaBell className="w-5 h-5" />
+                通知设置
+              </h2>
+              
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
                   <div>
-                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
-                      通用设置
-                    </h2>
-                    
-                    <div className="space-y-6">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                          语言设置
-                        </label>
-                        <select
-                          value={settings.language}
-                          onChange={(e) => handleSettingChange('language', '', e.target.value)}
-                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white"
-                        >
-                          <option value="zh">简体中文</option>
-                          <option value="en">English</option>
-                        </select>
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                          时区设置
-                        </label>
-                        <select
-                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white"
-                        >
-                          <option value="Asia/Shanghai">Asia/Shanghai (UTC+8)</option>
-                          <option value="America/New_York">America/New_York (UTC-5)</option>
-                          <option value="Europe/London">Europe/London (UTC+0)</option>
-                        </select>
-                      </div>
-                    </div>
+                    <label className="text-sm font-medium text-gray-900 dark:text-white">
+                      邮件通知
+                    </label>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      接收重要更新的邮件通知
+                    </p>
                   </div>
-                )}
-
-                {/* 外观设置 */}
-                {activeTab === 'appearance' && (
-                  <div>
-                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
-                      外观设置
-                    </h2>
-                    
-                    <div className="space-y-6">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                          主题模式
-                        </label>
-                        <div className="grid grid-cols-3 gap-4">
-                          {[
-                            { value: 'light', label: '浅色模式' },
-                            { value: 'dark', label: '深色模式' },
-                            { value: 'system', label: '跟随系统' },
-                          ].map((theme) => (
-                            <button
-                              key={theme.value}
-                              onClick={() => handleSettingChange('theme', '', theme.value)}
-                              className={`p-3 rounded-lg border text-center transition-colors ${
-                                settings.theme === theme.value
-                                  ? 'border-purple-500 bg-purple-50 dark:bg-purple-900 text-purple-700 dark:text-purple-300'
-                                  : 'border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
-                              }`}
-                            >
-                              {theme.label}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* 通知设置 */}
-                {activeTab === 'notifications' && (
-                  <div>
-                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
-                      通知设置
-                    </h2>
-                    
-                    <div className="space-y-6">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h3 className="text-sm font-medium text-gray-900 dark:text-white">
-                            邮件通知
-                          </h3>
-                          <p className="text-sm text-gray-500 dark:text-gray-400">
-                            接收重要更新和活动通知
-                          </p>
-                        </div>
-                        <label className="relative inline-flex items-center cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={settings.notifications.email}
-                            onChange={(e) => handleSettingChange('notifications', 'email', e.target.checked)}
-                            className="sr-only peer"
-                          />
-                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
-                        </label>
-                      </div>
-
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h3 className="text-sm font-medium text-gray-900 dark:text-white">
-                            社区通知
-                          </h3>
-                          <p className="text-sm text-gray-500 dark:text-gray-400">
-                            接收评论和回复通知
-                          </p>
-                        </div>
-                        <label className="relative inline-flex items-center cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={settings.notifications.community}
-                            onChange={(e) => handleSettingChange('notifications', 'community', e.target.checked)}
-                            className="sr-only peer"
-                          />
-                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* 隐私设置 */}
-                {activeTab === 'privacy' && (
-                  <div>
-                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
-                      隐私设置
-                    </h2>
-                    
-                    <div className="space-y-6">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h3 className="text-sm font-medium text-gray-900 dark:text-white">
-                            公开个人资料
-                          </h3>
-                          <p className="text-sm text-gray-500 dark:text-gray-400">
-                            允许其他用户查看您的个人资料
-                          </p>
-                        </div>
-                        <label className="relative inline-flex items-center cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={settings.privacy.profileVisible}
-                            onChange={(e) => handleSettingChange('privacy', 'profileVisible', e.target.checked)}
-                            className="sr-only peer"
-                          />
-                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
-                        </label>
-                      </div>
-
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h3 className="text-sm font-medium text-gray-900 dark:text-white">
-                            显示活动记录
-                          </h3>
-                          <p className="text-sm text-gray-500 dark:text-gray-400">
-                            在个人资料中显示您的活动统计
-                          </p>
-                        </div>
-                        <label className="relative inline-flex items-center cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={settings.privacy.showActivity}
-                            onChange={(e) => handleSettingChange('privacy', 'showActivity', e.target.checked)}
-                            className="sr-only peer"
-                          />
-                          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 dark:peer-focus:ring-purple-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-purple-600"></div>
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* 保存按钮 */}
-                <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
-                  <div className="flex justify-end space-x-4">
-                    <button className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">
-                      取消
-                    </button>
-                    <button className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg font-medium transition-colors">
-                      保存设置
-                    </button>
-                  </div>
+                  <input
+                    type="checkbox"
+                    checked={settings.notifications.email}
+                    onChange={(e) => handleSettingChange('notifications', 'email', e.target.checked)}
+                    className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500"
+                  />
                 </div>
+
+                <div className="flex items-center justify-between">
+                  <div>
+                    <label className="text-sm font-medium text-gray-900 dark:text-white">
+                      新项目通知
+                    </label>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      当有新的MCP项目发布时通知我
+                    </p>
+                  </div>
+                  <input
+                    type="checkbox"
+                    checked={settings.notifications.newProjects}
+                    onChange={(e) => handleSettingChange('notifications', 'newProjects', e.target.checked)}
+                    className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500"
+                  />
+                </div>
+              </div>
+            </section>
+
+            {/* 显示设置 */}
+            <section id="display" className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+                <FaEye className="w-5 h-5" />
+                显示设置
+              </h2>
+              
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+                    主题模式
+                  </label>
+                  <select
+                    value={settings.display.theme}
+                    onChange={(e) => handleSettingChange('display', 'theme', e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:text-white"
+                  >
+                    <option value="auto">跟随系统</option>
+                    <option value="light">浅色模式</option>
+                    <option value="dark">深色模式</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+                    每页显示项目数
+                  </label>
+                  <select
+                    value={settings.display.itemsPerPage}
+                    onChange={(e) => handleSettingChange('display', 'itemsPerPage', parseInt(e.target.value))}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:text-white"
+                  >
+                    <option value={10}>10</option>
+                    <option value={20}>20</option>
+                    <option value={50}>50</option>
+                    <option value={100}>100</option>
+                  </select>
+                </div>
+              </div>
+            </section>
+
+            {/* 隐私设置 */}
+            <section id="privacy" className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+                <FaUser className="w-5 h-5" />
+                隐私设置
+              </h2>
+              
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <label className="text-sm font-medium text-gray-900 dark:text-white">
+                      公开个人资料
+                    </label>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      让其他用户可以查看您的个人资料
+                    </p>
+                  </div>
+                  <input
+                    type="checkbox"
+                    checked={settings.privacy.profilePublic}
+                    onChange={(e) => handleSettingChange('privacy', 'profilePublic', e.target.checked)}
+                    className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500"
+                  />
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div>
+                    <label className="text-sm font-medium text-gray-900 dark:text-white">
+                      显示邮箱地址
+                    </label>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      在个人资料中显示您的邮箱地址
+                    </p>
+                  </div>
+                  <input
+                    type="checkbox"
+                    checked={settings.privacy.showEmail}
+                    onChange={(e) => handleSettingChange('privacy', 'showEmail', e.target.checked)}
+                    className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500"
+                  />
+                </div>
+              </div>
+            </section>
+
+            {/* 保存按钮 */}
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+              <div className="flex justify-end space-x-4">
+                <button className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                  重置
+                </button>
+                <button className="px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-md transition-colors">
+                  保存设置
+                </button>
               </div>
             </div>
           </div>
         </div>
-      </main>
-    </ClientWrapper>
+      </div>
+    </main>
   );
 } 

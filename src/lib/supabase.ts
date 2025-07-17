@@ -52,6 +52,11 @@ export interface GitHubProject {
   image_url: string;
   readme_content?: string;
   sync_at: string; // 最后同步时间
+  gemini_analyzed_at?: string; // Gemini分析时间
+  gemini_summary?: string; // Gemini分析摘要
+  gemini_key_features?: string[]; // Gemini分析的关键特性
+  gemini_use_cases?: string[]; // Gemini分析的使用案例
+  gemini_analysis_version?: number; // 分析版本号
 }
 
 // 获取所有项目（用于展示）
@@ -72,7 +77,7 @@ export async function getAllProjects(): Promise<ProcessedRepo[]> {
 
     console.log(`从数据库获取到 ${data.length} 个项目`);
 
-    // 转换为ProcessedRepo格式
+    // 转换为ProcessedRepo格式，包含 Gemini 分析结果
     const processedRepos: ProcessedRepo[] = data.map(project => ({
       id: project.id,
       name: project.name,
@@ -89,7 +94,13 @@ export async function getAllProjects(): Promise<ProcessedRepo[]> {
       updatedAt: project.updated_at,
       relevance: project.relevance,
       imageUrl: project.image_url,
-      readmeContent: project.readme_content
+      readmeContent: project.readme_content,
+      // 添加 Gemini 分析结果
+      geminiAnalyzedAt: project.gemini_analyzed_at,
+      geminiSummary: project.gemini_summary,
+      geminiKeyFeatures: project.gemini_key_features || [],
+      geminiUseCases: project.gemini_use_cases || [],
+      geminiAnalysisVersion: project.gemini_analysis_version
     }));
 
     return processedRepos;
@@ -153,13 +164,29 @@ export async function upsertProjects(projects: ProcessedRepo[]): Promise<{ inser
         // 首先检查项目是否已存在
         const { data: existingProject, error: selectError } = await supabase
           .from('github_projects')
-          .select('id, github_updated_at, relevance_score')
+          .select('id, github_updated_at, relevance_score, gemini_analyzed_at, gemini_analysis_version')
           .eq('id', project.id)
           .single();
 
         if (selectError && selectError.code !== 'PGRST116') {
           console.error(`检查项目 ${project.id} 时出错:`, selectError);
           continue;
+        }
+
+        const needsAnalysis = shouldAnalyzeProject(existingProject, project);
+        let geminiAnalysis = null;
+
+        // 对需要分析的项目进行 Gemini 分析
+        if (needsAnalysis) {
+          try {
+            console.log(`🤖 正在分析项目: ${project.name}`);
+            const { analyzeProjectRelevance } = await import('./analysis');
+            geminiAnalysis = await analyzeProjectRelevance(project);
+            console.log(`✅ 分析完成: ${project.name} (得分: ${geminiAnalysis.relevanceScore})`);
+          } catch (analysisError) {
+            console.warn(`⚠️ 分析项目 ${project.name} 失败:`, analysisError);
+            // 分析失败时继续入库，但不设置分析结果
+          }
         }
 
         const projectData: Partial<GitHubProject> = {
@@ -177,11 +204,19 @@ export async function upsertProjects(projects: ProcessedRepo[]): Promise<{ inser
           created_at: project.createdAt,
           updated_at: project.updatedAt,
           github_updated_at: project.updatedAt,
-          relevance: project.relevance,
-          relevance_score: calculateRelevanceScore(project),
+          relevance: geminiAnalysis?.relevanceCategory || project.relevance,
+          relevance_score: geminiAnalysis?.relevanceScore || calculateRelevanceScore(project),
           image_url: project.imageUrl,
           readme_content: project.readmeContent,
-          sync_at: new Date().toISOString()
+          sync_at: new Date().toISOString(),
+          // 添加 Gemini 分析结果
+          ...(geminiAnalysis && {
+            gemini_analyzed_at: new Date().toISOString(),
+            gemini_summary: geminiAnalysis.summary,
+            gemini_key_features: geminiAnalysis.keyFeatures,
+            gemini_use_cases: geminiAnalysis.useCases,
+            gemini_analysis_version: 1
+          })
         };
 
         if (!existingProject) {
@@ -194,14 +229,14 @@ export async function upsertProjects(projects: ProcessedRepo[]): Promise<{ inser
             console.error(`插入项目 ${project.id} 失败:`, insertError);
           } else {
             inserted++;
-            console.log(`✅ 新增项目: ${project.name}`);
+            console.log(`✅ 新增项目: ${project.name}${geminiAnalysis ? ' (已分析)' : ''}`);
           }
         } else {
           // 项目已存在，检查是否需要更新
           const existingUpdateTime = new Date(existingProject.github_updated_at);
           const newUpdateTime = new Date(project.updatedAt);
 
-          if (newUpdateTime > existingUpdateTime || !existingProject.relevance_score) {
+          if (newUpdateTime > existingUpdateTime || !existingProject.relevance_score || needsAnalysis) {
             // 需要更新
             const { error: updateError } = await supabase
               .from('github_projects')
@@ -212,7 +247,7 @@ export async function upsertProjects(projects: ProcessedRepo[]): Promise<{ inser
               console.error(`更新项目 ${project.id} 失败:`, updateError);
             } else {
               updated++;
-              console.log(`🔄 更新项目: ${project.name}`);
+              console.log(`🔄 更新项目: ${project.name}${geminiAnalysis ? ' (已重新分析)' : ''}`);
             }
           } else {
             // 无需更新
@@ -232,6 +267,36 @@ export async function upsertProjects(projects: ProcessedRepo[]): Promise<{ inser
     console.error('批量同步项目时出错:', error);
     return { inserted, updated, skipped };
   }
+}
+
+// 判断是否需要进行 Gemini 分析
+function shouldAnalyzeProject(existingProject: any, newProject: ProcessedRepo): boolean {
+  // 新项目总是需要分析
+  if (!existingProject) {
+    return true;
+  }
+
+  // 如果从未分析过，需要分析
+  if (!existingProject.gemini_analyzed_at) {
+    return true;
+  }
+
+  // 如果项目在GitHub上有更新，且距离上次分析超过7天，需要重新分析
+  const lastAnalyzed = new Date(existingProject.gemini_analyzed_at);
+  const daysSinceAnalysis = (Date.now() - lastAnalyzed.getTime()) / (1000 * 60 * 60 * 24);
+  const projectUpdated = new Date(newProject.updatedAt) > new Date(existingProject.github_updated_at);
+  
+  if (projectUpdated && daysSinceAnalysis > 7) {
+    return true;
+  }
+
+  // 如果分析版本过旧，需要重新分析
+  const currentAnalysisVersion = 1;
+  if (!existingProject.gemini_analysis_version || existingProject.gemini_analysis_version < currentAnalysisVersion) {
+    return true;
+  }
+
+  return false;
 }
 
 // 计算项目相关性分数（用于排序）

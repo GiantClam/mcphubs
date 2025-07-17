@@ -1,4 +1,3 @@
-import ClientWrapper from '@/components/ClientWrapper';
 import { FaCode, FaDatabase, FaCloud, FaRobot, FaGithub, FaDocker, FaSlack, FaDiscord, FaTelegram, FaLinkedin, FaTwitter } from 'react-icons/fa';
 import { SiJetbrains, SiNotion, SiObsidian, SiFilezilla, SiElasticsearch, SiGrafana } from 'react-icons/si';
 
@@ -223,158 +222,156 @@ export default function IntegrationsPage() {
   };
 
   return (
-    <ClientWrapper>
-      <main className="flex-grow container mx-auto px-4 py-8">
-        <div className="max-w-7xl mx-auto">
-          {/* 页面标题 */}
-          <section className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white">
-              MCP 集成案例
-            </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              探索 Model Context Protocol 与各种工具、平台和服务的集成示例，了解如何在不同环境中发挥 MCP 的强大能力
-            </p>
-          </section>
+    <main className="flex-grow container mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto">
+        {/* 页面标题 */}
+        <section className="text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white">
+            MCP 集成案例
+          </h1>
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+            探索 Model Context Protocol 与各种工具、平台和服务的集成示例，了解如何在不同环境中发挥 MCP 的强大能力
+          </p>
+        </section>
 
-          {/* 集成案例展示 */}
-          <div className="space-y-12">
-            {integrations.map((category, categoryIndex) => (
-              <section key={categoryIndex} className="mb-12">
-                <div className="text-center mb-8">
-                  <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-                    {category.category}
-                  </h2>
-                  <p className="text-lg text-gray-600 dark:text-gray-300">
-                    {category.description}
-                  </p>
+        {/* 集成案例展示 */}
+        <div className="space-y-12">
+          {integrations.map((category, categoryIndex) => (
+            <section key={categoryIndex} className="mb-12">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                  {category.category}
+                </h2>
+                <p className="text-lg text-gray-600 dark:text-gray-300">
+                  {category.description}
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {category.items.map((item, itemIndex) => (
+                  <div key={itemIndex} className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow border border-gray-200 dark:border-gray-700">
+                    <div className="flex items-center mb-4">
+                      <div className="mr-4">
+                        {item.icon}
+                      </div>
+                      <div className="flex-grow">
+                        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                          {item.name}
+                        </h3>
+                        <span className={`inline-block px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(item.status)}`}>
+                          {item.status}
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <p className="text-gray-600 dark:text-gray-300 mb-4">
+                      {item.description}
+                    </p>
+                    
+                    <div className="mb-4">
+                      <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">主要功能：</h4>
+                      <ul className="space-y-1">
+                        {item.features.map((feature, featureIndex) => (
+                          <li key={featureIndex} className="text-sm text-gray-600 dark:text-gray-300 flex items-center">
+                            <span className="w-1.5 h-1.5 bg-purple-600 dark:bg-purple-400 rounded-full mr-2"></span>
+                            {feature}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    
+                    {item.link !== "#" && (
+                      <a
+                        href={item.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300 font-medium"
+                      >
+                        了解更多
+                        <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                      </a>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+
+        {/* 应用场景 */}
+        <section className="mt-16 mb-12">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+              实际应用场景
+            </h2>
+            <p className="text-lg text-gray-600 dark:text-gray-300">
+              看看 MCP 集成如何解决真实世界的问题
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {useCases.map((useCase, index) => (
+              <div key={index} className="bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-lg p-6 border border-purple-200 dark:border-purple-800">
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                  {useCase.title}
+                </h3>
+                <p className="text-gray-600 dark:text-gray-300 mb-4">
+                  {useCase.description}
+                </p>
+                
+                <div className="mb-4">
+                  <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">技术栈：</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {useCase.technologies.map((tech, techIndex) => (
+                      <span key={techIndex} className="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-xs rounded-full">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {category.items.map((item, itemIndex) => (
-                    <div key={itemIndex} className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow border border-gray-200 dark:border-gray-700">
-                      <div className="flex items-center mb-4">
-                        <div className="mr-4">
-                          {item.icon}
-                        </div>
-                        <div className="flex-grow">
-                          <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                            {item.name}
-                          </h3>
-                          <span className={`inline-block px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(item.status)}`}>
-                            {item.status}
-                          </span>
-                        </div>
-                      </div>
-                      
-                      <p className="text-gray-600 dark:text-gray-300 mb-4">
-                        {item.description}
-                      </p>
-                      
-                      <div className="mb-4">
-                        <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">主要功能：</h4>
-                        <ul className="space-y-1">
-                          {item.features.map((feature, featureIndex) => (
-                            <li key={featureIndex} className="text-sm text-gray-600 dark:text-gray-300 flex items-center">
-                              <span className="w-1.5 h-1.5 bg-purple-600 dark:bg-purple-400 rounded-full mr-2"></span>
-                              {feature}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                      
-                      {item.link !== "#" && (
-                        <a
-                          href={item.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300 font-medium"
-                        >
-                          了解更多
-                          <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                          </svg>
-                        </a>
-                      )}
-                    </div>
-                  ))}
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">核心优势：</h4>
+                  <ul className="space-y-1">
+                    {useCase.benefits.map((benefit, benefitIndex) => (
+                      <li key={benefitIndex} className="text-sm text-gray-600 dark:text-gray-300 flex items-center">
+                        <span className="w-1.5 h-1.5 bg-green-500 rounded-full mr-2"></span>
+                        {benefit}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              </section>
+              </div>
             ))}
           </div>
+        </section>
 
-          {/* 应用场景 */}
-          <section className="mt-16 mb-12">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-                实际应用场景
-              </h2>
-              <p className="text-lg text-gray-600 dark:text-gray-300">
-                看看 MCP 集成如何解决真实世界的问题
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {useCases.map((useCase, index) => (
-                <div key={index} className="bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-lg p-6 border border-purple-200 dark:border-purple-800">
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
-                    {useCase.title}
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-300 mb-4">
-                    {useCase.description}
-                  </p>
-                  
-                  <div className="mb-4">
-                    <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">技术栈：</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {useCase.technologies.map((tech, techIndex) => (
-                        <span key={techIndex} className="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-xs rounded-full">
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">核心优势：</h4>
-                    <ul className="space-y-1">
-                      {useCase.benefits.map((benefit, benefitIndex) => (
-                        <li key={benefitIndex} className="text-sm text-gray-600 dark:text-gray-300 flex items-center">
-                          <span className="w-1.5 h-1.5 bg-green-500 rounded-full mr-2"></span>
-                          {benefit}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* 开始集成 */}
-          <section className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg p-8 text-center text-white mt-12">
-            <h2 className="text-3xl font-bold mb-4">
-              开始您的 MCP 集成之旅
-            </h2>
-            <p className="text-lg mb-6 max-w-2xl mx-auto">
-              选择适合您项目的集成方案，或者创建自己的 MCP 服务器来扩展现有工具的功能
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href="/development-guides"
-                className="bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
-              >
-                查看开发指南
-              </a>
-              <a
-                href="/projects"
-                className="bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-purple-600 transition-colors"
-              >
-                浏览项目示例
-              </a>
-            </div>
-          </section>
-        </div>
-      </main>
-    </ClientWrapper>
+        {/* 开始集成 */}
+        <section className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg p-8 text-center text-white mt-12">
+          <h2 className="text-3xl font-bold mb-4">
+            开始您的 MCP 集成之旅
+          </h2>
+          <p className="text-lg mb-6 max-w-2xl mx-auto">
+            选择适合您项目的集成方案，或者创建自己的 MCP 服务器来扩展现有工具的功能
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a
+              href="/development-guides"
+              className="bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+            >
+              查看开发指南
+            </a>
+            <a
+              href="/projects"
+              className="bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-purple-600 transition-colors"
+            >
+              浏览项目示例
+            </a>
+          </div>
+        </section>
+      </div>
+    </main>
   );
 } 

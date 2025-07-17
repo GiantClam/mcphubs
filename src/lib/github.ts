@@ -37,6 +37,12 @@ export interface ProcessedRepo {
   relevance: string;
   imageUrl: string;
   readmeContent?: string;
+  // Gemini 分析结果字段
+  geminiAnalyzedAt?: string;
+  geminiSummary?: string;
+  geminiKeyFeatures?: string[];
+  geminiUseCases?: string[];
+  geminiAnalysisVersion?: number;
 }
 
 // 从环境变量获取配置

@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import ClientWrapper from '@/components/ClientWrapper';
 import { FaServer, FaDesktop, FaCode, FaRocket, FaBook, FaDownload, FaCopy, FaCheckCircle, FaGithub, FaNodeJs, FaPython, FaJs } from 'react-icons/fa';
 
 export default function DevelopmentGuidesPage() {
@@ -32,104 +31,103 @@ export default function DevelopmentGuidesPage() {
   );
 
   return (
-    <ClientWrapper>
-      <main className="flex-grow container mx-auto px-4 py-8">
-        <div className="max-w-6xl mx-auto">
-          {/* 页面标题 */}
-          <section className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white">
-              MCP 开发指南
-            </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-300">
-              学习如何构建 MCP 服务器和客户端，开发强大的 AI 集成应用
-            </p>
-          </section>
+    <main className="flex-grow container mx-auto px-4 py-8">
+      <div className="max-w-6xl mx-auto">
+        {/* 页面标题 */}
+        <section className="text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white">
+            MCP 开发指南
+          </h1>
+          <p className="text-xl text-gray-600 dark:text-gray-300">
+            学习如何构建 MCP 服务器和客户端，开发强大的 AI 集成应用
+          </p>
+        </section>
 
-          {/* 标签导航 */}
-          <div className="flex justify-center mb-8">
-            <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-1 flex">
-              <button
-                onClick={() => setActiveTab('server')}
-                className={`px-6 py-2 rounded-md font-medium transition-colors ${
-                  activeTab === 'server' 
-                    ? 'bg-purple-600 text-white' 
-                    : 'text-gray-600 dark:text-gray-300 hover:text-purple-600'
-                }`}
-              >
-                <FaServer className="w-4 h-4 inline mr-2" />
-                服务器开发
-              </button>
-              <button
-                onClick={() => setActiveTab('client')}
-                className={`px-6 py-2 rounded-md font-medium transition-colors ${
-                  activeTab === 'client' 
-                    ? 'bg-purple-600 text-white' 
-                    : 'text-gray-600 dark:text-gray-300 hover:text-purple-600'
-                }`}
-              >
-                <FaDesktop className="w-4 h-4 inline mr-2" />
-                客户端开发
-              </button>
-            </div>
+        {/* 标签导航 */}
+        <div className="flex justify-center mb-8">
+          <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-1 flex">
+            <button
+              onClick={() => setActiveTab('server')}
+              className={`px-6 py-2 rounded-md font-medium transition-colors ${
+                activeTab === 'server' 
+                  ? 'bg-purple-600 text-white' 
+                  : 'text-gray-600 dark:text-gray-300 hover:text-purple-600'
+              }`}
+            >
+              <FaServer className="w-4 h-4 inline mr-2" />
+              服务器开发
+            </button>
+            <button
+              onClick={() => setActiveTab('client')}
+              className={`px-6 py-2 rounded-md font-medium transition-colors ${
+                activeTab === 'client' 
+                  ? 'bg-purple-600 text-white' 
+                  : 'text-gray-600 dark:text-gray-300 hover:text-purple-600'
+              }`}
+            >
+              <FaDesktop className="w-4 h-4 inline mr-2" />
+              客户端开发
+            </button>
           </div>
+        </div>
 
-          {/* 服务器开发指南 */}
-          {activeTab === 'server' && (
-            <div className="space-y-8">
-              {/* 快速开始 */}
-              <section className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
-                <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white flex items-center">
-                  <FaRocket className="w-6 h-6 mr-2 text-purple-600" />
-                  快速开始
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="text-center">
-                    <div className="bg-blue-100 dark:bg-blue-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <FaPython className="w-8 h-8 text-blue-600 dark:text-blue-400" />
-                    </div>
-                    <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Python SDK</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-300">官方 Python SDK，易于使用</p>
+        {/* 服务器开发指南 */}
+        {activeTab === 'server' && (
+          <div className="space-y-8">
+            {/* 快速开始 */}
+            <section className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
+              <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white flex items-center">
+                <FaRocket className="w-6 h-6 mr-2 text-purple-600" />
+                快速开始
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="text-center">
+                  <div className="bg-blue-100 dark:bg-blue-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <FaPython className="w-8 h-8 text-blue-600 dark:text-blue-400" />
                   </div>
-                  <div className="text-center">
-                    <div className="bg-green-100 dark:bg-green-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <FaNodeJs className="w-8 h-8 text-green-600 dark:text-green-400" />
-                    </div>
-                    <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Node.js SDK</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-300">TypeScript/JavaScript 支持</p>
-                  </div>
-                  <div className="text-center">
-                    <div className="bg-purple-100 dark:bg-purple-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <FaCode className="w-8 h-8 text-purple-600 dark:text-purple-400" />
-                    </div>
-                    <h3 className="font-semibold text-gray-900 dark:text-white mb-2">其他语言</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-300">Go, Rust, Java 等</p>
-                  </div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Python SDK</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">官方 Python SDK，易于使用</p>
                 </div>
-              </section>
-
-              {/* Python MCP 服务器开发 */}
-              <section className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
-                <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white flex items-center">
-                  <FaPython className="w-6 h-6 mr-2 text-blue-600" />
-                  Python MCP 服务器开发
-                </h2>
-                
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">1. 安装 Python SDK</h3>
-                    <CodeBlock
-                      id="python-install"
-                      language="bash"
-                      code={`pip install mcp`}
-                    />
+                <div className="text-center">
+                  <div className="bg-green-100 dark:bg-green-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <FaNodeJs className="w-8 h-8 text-green-600 dark:text-green-400" />
                   </div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Node.js SDK</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">TypeScript/JavaScript 支持</p>
+                </div>
+                <div className="text-center">
+                  <div className="bg-purple-100 dark:bg-purple-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <FaCode className="w-8 h-8 text-purple-600 dark:text-purple-400" />
+                  </div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">其他语言</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">Go, Rust, Java 等</p>
+                </div>
+              </div>
+            </section>
 
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">2. 创建基础服务器</h3>
-                    <CodeBlock
-                      id="python-basic-server"
-                      language="python"
-                      code={`import asyncio
+            {/* Python MCP 服务器开发 */}
+            <section className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
+              <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white flex items-center">
+                <FaPython className="w-6 h-6 mr-2 text-blue-600" />
+                Python MCP 服务器开发
+              </h2>
+              
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">1. 安装 Python SDK</h3>
+                  <CodeBlock
+                    id="python-install"
+                    language="bash"
+                    code={`pip install mcp`}
+                  />
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">2. 创建基础服务器</h3>
+                  <CodeBlock
+                    id="python-basic-server"
+                    language="python"
+                    code={`import asyncio
 from mcp.server import Server, NotificationOptions
 from mcp.server.models import InitializationOptions
 from mcp.server.stdio import stdio_server
@@ -241,15 +239,15 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())`}
-                    />
-                  </div>
+                  />
+                </div>
 
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">3. 高级功能示例</h3>
-                    <CodeBlock
-                      id="python-advanced"
-                      language="python"
-                      code={`# 添加提示 (Prompts)
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">3. 高级功能示例</h3>
+                  <CodeBlock
+                    id="python-advanced"
+                    language="python"
+                    code={`# 添加提示 (Prompts)
 @server.list_prompts()
 async def handle_list_prompts() -> list[Prompt]:
     return [
@@ -293,35 +291,35 @@ async def handle_error(error):
     """处理错误"""
     print(f"发生错误: {error}")
     return {"error": str(error)}`}
-                    />
-                  </div>
+                  />
                 </div>
-              </section>
+              </div>
+            </section>
 
-              {/* TypeScript MCP 服务器开发 */}
-              <section className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
-                <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white flex items-center">
-                  <FaJs className="w-6 h-6 mr-2 text-yellow-600" />
-                  TypeScript MCP 服务器开发
-                </h2>
-                
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">1. 安装依赖</h3>
-                    <CodeBlock
-                      id="ts-install"
-                      language="bash"
-                      code={`npm install @modelcontextprotocol/sdk
+            {/* TypeScript MCP 服务器开发 */}
+            <section className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
+              <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white flex items-center">
+                <FaJs className="w-6 h-6 mr-2 text-yellow-600" />
+                TypeScript MCP 服务器开发
+              </h2>
+              
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">1. 安装依赖</h3>
+                  <CodeBlock
+                    id="ts-install"
+                    language="bash"
+                    code={`npm install @modelcontextprotocol/sdk
 npm install -D typescript @types/node`}
-                    />
-                  </div>
+                  />
+                </div>
 
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">2. 创建 TypeScript 服务器</h3>
-                    <CodeBlock
-                      id="ts-server"
-                      language="typescript"
-                      code={`import { Server } from '@modelcontextprotocol/sdk/server/index.js';
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">2. 创建 TypeScript 服务器</h3>
+                  <CodeBlock
+                    id="ts-server"
+                    language="typescript"
+                    code={`import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import {
   CallToolRequestSchema,
@@ -431,28 +429,28 @@ main().catch((error) => {
   console.error('服务器启动失败:', error);
   process.exit(1);
 });`}
-                    />
-                  </div>
+                  />
                 </div>
-              </section>
+              </div>
+            </section>
 
-              {/* 部署和配置 */}
-              <section className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
-                <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white flex items-center">
-                  <FaRocket className="w-6 h-6 mr-2 text-green-600" />
-                  部署和配置
-                </h2>
-                
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Claude Desktop 配置</h3>
-                    <p className="text-gray-600 dark:text-gray-300 mb-4">
-                      在 Claude Desktop 中配置您的 MCP 服务器：
-                    </p>
-                    <CodeBlock
-                      id="claude-config"
-                      language="json"
-                      code={`{
+            {/* 部署和配置 */}
+            <section className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
+              <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white flex items-center">
+                <FaRocket className="w-6 h-6 mr-2 text-green-600" />
+                部署和配置
+              </h2>
+              
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Claude Desktop 配置</h3>
+                  <p className="text-gray-600 dark:text-gray-300 mb-4">
+                    在 Claude Desktop 中配置您的 MCP 服务器：
+                  </p>
+                  <CodeBlock
+                    id="claude-config"
+                    language="json"
+                    code={`{
   "mcpServers": {
     "my-mcp-server": {
       "command": "python",
@@ -463,28 +461,28 @@ main().catch((error) => {
     }
   }
 }`}
-                    />
-                  </div>
+                  />
+                </div>
 
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">环境变量配置</h3>
-                    <CodeBlock
-                      id="env-config"
-                      language="bash"
-                      code={`# .env 文件
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">环境变量配置</h3>
+                  <CodeBlock
+                    id="env-config"
+                    language="bash"
+                    code={`# .env 文件
 DATABASE_URL=postgresql://user:password@localhost/dbname
 API_KEY=your-api-key
 LOG_LEVEL=info
 DEBUG=true`}
-                    />
-                  </div>
+                  />
+                </div>
 
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Docker 部署</h3>
-                    <CodeBlock
-                      id="dockerfile"
-                      language="dockerfile"
-                      code={`FROM python:3.11-slim
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Docker 部署</h3>
+                  <CodeBlock
+                    id="dockerfile"
+                    language="dockerfile"
+                    code={`FROM python:3.11-slim
 
 WORKDIR /app
 
@@ -494,82 +492,82 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 CMD ["python", "server.py"]`}
-                    />
-                  </div>
+                  />
                 </div>
-              </section>
-            </div>
-          )}
+              </div>
+            </section>
+          </div>
+        )}
 
-          {/* 客户端开发指南 */}
-          {activeTab === 'client' && (
-            <div className="space-y-8">
-              {/* 客户端概述 */}
-              <section className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
-                <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white flex items-center">
-                  <FaDesktop className="w-6 h-6 mr-2 text-blue-600" />
-                  MCP 客户端开发概述
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">主要功能</h3>
-                    <ul className="space-y-2 text-gray-600 dark:text-gray-300">
-                      <li className="flex items-start">
-                        <span className="text-purple-600 dark:text-purple-400 mr-2">•</span>
-                        连接到 MCP 服务器
-                      </li>
-                      <li className="flex items-start">
-                        <span className="text-purple-600 dark:text-purple-400 mr-2">•</span>
-                        发现和调用工具
-                      </li>
-                      <li className="flex items-start">
-                        <span className="text-purple-600 dark:text-purple-400 mr-2">•</span>
-                        访问资源
-                      </li>
-                      <li className="flex items-start">
-                        <span className="text-purple-600 dark:text-purple-400 mr-2">•</span>
-                        使用提示模板
-                      </li>
-                    </ul>
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">支持的传输层</h3>
-                    <ul className="space-y-2 text-gray-600 dark:text-gray-300">
-                      <li className="flex items-start">
-                        <span className="text-blue-600 dark:text-blue-400 mr-2">•</span>
-                        Stdio (标准输入/输出)
-                      </li>
-                      <li className="flex items-start">
-                        <span className="text-blue-600 dark:text-blue-400 mr-2">•</span>
-                        Server-Sent Events (SSE)
-                      </li>
-                      <li className="flex items-start">
-                        <span className="text-blue-600 dark:text-blue-400 mr-2">•</span>
-                        WebSocket
-                      </li>
-                      <li className="flex items-start">
-                        <span className="text-blue-600 dark:text-blue-400 mr-2">•</span>
-                        HTTP
-                      </li>
-                    </ul>
-                  </div>
+        {/* 客户端开发指南 */}
+        {activeTab === 'client' && (
+          <div className="space-y-8">
+            {/* 客户端概述 */}
+            <section className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
+              <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white flex items-center">
+                <FaDesktop className="w-6 h-6 mr-2 text-blue-600" />
+                MCP 客户端开发概述
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">主要功能</h3>
+                  <ul className="space-y-2 text-gray-600 dark:text-gray-300">
+                    <li className="flex items-start">
+                      <span className="text-purple-600 dark:text-purple-400 mr-2">•</span>
+                      连接到 MCP 服务器
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-purple-600 dark:text-purple-400 mr-2">•</span>
+                      发现和调用工具
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-purple-600 dark:text-purple-400 mr-2">•</span>
+                      访问资源
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-purple-600 dark:text-purple-400 mr-2">•</span>
+                      使用提示模板
+                    </li>
+                  </ul>
                 </div>
-              </section>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">支持的传输层</h3>
+                  <ul className="space-y-2 text-gray-600 dark:text-gray-300">
+                    <li className="flex items-start">
+                      <span className="text-blue-600 dark:text-blue-400 mr-2">•</span>
+                      Stdio (标准输入/输出)
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-blue-600 dark:text-blue-400 mr-2">•</span>
+                      Server-Sent Events (SSE)
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-blue-600 dark:text-blue-400 mr-2">•</span>
+                      WebSocket
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-blue-600 dark:text-blue-400 mr-2">•</span>
+                      HTTP
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </section>
 
-              {/* Python 客户端开发 */}
-              <section className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
-                <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white flex items-center">
-                  <FaPython className="w-6 h-6 mr-2 text-blue-600" />
-                  Python 客户端开发
-                </h2>
-                
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">1. 基础客户端</h3>
-                    <CodeBlock
-                      id="python-client"
-                      language="python"
-                      code={`import asyncio
+            {/* Python 客户端开发 */}
+            <section className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
+              <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white flex items-center">
+                <FaPython className="w-6 h-6 mr-2 text-blue-600" />
+                Python 客户端开发
+              </h2>
+              
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">1. 基础客户端</h3>
+                  <CodeBlock
+                    id="python-client"
+                    language="python"
+                    code={`import asyncio
 from mcp.client import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 
@@ -606,15 +604,15 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())`}
-                    />
-                  </div>
+                  />
+                </div>
 
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">2. 高级客户端功能</h3>
-                    <CodeBlock
-                      id="python-advanced-client"
-                      language="python"
-                      code={`async def advanced_client_example():
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">2. 高级客户端功能</h3>
+                  <CodeBlock
+                    id="python-advanced-client"
+                    language="python"
+                    code={`async def advanced_client_example():
     server_params = StdioServerParameters(
         command="python",
         args=["server.py"]
@@ -654,25 +652,25 @@ if __name__ == "__main__":
                 print(f"收到通知: {notification}")
             
             session.set_notification_handler(notification_handler)`}
-                    />
-                  </div>
+                  />
                 </div>
-              </section>
+              </div>
+            </section>
 
-              {/* JavaScript 客户端开发 */}
-              <section className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
-                <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white flex items-center">
-                  <FaJs className="w-6 h-6 mr-2 text-yellow-600" />
-                  JavaScript 客户端开发
-                </h2>
-                
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">1. 基础客户端</h3>
-                    <CodeBlock
-                      id="js-client"
-                      language="javascript"
-                      code={`import { Client } from '@modelcontextprotocol/sdk/client/index.js';
+            {/* JavaScript 客户端开发 */}
+            <section className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
+              <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white flex items-center">
+                <FaJs className="w-6 h-6 mr-2 text-yellow-600" />
+                JavaScript 客户端开发
+              </h2>
+              
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">1. 基础客户端</h3>
+                  <CodeBlock
+                    id="js-client"
+                    language="javascript"
+                    code={`import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 
 async function main() {
@@ -733,15 +731,15 @@ async function main() {
 }
 
 main().catch(console.error);`}
-                    />
-                  </div>
+                  />
+                </div>
 
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">2. React 集成示例</h3>
-                    <CodeBlock
-                      id="react-client"
-                      language="tsx"
-                      code={`import React, { useState, useEffect } from 'react';
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">2. React 集成示例</h3>
+                  <CodeBlock
+                    id="react-client"
+                    language="tsx"
+                    code={`import React, { useState, useEffect } from 'react';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 
@@ -846,88 +844,87 @@ const MCPClient: React.FC = () => {
 };
 
 export default MCPClient;`}
-                    />
-                  </div>
+                  />
                 </div>
-              </section>
-            </div>
-          )}
+              </div>
+            </section>
+          </div>
+        )}
 
-          {/* 最佳实践和资源 */}
-          <section className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg mt-8">
-            <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white flex items-center">
-              <FaBook className="w-6 h-6 mr-2 text-green-600" />
-              最佳实践和资源
-            </h2>
+        {/* 最佳实践和资源 */}
+        <section className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg mt-8">
+          <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white flex items-center">
+            <FaBook className="w-6 h-6 mr-2 text-green-600" />
+            最佳实践和资源
+          </h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">开发最佳实践</h3>
+              <ul className="space-y-2 text-gray-600 dark:text-gray-300">
+                <li className="flex items-start">
+                  <span className="text-green-600 dark:text-green-400 mr-2">✓</span>
+                  使用类型注解和输入验证
+                </li>
+                <li className="flex items-start">
+                  <span className="text-green-600 dark:text-green-400 mr-2">✓</span>
+                  实现适当的错误处理
+                </li>
+                <li className="flex items-start">
+                  <span className="text-green-600 dark:text-green-400 mr-2">✓</span>
+                  添加详细的工具描述
+                </li>
+                <li className="flex items-start">
+                  <span className="text-green-600 dark:text-green-400 mr-2">✓</span>
+                  支持异步操作
+                </li>
+                <li className="flex items-start">
+                  <span className="text-green-600 dark:text-green-400 mr-2">✓</span>
+                  使用环境变量管理配置
+                </li>
+              </ul>
+            </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">开发最佳实践</h3>
-                <ul className="space-y-2 text-gray-600 dark:text-gray-300">
-                  <li className="flex items-start">
-                    <span className="text-green-600 dark:text-green-400 mr-2">✓</span>
-                    使用类型注解和输入验证
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-green-600 dark:text-green-400 mr-2">✓</span>
-                    实现适当的错误处理
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-green-600 dark:text-green-400 mr-2">✓</span>
-                    添加详细的工具描述
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-green-600 dark:text-green-400 mr-2">✓</span>
-                    支持异步操作
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-green-600 dark:text-green-400 mr-2">✓</span>
-                    使用环境变量管理配置
-                  </li>
-                </ul>
-              </div>
-              
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">有用资源</h3>
-                <div className="space-y-2">
-                  <a
-                    href="https://github.com/modelcontextprotocol/python-sdk"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center text-blue-600 dark:text-blue-400 hover:underline"
-                  >
-                    <FaGithub className="w-4 h-4 mr-2" />
-                    Python SDK
-                  </a>
-                  <a
-                    href="https://github.com/modelcontextprotocol/typescript-sdk"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center text-blue-600 dark:text-blue-400 hover:underline"
-                  >
-                    <FaGithub className="w-4 h-4 mr-2" />
-                    TypeScript SDK
-                  </a>
-                  <a
-                    href="/concepts"
-                    className="flex items-center text-purple-600 dark:text-purple-400 hover:underline"
-                  >
-                    <FaBook className="w-4 h-4 mr-2" />
-                    核心概念
-                  </a>
-                  <a
-                    href="/projects"
-                    className="flex items-center text-purple-600 dark:text-purple-400 hover:underline"
-                  >
-                    <FaRocket className="w-4 h-4 mr-2" />
-                    项目示例
-                  </a>
-                </div>
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">有用资源</h3>
+              <div className="space-y-2">
+                <a
+                  href="https://github.com/modelcontextprotocol/python-sdk"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center text-blue-600 dark:text-blue-400 hover:underline"
+                >
+                  <FaGithub className="w-4 h-4 mr-2" />
+                  Python SDK
+                </a>
+                <a
+                  href="https://github.com/modelcontextprotocol/typescript-sdk"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center text-blue-600 dark:text-blue-400 hover:underline"
+                >
+                  <FaGithub className="w-4 h-4 mr-2" />
+                  TypeScript SDK
+                </a>
+                <a
+                  href="/concepts"
+                  className="flex items-center text-purple-600 dark:text-purple-400 hover:underline"
+                >
+                  <FaBook className="w-4 h-4 mr-2" />
+                  核心概念
+                </a>
+                <a
+                  href="/projects"
+                  className="flex items-center text-purple-600 dark:text-purple-400 hover:underline"
+                >
+                  <FaRocket className="w-4 h-4 mr-2" />
+                  项目示例
+                </a>
               </div>
             </div>
-          </section>
-        </div>
-      </main>
-    </ClientWrapper>
+          </div>
+        </section>
+      </div>
+    </main>
   );
 } 

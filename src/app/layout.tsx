@@ -5,6 +5,7 @@ import SessionWrapper from "@/components/SessionWrapper";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import StructuredData from "./structured-data";
+import { triggerStartupSync } from "@/lib/startup-sync";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -114,6 +115,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // 在应用启动时触发同步任务（异步执行，不阻塞页面渲染）
+  if (typeof window === 'undefined') {
+    // 仅在服务端执行一次
+    triggerStartupSync({
+      forceSync: false, // 非强制模式，智能判断是否需要同步
+      skipTimeWindow: true, // 启动时跳过时间窗口限制
+      delay: 3000 // 延迟3秒，确保应用完全启动
+    }).catch(error => {
+      console.error('启动同步触发失败:', error);
+    });
+  }
+
   return (
     <html lang="zh-CN" className="h-full">
       <head>

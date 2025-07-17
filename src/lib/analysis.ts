@@ -38,7 +38,7 @@ function getGoogleCredentials() {
 function getVertexAIOptions() {
   // 基础配置
   const baseOptions = {
-    modelName: "gemini-pro", // Google 的 Gemini Pro 模型
+    modelName: "gemini-2.5-flash", // Google 的 Gemini 2.5 Flash 模型（更快更高效）
     temperature: 0,
     // Vertex AI 项目配置
     project: process.env.GOOGLE_CLOUD_PROJECT,
