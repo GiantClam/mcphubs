@@ -6,16 +6,13 @@
 
 ### 🔐 **Google Services 配置**
 
-#### **1. Google AdSense (必需)**
-```bash
-# 您的真实AdSense Publisher ID
-NEXT_PUBLIC_GOOGLE_ADSENSE_ID=ca-pub-1234567890123456
+#### **1. Google AdSense (已硬编码) ✅**
+```typescript
+// AdSense Publisher ID 已直接写入代码中
+'google-adsense-account': 'ca-pub-7958390626430202'
 ```
 
-**获取方式：**
-1. 登录 [Google AdSense](https://www.google.com/adsense/)
-2. 进入"账户" → "账户信息"
-3. 复制"发布商ID"（格式：ca-pub-xxxxxxxxxxxxxxxxx）
+**✅ 无需配置**: AdSense Publisher ID 已硬编码在 `src/app/layout.tsx` 中，部署时无需设置环境变量。
 
 #### **2. Google Analytics (可选)**
 ```bash
@@ -38,31 +35,28 @@ NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=your-verification-code
 
 #### **Vercel 部署**
 ```bash
-# 1. 通过CLI配置
-vercel env add NEXT_PUBLIC_GOOGLE_ADSENSE_ID
-
-# 2. 或在Vercel Dashboard中设置
-# 项目设置 → Environment Variables → 添加变量
+# 只需要设置Analytics和Site Verification（可选）
+vercel env add NEXT_PUBLIC_GOOGLE_ANALYTICS_ID
+vercel env add NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
 ```
 
 #### **Netlify 部署**
 ```bash
 # 在Netlify Dashboard中：
-# Site settings → Environment variables → 添加变量
+# Site settings → Environment variables → 添加可选变量
 ```
 
 #### **Docker 部署**
 ```bash
-# docker-compose.yml
+# docker-compose.yml（可选变量）
 environment:
-  - NEXT_PUBLIC_GOOGLE_ADSENSE_ID=ca-pub-your-real-id
   - NEXT_PUBLIC_GOOGLE_ANALYTICS_ID=G-YOUR-ANALYTICS-ID
+  - NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=your-verification-code
 ```
 
 #### **传统服务器部署**
 ```bash
-# 创建 .env.production 文件
-NEXT_PUBLIC_GOOGLE_ADSENSE_ID=ca-pub-your-real-id
+# 创建 .env.production 文件（可选变量）
 NEXT_PUBLIC_GOOGLE_ANALYTICS_ID=G-YOUR-ANALYTICS-ID
 NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=your-verification-code
 ```
@@ -70,23 +64,23 @@ NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=your-verification-code
 ## 🔒 **安全最佳实践**
 
 ### ✅ **推荐做法**
-- ✅ 在生产环境中设置真实的环境变量
-- ✅ 源代码中只使用占位符或环境变量
-- ✅ 不同环境使用不同的配置文件
+- ✅ AdSense ID 硬编码 - 简单有效
+- ✅ 不同环境使用不同的可选配置文件
 - ✅ 定期检查和更新敏感信息
 
 ### ❌ **避免做法**
-- ❌ 在源代码中硬编码真实ID
 - ❌ 将 .env.local 提交到Git
-- ❌ 在公开仓库中暴露真实配置
-- ❌ 使用生产环境的ID进行开发测试
+- ❌ 在公开仓库中暴露OAuth secrets
+- ❌ 使用生产环境的敏感ID进行开发测试
 
 ## 🧪 **测试配置**
 
-### **验证AdSense配置**
-1. 构建项目：`npm run build`
-2. 检查构建输出中的AdSense ID
-3. 确认不是占位符 `ca-pub-XXXXXXXXXXXXXXXXX`
+### **验证AdSense配置 ✅**
+```bash
+# AdSense已硬编码，无需验证环境变量
+# 直接检查网页源代码即可看到：
+# <script src="...client=ca-pub-7958390626430202">
+```
 
 ### **验证Analytics配置**
 1. 访问部署的网站
@@ -95,11 +89,14 @@ NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=your-verification-code
 
 ## 🔄 **更新流程**
 
-当需要更新Google服务配置时：
+### **更新AdSense ID**
+1. 修改 `src/app/layout.tsx` 中的 Publisher ID
+2. 重新部署应用
 
-1. **更新环境变量**（不修改源代码）
-2. **重新部署**应用
-3. **验证**新配置是否生效
+### **更新其他Google服务**
+1. 更新环境变量
+2. 重新部署应用
+3. 验证新配置是否生效
 
 ## 📞 **技术支持**
 
@@ -110,4 +107,4 @@ NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=your-verification-code
 
 ---
 
-**⚠️ 重要提醒：永远不要将真实的API密钥提交到公开仓库！** 
+**📌 重要说明：AdSense Publisher ID 现在已硬编码，部署更加简单！** 

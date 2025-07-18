@@ -66,8 +66,8 @@ export const metadata: Metadata = {
     images: ["/images/og-mcphubs.jpg"]
   },
   other: {
-    'google-adsense-account': process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_ID || 'ca-pub-XXXXXXXXXXXXXXXXX',
-    'google-site-verification': process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || 'your-verification-code',
+    'google-adsense-account': 'ca-pub-7958390626430202',
+    'google-site-verification': 'adsense-verification',
     // 地理定位 - 针对高价值地区
     'geo.region': 'US-CA',
     'geo.placename': 'San Francisco',
@@ -167,7 +167,7 @@ export default function RootLayout({
         
         {/* Google Analytics - 重点追踪高价值地区 */}
         <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID || 'G-XXXXXXXXXX'}`}
+          src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"
           strategy="afterInteractive"
         />
         <Script id="google-analytics" strategy="afterInteractive">
@@ -175,7 +175,7 @@ export default function RootLayout({
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID || 'G-XXXXXXXXXX'}', {
+            gtag('config', 'G-XXXXXXXXXX', {
               // 重点追踪高价值地区
               custom_map: {
                 'target_regions': 'US,CA,AU,SE,JP,KR,DE,FR,ES'
@@ -186,7 +186,7 @@ export default function RootLayout({
         
         <Script
           async
-          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_ID || 'ca-pub-XXXXXXXXXXXXXXXXX'}`}
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7958390626430202"
           crossOrigin="anonymous"
           strategy="lazyOnload"
         />
