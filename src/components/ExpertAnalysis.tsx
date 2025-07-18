@@ -13,69 +13,69 @@ interface ExpertInsight {
   type: 'positive' | 'neutral' | 'warning';
 }
 
-// 基于项目特征生成专家见解
+// Generate expert insights based on project characteristics
 function generateExpertInsights(project: ProcessedRepo): ExpertInsight[] {
   const insights: ExpertInsight[] = [];
   
-  // 基于项目人气分析
+  // Analysis based on project popularity
   if (project.stars > 1000) {
     insights.push({
-      title: "社区影响力",
-      content: `该项目拥有${project.stars}个stars，在MCP生态系统中具有显著影响力。高关注度通常意味着代码质量可靠，社区支持活跃，是企业级应用的理想选择。`,
+      title: "Community Impact",
+      content: `This project has ${project.stars} stars and significant influence in the MCP ecosystem. High attention usually indicates reliable code quality and active community support, making it ideal for enterprise applications.`,
       icon: <FaTrophy className="w-5 h-5" />,
       type: 'positive'
     });
   } else if (project.stars > 100) {
     insights.push({
-      title: "成长潜力",
-      content: `项目目前有${project.stars}个stars，处于快速发展阶段。这类项目通常更具创新性，值得早期采用者关注，但需要评估稳定性风险。`,
+      title: "Growth Potential",
+      content: `The project currently has ${project.stars} stars and is in a rapid development phase. Such projects are typically more innovative and worth attention from early adopters, but stability risks need evaluation.`,
       icon: <FaRocket className="w-5 h-5" />,
       type: 'neutral'
     });
   }
 
-  // 基于编程语言分析
+  // Analysis based on programming language
   if (project.language === 'Python') {
     insights.push({
-      title: "技术栈优势",
-      content: "Python实现使得该项目具有良好的AI生态兼容性，特别适合与机器学习框架集成。Python的丰富生态系统为MCP扩展提供了无限可能。",
+      title: "Technology Stack Advantages",
+      content: "Python implementation provides excellent AI ecosystem compatibility, particularly suitable for integration with machine learning frameworks. Python's rich ecosystem offers unlimited possibilities for MCP extensions.",
       icon: <FaCode className="w-5 h-5" />,
       type: 'positive'
     });
   } else if (project.language === 'JavaScript' || project.language === 'TypeScript') {
     insights.push({
-      title: "前端集成友好",
-      content: "JavaScript/TypeScript实现使得该项目能够无缝集成到现代Web应用中，为构建交互式MCP应用提供了强大支持。",
+      title: "Frontend Integration Friendly",
+      content: "JavaScript/TypeScript implementation allows seamless integration into modern web applications, providing strong support for building interactive MCP applications.",
       icon: <FaCode className="w-5 h-5" />,
       type: 'positive'
     });
   }
 
-  // 基于活跃度分析
+  // Analysis based on activity
   const lastUpdateDate = new Date(project.updatedAt);
   const monthsAgo = (Date.now() - lastUpdateDate.getTime()) / (1000 * 60 * 60 * 24 * 30);
   
   if (monthsAgo < 1) {
     insights.push({
-      title: "活跃维护",
-      content: "项目最近一个月内仍有更新，显示出良好的维护状态。活跃的开发节奏通常意味着bug修复及时，新功能持续添加。",
+      title: "Active Maintenance",
+      content: "The project has been updated within the last month, showing good maintenance status. Active development pace usually means timely bug fixes and continuous addition of new features.",
       icon: <FaLightbulb className="w-5 h-5" />,
       type: 'positive'
     });
   } else if (monthsAgo > 6) {
     insights.push({
-      title: "维护状态提醒",
-      content: `项目最后更新于${Math.floor(monthsAgo)}个月前，建议评估维护状态。长期未更新可能存在兼容性或安全性风险。`,
+      title: "Maintenance Status Alert",
+      content: `The project was last updated ${Math.floor(monthsAgo)} months ago, recommend evaluating maintenance status. Long periods without updates may pose compatibility or security risks.`,
       icon: <FaExclamationTriangle className="w-5 h-5" />,
       type: 'warning'
     });
   }
 
-  // 基于Fork数量分析
+  // Analysis based on Fork count
   if (project.forks > 50) {
     insights.push({
-      title: "开发者生态",
-      content: `${project.forks}个Fork表明项目拥有活跃的开发者社区。高Fork数通常意味着代码被广泛研究和改进，有利于项目长期发展。`,
+      title: "Developer Ecosystem",
+      content: `${project.forks} forks indicate the project has an active developer community. High fork count usually means the code is widely studied and improved, beneficial for long-term project development.`,
       icon: <FaUsers className="w-5 h-5" />,
       type: 'positive'
     });
@@ -113,7 +113,7 @@ function generatePracticalAdvice(project: ProcessedRepo): string[] {
   return advice;
 }
 
-// 基于项目特征生成技术评估
+// Generate technical assessment based on project characteristics
 function generateTechnicalAssessment(project: ProcessedRepo): {
   strengths: string[];
   considerations: string[];
@@ -122,37 +122,37 @@ function generateTechnicalAssessment(project: ProcessedRepo): {
   const strengths: string[] = [];
   const considerations: string[] = [];
   
-  // 基于项目成熟度评估
+  // Assessment based on project maturity
   if (project.stars > 500) {
-    strengths.push("项目成熟度高，社区认可度强");
-    strengths.push("代码质量相对可靠，经过实际使用验证");
+    strengths.push("High project maturity with strong community recognition");
+    strengths.push("Relatively reliable code quality, verified through actual usage");
   } else {
-    considerations.push("项目相对较新，需要评估稳定性");
+    considerations.push("Project is relatively new, stability evaluation needed");
   }
 
-  // 基于维护状态评估
+  // Assessment based on maintenance status
   const lastUpdateDate = new Date(project.updatedAt);
   const monthsAgo = (Date.now() - lastUpdateDate.getTime()) / (1000 * 60 * 60 * 24 * 30);
   
   if (monthsAgo < 3) {
-    strengths.push("维护活跃，响应及时");
+    strengths.push("Active maintenance with timely responses");
   } else {
-    considerations.push("维护频率需要关注");
+    considerations.push("Maintenance frequency needs attention");
   }
 
-  // 基于Fork数量评估
+  // Assessment based on Fork count
   if (project.forks > 20) {
-    strengths.push("开发者参与度高，代码被广泛研究");
+    strengths.push("High developer participation, code widely studied");
   }
 
-  // 生成未来展望
+  // Generate future outlook
   let futureOutlook = "";
   if (project.stars > 1000) {
-    futureOutlook = "作为MCP生态系统的重要组成部分，该项目有望在AI应用开发中发挥关键作用。预计将持续获得社区支持和功能改进。";
+    futureOutlook = "As an important component of the MCP ecosystem, this project is expected to play a key role in AI application development. It will likely continue to receive community support and feature improvements.";
   } else if (project.stars > 100) {
-    futureOutlook = "项目正处于快速发展期，具有良好的成长潜力。随着MCP标准的普及，可能会获得更多关注和贡献。";
+    futureOutlook = "The project is in a rapid development phase with good growth potential. As MCP standards become more widespread, it may receive more attention and contributions.";
   } else {
-    futureOutlook = "作为新兴项目，具有创新潜力。建议持续关注其发展动态，适时参与贡献或采用。";
+    futureOutlook = "As an emerging project, it has innovation potential. We recommend keeping track of its development progress and considering participation or adoption at the right time.";
   }
 
   return { strengths, considerations, futureOutlook };
@@ -170,7 +170,7 @@ const ExpertAnalysis: React.FC<ExpertAnalysisProps> = ({ project }) => {
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Expert In-Depth Analysis</h2>
       </div>
 
-      {/* 专家见解 */}
+      {/* Expert Insights */}
       <div className="mb-8">
         <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Professional Insights</h3>
         <div className="space-y-4">
@@ -215,7 +215,7 @@ const ExpertAnalysis: React.FC<ExpertAnalysisProps> = ({ project }) => {
         </div>
       </div>
 
-      {/* 技术评估 */}
+      {/* Technical Assessment */}
       <div className="mb-8">
         <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Technical Assessment</h3>
         <div className="grid md:grid-cols-2 gap-6">
@@ -244,7 +244,7 @@ const ExpertAnalysis: React.FC<ExpertAnalysisProps> = ({ project }) => {
         </div>
       </div>
 
-      {/* 实用建议 */}
+      {/* Practical Recommendations */}
       <div className="mb-8">
         <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Practical Recommendations</h3>
         <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
@@ -259,7 +259,7 @@ const ExpertAnalysis: React.FC<ExpertAnalysisProps> = ({ project }) => {
         </div>
       </div>
 
-      {/* 发展前景 */}
+      {/* Future Outlook */}
       <div>
         <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Future Outlook</h3>
         <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4 border border-purple-200 dark:border-purple-800">

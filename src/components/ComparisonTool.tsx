@@ -20,47 +20,47 @@ const ComparisonTool: React.FC<ComparisonToolProps> = ({ projects }) => {
   const [selectedProjects, setSelectedProjects] = useState<ProcessedRepo[]>([]);
   const [showProjectSelector, setShowProjectSelector] = useState(false);
 
-  // 定义对比指标
+  // Define comparison metrics
   const comparisonMetrics: ComparisonMetric[] = [
     {
       key: 'stars',
-      label: '社区关注度 (Stars)',
+      label: 'Community Attention (Stars)',
       type: 'number',
       getValue: (project) => project.stars
     },
     {
       key: 'forks',
-      label: '开发参与度 (Forks)',
+      label: 'Development Participation (Forks)',
       type: 'number',
       getValue: (project) => project.forks
     },
     {
       key: 'language',
-      label: '主要编程语言',
+      label: 'Primary Programming Language',
       type: 'text',
       getValue: (project) => project.language
     },
     {
       key: 'relevance',
-      label: 'MCP相关性',
+      label: 'MCP Relevance',
       type: 'relevance',
       getValue: (project) => project.relevance
     },
     {
       key: 'updatedAt',
-      label: '最后更新时间',
+      label: 'Last Updated',
       type: 'date',
       getValue: (project) => new Date(project.updatedAt)
     },
     {
       key: 'owner',
-      label: '项目维护者',
+      label: 'Project Maintainer',
       type: 'text',
       getValue: (project) => project.owner
     }
   ];
 
-  // 添加项目到对比列表
+  // Add project to comparison list
   const addProject = (project: ProcessedRepo) => {
     if (selectedProjects.length < 4 && !selectedProjects.find(p => p.id === project.id)) {
       setSelectedProjects([...selectedProjects, project]);
@@ -68,23 +68,23 @@ const ComparisonTool: React.FC<ComparisonToolProps> = ({ projects }) => {
     setShowProjectSelector(false);
   };
 
-  // 移除项目从对比列表
+  // Remove project from comparison list
   const removeProject = (projectId: string) => {
     setSelectedProjects(selectedProjects.filter(p => p.id !== projectId));
   };
 
-  // 可选择的项目（排除已选择的）
+  // Available projects (excluding selected ones)
   const availableProjects = useMemo(() => {
     return projects.filter(project => !selectedProjects.find(p => p.id === project.id));
   }, [projects, selectedProjects]);
 
-  // 格式化值显示
+  // Format value display
   const formatValue = (value: any, type: string) => {
     switch (type) {
       case 'number':
         return value.toLocaleString();
       case 'date':
-        return value.toLocaleDateString('zh-CN');
+        return value.toLocaleDateString('en-US');
       case 'relevance':
         return (
           <span className={`px-2 py-1 rounded-full text-xs font-medium ${
@@ -104,7 +104,7 @@ const ComparisonTool: React.FC<ComparisonToolProps> = ({ projects }) => {
     }
   };
 
-  // 获取指标的最佳值（用于高亮显示）
+  // Get best value for metric (for highlighting)
   const getBestValue = (metric: ComparisonMetric) => {
     if (selectedProjects.length === 0) return null;
     
@@ -124,7 +124,7 @@ const ComparisonTool: React.FC<ComparisonToolProps> = ({ projects }) => {
     }
   };
 
-  // 判断是否为最佳值
+  // Check if it's the best value
   const isBestValue = (project: ProcessedRepo, metric: ComparisonMetric) => {
     const bestValue = getBestValue(metric);
     if (bestValue === null) return false;
@@ -202,7 +202,7 @@ const ComparisonTool: React.FC<ComparisonToolProps> = ({ projects }) => {
 
   return (
     <div className="space-y-6">
-      {/* 项目选择器 */}
+      {/* Project selector */}
       <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -218,7 +218,7 @@ const ComparisonTool: React.FC<ComparisonToolProps> = ({ projects }) => {
           </button>
         </div>
 
-        {/* 已选择的项目 */}
+        {/* Selected projects */}
         {selectedProjects.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
             {selectedProjects.map(project => (
@@ -249,7 +249,7 @@ const ComparisonTool: React.FC<ComparisonToolProps> = ({ projects }) => {
           </div>
         )}
 
-        {/* 项目选择下拉 */}
+        {/* Project selection dropdown */}
         {showProjectSelector && (
           <div className="max-h-60 overflow-y-auto border border-gray-200 dark:border-gray-700 rounded-lg">
             {availableProjects.map(project => (
@@ -287,12 +287,12 @@ const ComparisonTool: React.FC<ComparisonToolProps> = ({ projects }) => {
         )}
       </div>
 
-      {/* 对比表格 */}
+      {/* Comparison table */}
       {selectedProjects.length >= 2 && (
         <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
           <div className="p-6 border-b border-gray-200 dark:border-gray-700">
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-              详细对比分析
+              Detailed Comparison Analysis
             </h2>
           </div>
           
@@ -301,7 +301,7 @@ const ComparisonTool: React.FC<ComparisonToolProps> = ({ projects }) => {
               <thead className="bg-gray-50 dark:bg-gray-700">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                    对比项目
+                    Comparison Items
                   </th>
                   {selectedProjects.map(project => (
                     <th key={project.id} className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
@@ -343,7 +343,7 @@ const ComparisonTool: React.FC<ComparisonToolProps> = ({ projects }) => {
                 ))}
                 <tr>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
-                    GitHub链接
+                    GitHub Link
                   </td>
                   {selectedProjects.map(project => (
                     <td key={project.id} className="px-6 py-4 whitespace-nowrap text-sm">
@@ -354,7 +354,7 @@ const ComparisonTool: React.FC<ComparisonToolProps> = ({ projects }) => {
                         className="flex items-center text-purple-600 hover:text-purple-800 dark:text-purple-400 dark:hover:text-purple-300"
                       >
                         <FaGithub className="mr-1" />
-                        查看项目
+                        View Project
                       </a>
                     </td>
                   ))}
@@ -365,7 +365,7 @@ const ComparisonTool: React.FC<ComparisonToolProps> = ({ projects }) => {
         </div>
       )}
 
-      {/* 专家建议 */}
+      {/* Expert recommendations */}
       {selectedProjects.length >= 2 && generateExpertRecommendation()}
     </div>
   );

@@ -19,13 +19,13 @@ interface Comment {
   replies: Comment[];
 }
 
-// 模拟评论数据（实际应用中应该从数据库获取）
+// Mock comment data (should be fetched from database in actual application)
 function generateMockComments(projectName: string): Comment[] {
   const comments: Comment[] = [
     {
       id: '1',
-      author: 'AI开发者小王',
-      content: `我在项目中使用了${projectName}，发现它的MCP集成非常简洁。特别是在处理复杂对话上下文时，能够很好地保持语义连贯性。推荐给需要构建智能对话系统的开发者。`,
+      author: 'AI Developer Alex',
+      content: `I used ${projectName} in my project and found its MCP integration very elegant. Especially when handling complex conversation contexts, it maintains semantic coherence very well. Highly recommended for developers building intelligent dialogue systems.`,
       rating: 5,
       timestamp: new Date('2024-01-15'),
       likes: 12,
@@ -33,8 +33,8 @@ function generateMockComments(projectName: string): Comment[] {
       replies: [
         {
           id: '1-1',
-          author: '技术架构师李明',
-          content: '同意！我们在企业级应用中也使用了这个项目，稳定性很好。你有遇到过性能瓶颈吗？',
+          author: 'Tech Architect Michael',
+          content: 'Agreed! We also use this project in enterprise applications, stability is great. Have you encountered any performance bottlenecks?',
           rating: 0,
           timestamp: new Date('2024-01-16'),
           likes: 3,
@@ -45,8 +45,8 @@ function generateMockComments(projectName: string): Comment[] {
     },
     {
       id: '2',
-      author: 'MCP爱好者',
-      content: '这个项目的文档质量很高，代码结构清晰。作为MCP生态系统的一部分，它为我的学习提供了很好的参考。希望能看到更多实际应用案例。',
+      author: 'MCP Enthusiast',
+      content: 'This project has high-quality documentation and clear code structure. As part of the MCP ecosystem, it provides excellent reference for my learning. Hope to see more real-world use cases.',
       rating: 4,
       timestamp: new Date('2024-01-10'),
       likes: 8,
@@ -55,8 +55,8 @@ function generateMockComments(projectName: string): Comment[] {
     },
     {
       id: '3',
-      author: '全栈开发小张',
-      content: '部署过程遇到了一些依赖问题，但通过查看Issues页面找到了解决方案。整体体验不错，MCP协议的实现很标准。建议新手先从官方示例开始。',
+      author: 'Full-Stack Dev Sam',
+      content: 'Encountered some dependency issues during deployment, but found solutions through the Issues page. Overall experience is good, MCP protocol implementation is very standard. Recommend beginners start with official examples.',
       rating: 4,
       timestamp: new Date('2024-01-08'),
       likes: 6,
@@ -78,7 +78,7 @@ const CommunityComments: React.FC<CommunityCommentsProps> = ({ project }) => {
     if (newComment.trim()) {
       const comment: Comment = {
         id: Date.now().toString(),
-        author: '当前用户',
+        author: 'Current User',
         content: newComment,
         rating: rating,
         timestamp: new Date(),
@@ -126,10 +126,10 @@ const CommunityComments: React.FC<CommunityCommentsProps> = ({ project }) => {
     const diffInMs = now.getTime() - date.getTime();
     const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
     
-    if (diffInDays < 1) return '今天';
-    if (diffInDays < 7) return `${diffInDays}天前`;
-    if (diffInDays < 30) return `${Math.floor(diffInDays / 7)}周前`;
-    return `${Math.floor(diffInDays / 30)}个月前`;
+    if (diffInDays < 1) return 'Today';
+    if (diffInDays < 7) return `${diffInDays} days ago`;
+    if (diffInDays < 30) return `${Math.floor(diffInDays / 7)} weeks ago`;
+    return `${Math.floor(diffInDays / 30)} months ago`;
   };
 
   return (
@@ -138,27 +138,27 @@ const CommunityComments: React.FC<CommunityCommentsProps> = ({ project }) => {
         <div className="flex items-center">
           <FaComment className="w-6 h-6 text-blue-600 mr-3" />
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-            社区评论 ({comments.length})
+            Community Comments ({comments.length})
           </h2>
         </div>
         <button
           onClick={() => setShowCommentForm(!showCommentForm)}
           className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
         >
-          发表评论
+          Post Comment
         </button>
       </div>
 
-      {/* 发表评论表单 */}
+      {/* Comment submission form */}
       {showCommentForm && (
         <div className="mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-            分享您的使用体验
+            Share Your Experience
           </h3>
           
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              评分
+              Rating
             </label>
             <div className="flex items-center space-x-1">
               {Array.from({ length: 5 }, (_, i) => (
@@ -179,13 +179,13 @@ const CommunityComments: React.FC<CommunityCommentsProps> = ({ project }) => {
           
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              评论内容
+              Comment Content
             </label>
             <textarea
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
               className="w-full h-24 p-3 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="分享您对这个项目的看法、使用经验或建议..."
+              placeholder="Share your thoughts, usage experience or suggestions about this project..."
             />
           </div>
           
@@ -195,19 +195,19 @@ const CommunityComments: React.FC<CommunityCommentsProps> = ({ project }) => {
               disabled={!newComment.trim()}
               className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-gray-400 transition-colors"
             >
-              发布评论
+              Post Comment
             </button>
             <button
               onClick={() => setShowCommentForm(false)}
               className="px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors"
             >
-              取消
+              Cancel
             </button>
           </div>
         </div>
       )}
 
-      {/* 评论列表 */}
+      {/* Comment list */}
       <div className="space-y-6">
         {comments.map((comment) => (
           <div key={comment.id} className="border-b border-gray-200 dark:border-gray-700 pb-6 last:border-b-0">
@@ -258,11 +258,11 @@ const CommunityComments: React.FC<CommunityCommentsProps> = ({ project }) => {
                   
                   <button className="flex items-center space-x-1 text-gray-500 hover:text-blue-600 transition-colors">
                     <FaReply className="w-4 h-4" />
-                    <span className="text-sm">回复</span>
+                    <span className="text-sm">Reply</span>
                   </button>
                 </div>
                 
-                {/* 回复 */}
+                {/* Replies */}
                 {comment.replies.length > 0 && (
                   <div className="mt-4 pl-4 border-l-2 border-gray-200 dark:border-gray-600">
                     {comment.replies.map((reply) => (
