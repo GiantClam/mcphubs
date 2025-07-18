@@ -166,16 +166,16 @@ const ComparisonTool: React.FC<ComparisonToolProps> = ({ projects }) => {
           <div className="flex items-start">
             <FaStar className="text-yellow-500 mr-2 mt-1 flex-shrink-0" />
             <span className="text-gray-700 dark:text-gray-300">
-              <strong>{highStarsProject.name}</strong> 拥有最高的社区关注度（{highStarsProject.stars} stars），
-              适合需要稳定、经过验证的解决方案的项目。
+              <strong>{highStarsProject.name}</strong> has the highest community attention ({highStarsProject.stars} stars),
+              suitable for projects requiring stable, proven solutions.
             </span>
           </div>
           
           <div className="flex items-start">
             <FaCode className="text-blue-500 mr-2 mt-1 flex-shrink-0" />
             <span className="text-gray-700 dark:text-gray-300">
-              <strong>{mostRecentProject.name}</strong> 是最近更新的项目，
-              可能包含最新的功能和修复，适合需要前沿技术的应用。
+              <strong>{mostRecentProject.name}</strong> is the most recently updated project,
+              may contain the latest features and fixes, suitable for applications requiring cutting-edge technology.
             </span>
           </div>
           
@@ -183,16 +183,16 @@ const ComparisonTool: React.FC<ComparisonToolProps> = ({ projects }) => {
             <div className="flex items-start">
               <FaChartBar className="text-green-500 mr-2 mt-1 flex-shrink-0" />
               <span className="text-gray-700 dark:text-gray-300">
-                {highRelevanceProjects.map(p => p.name).join('、')} 与MCP的相关性最高，
-                是专注于MCP生态系统的首选项目。
+                {highRelevanceProjects.map(p => p.name).join(', ')} have the highest relevance to MCP,
+                making them preferred projects focused on the MCP ecosystem.
               </span>
             </div>
           )}
           
           <div className="mt-4 p-3 bg-white dark:bg-gray-800 rounded border">
             <p className="text-gray-600 dark:text-gray-400 text-xs">
-              💡 建议根据您的具体需求权衡社区支持、技术先进性和MCP兼容性。
-              对于生产环境，优先考虑高星级项目；对于实验性项目，可以选择更新更频繁的项目。
+              💡 We recommend weighing community support, technological advancement, and MCP compatibility based on your specific needs.
+              For production environments, prioritize high-star projects; for experimental projects, consider more frequently updated ones.
             </p>
           </div>
         </div>
@@ -206,7 +206,7 @@ const ComparisonTool: React.FC<ComparisonToolProps> = ({ projects }) => {
       <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-            选择要对比的项目 ({selectedProjects.length}/4)
+            Select Projects to Compare ({selectedProjects.length}/4)
           </h2>
           <button
             onClick={() => setShowProjectSelector(!showProjectSelector)}
@@ -214,7 +214,7 @@ const ComparisonTool: React.FC<ComparisonToolProps> = ({ projects }) => {
             disabled={selectedProjects.length >= 4}
           >
             <FaPlus className="mr-2" />
-            添加项目
+            Add Project
           </button>
         </div>
 

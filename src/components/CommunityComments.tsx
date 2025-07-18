@@ -298,13 +298,13 @@ const CommunityComments: React.FC<CommunityCommentsProps> = ({ project }) => {
       {/* 社区指南 */}
       <div className="mt-8 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
         <h3 className="font-semibold text-blue-800 dark:text-blue-300 mb-2">
-          社区评论指南
+          Community Comment Guidelines
         </h3>
         <ul className="text-sm text-blue-700 dark:text-blue-400 space-y-1">
-          <li>• 分享真实的使用体验和技术见解</li>
-          <li>• 提供具体的使用案例和解决方案</li>
-          <li>• 尊重其他用户，保持友善的讨论氛围</li>
-          <li>• 避免发布与项目无关的内容</li>
+          <li>• Share genuine usage experiences and technical insights</li>
+          <li>• Provide specific use cases and solutions</li>
+          <li>• Respect other users and maintain a friendly discussion atmosphere</li>
+          <li>• Avoid posting content unrelated to the project</li>
         </ul>
       </div>
     </div>

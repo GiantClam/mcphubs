@@ -111,6 +111,35 @@ const searchQueries = [
   }
 ];
 
+// 验证GitHub仓库URL的有效性
+async function validateGitHubUrl(url: string): Promise<string> {
+  try {
+    // 解析URL获取owner和repo
+    const urlObj = new URL(url);
+    const pathParts = urlObj.pathname.split('/').filter(part => part);
+    
+    if (pathParts.length >= 2) {
+      const owner = pathParts[0];
+      const repo = pathParts[1];
+      
+      // 通过API验证仓库是否存在
+      const response = await githubClient.get(`/repos/${owner}/${repo}`);
+      
+      // 返回API确认的正确URL
+      return response.data.html_url;
+    }
+    
+    return url; // 如果URL格式不正确，返回原URL
+  } catch (error: any) {
+    if (error.response?.status === 404) {
+      console.warn(`仓库不存在或已被删除: ${url}`);
+    } else {
+      console.warn(`验证URL失败: ${url}`, error.message);
+    }
+    return url; // 验证失败时返回原URL
+  }
+}
+
 // 执行单个搜索查询
 async function executeSearchQuery(searchConfig: { query: string; description: string }): Promise<GitHubRepo[]> {
   try {
@@ -174,23 +203,41 @@ export async function searchMCPProjects(): Promise<ProcessedRepo[]> {
 
     // 处理并转换数据，限制最多200个项目以避免性能问题
     const limitedRepos = allRepos.slice(0, 200);
-    const processedRepos: ProcessedRepo[] = limitedRepos.map(repo => ({
-      id: repo.id.toString(),
-      name: repo.name,
-      fullName: repo.full_name,
-      owner: repo.owner.login,
-      ownerAvatar: repo.owner.avatar_url,
-      url: repo.html_url,
-      description: repo.description || '暂无描述',
-      stars: repo.stargazers_count,
-      forks: repo.forks_count,
-      language: repo.language || 'Unknown',
-      topics: repo.topics || [],
-      createdAt: repo.created_at,
-      updatedAt: repo.updated_at,
-      relevance: determineRelevance(repo),
-      imageUrl: generateProjectImage(repo),
-    }));
+    
+    console.log('🔍 开始验证GitHub链接...');
+    const processedRepos: ProcessedRepo[] = [];
+    
+    for (const repo of limitedRepos) {
+      // 验证并修复URL
+      const validatedUrl = await validateGitHubUrl(repo.html_url);
+      
+      if (validatedUrl !== repo.html_url) {
+        console.log(`🔧 修复URL: ${repo.full_name}`);
+        console.log(`   原链接: ${repo.html_url}`);
+        console.log(`   新链接: ${validatedUrl}`);
+      }
+      
+      processedRepos.push({
+        id: repo.id.toString(),
+        name: repo.name,
+        fullName: repo.full_name,
+        owner: repo.owner.login,
+        ownerAvatar: repo.owner.avatar_url,
+        url: validatedUrl, // 使用验证后的URL
+        description: repo.description || '暂无描述',
+        stars: repo.stargazers_count,
+        forks: repo.forks_count,
+        language: repo.language || 'Unknown',
+        topics: repo.topics || [],
+        createdAt: repo.created_at,
+        updatedAt: repo.updated_at,
+        relevance: determineRelevance(repo),
+        imageUrl: generateProjectImage(repo),
+      });
+      
+      // 避免API速率限制
+      await new Promise(resolve => setTimeout(resolve, 50));
+    }
 
     console.log(`项目数据处理完成，最终返回 ${processedRepos.length} 个项目`);
     return processedRepos;

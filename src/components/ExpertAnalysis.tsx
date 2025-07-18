@@ -88,27 +88,27 @@ function generateExpertInsights(project: ProcessedRepo): ExpertInsight[] {
 function generatePracticalAdvice(project: ProcessedRepo): string[] {
   const advice: string[] = [];
   
-  // 基于项目规模的建议
+  // Advice based on project scale
   if (project.stars > 1000) {
-    advice.push("适合生产环境部署，社区支持充足");
-    advice.push("建议查看Issues页面了解常见问题和解决方案");
+    advice.push("Suitable for production deployment with sufficient community support");
+    advice.push("Recommend checking Issues page for common problems and solutions");
   } else {
-    advice.push("适合实验和学习，建议先在测试环境中验证");
-    advice.push("考虑参与贡献，帮助项目发展");
+    advice.push("Suitable for experimentation and learning, verify in test environment first");
+    advice.push("Consider contributing to help project development");
   }
 
-  // 基于语言的建议
+  // Language-specific advice
   if (project.language === 'Python') {
-    advice.push("建议使用虚拟环境管理依赖");
-    advice.push("可考虑与LangChain、OpenAI等框架集成");
+    advice.push("Recommend using virtual environments for dependency management");
+    advice.push("Consider integration with LangChain, OpenAI and other frameworks");
   } else if (project.language === 'JavaScript' || project.language === 'TypeScript') {
-    advice.push("建议使用npm或yarn进行包管理");
-    advice.push("可考虑与React、Vue等前端框架集成");
+    advice.push("Recommend using npm or yarn for package management");
+    advice.push("Consider integration with React, Vue and other frontend frameworks");
   }
 
-  // 通用建议
-  advice.push("仔细阅读文档和示例代码");
-  advice.push("关注项目的License和使用条款");
+  // General advice
+  advice.push("Carefully read documentation and example code");
+  advice.push("Pay attention to project License and terms of use");
   
   return advice;
 }

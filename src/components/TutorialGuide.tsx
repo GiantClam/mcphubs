@@ -20,48 +20,48 @@ interface TutorialSection {
   steps: TutorialStep[];
 }
 
-// 基于项目特征生成教程内容
+// Generate tutorial content based on project characteristics
 function generateTutorialContent(project: ProcessedRepo): TutorialSection[] {
   const tutorials: TutorialSection[] = [];
 
-  // 快速入门教程
+  // Quick start tutorial
   const quickStartSteps: TutorialStep[] = [
     {
-      title: "环境准备",
-      description: `设置${project.language}开发环境和必要的依赖项`,
+      title: "Environment Setup",
+      description: `Set up ${project.language} development environment and necessary dependencies`,
       code: project.language === 'Python' 
-        ? `# 创建虚拟环境\npython -m venv mcp_env\nsource mcp_env/bin/activate  # Linux/Mac\nmcp_env\\Scripts\\activate     # Windows\n\n# 安装项目依赖\npip install -r requirements.txt`
+        ? `# Create virtual environment\npython -m venv mcp_env\nsource mcp_env/bin/activate  # Linux/Mac\nmcp_env\\Scripts\\activate     # Windows\n\n# Install project dependencies\npip install -r requirements.txt`
         : project.language === 'JavaScript' || project.language === 'TypeScript'
-        ? `# 安装依赖\nnpm install\n# 或使用yarn\nyarn install`
-        : `# 克隆项目\ngit clone ${project.url}\ncd ${project.name}`,
+        ? `# Install dependencies\nnpm install\n# or use yarn\nyarn install`
+        : `# Clone project\ngit clone ${project.url}\ncd ${project.name}`,
       tips: [
-        "确保使用正确的环境隔离",
-        "检查系统兼容性要求",
-        "建议使用稳定版本的运行时环境"
+        "Ensure proper environment isolation",
+        "Check system compatibility requirements",
+        "Recommend using stable versions of runtime environment"
       ]
     },
     {
-      title: "项目配置",
-      description: "配置项目的基本参数和MCP相关设置",
+      title: "Project Configuration",
+      description: "Configure basic parameters and MCP-related settings",
       code: project.language === 'Python' 
-        ? `# 配置文件示例 (config.py)\nMCP_SERVER_URL = "your_mcp_server_url"\nAPI_KEY = "your_api_key"\nDEBUG = True\n\n# 验证配置\npython -c "import config; print('配置加载成功')"`
-        : `// 配置文件示例 (config.js)\nmodule.exports = {\n  mcpServerUrl: 'your_mcp_server_url',\n  apiKey: 'your_api_key',\n  debug: true\n};`,
+        ? `# Configuration file example (config.py)\nMCP_SERVER_URL = "your_mcp_server_url"\nAPI_KEY = "your_api_key"\nDEBUG = True\n\n# Verify configuration\npython -c "import config; print('Configuration loaded successfully')"`
+        : `// Configuration file example (config.js)\nmodule.exports = {\n  mcpServerUrl: 'your_mcp_server_url',\n  apiKey: 'your_api_key',\n  debug: true\n};`,
       tips: [
-        "妥善保管API密钥和敏感信息",
-        "使用环境变量管理配置",
-        "测试配置是否正确加载"
+        "Properly secure API keys and sensitive information",
+        "Use environment variables for configuration management",
+        "Test if configuration loads correctly"
       ]
     },
     {
-      title: "运行项目",
-      description: "启动项目并验证MCP功能",
+      title: "Run Project",
+      description: "Start project and verify MCP functionality",
       code: project.language === 'Python' 
-        ? `# 启动项目\npython main.py\n\n# 或使用开发模式\npython -m ${project.name} --dev`
-        : `# 启动项目\nnpm start\n\n# 或开发模式\nnpm run dev`,
+        ? `# Start project\npython main.py\n\n# or use development mode\npython -m ${project.name} --dev`
+        : `# Start project\nnpm start\n\n# or development mode\nnpm run dev`,
       tips: [
-        "首次运行可能需要较长时间",
-        "检查日志输出是否有错误",
-        "验证MCP连接是否正常"
+        "First run may take longer time",
+        "Check log output for any errors",
+        "Verify MCP connection is working properly"
       ]
     }
   ];
@@ -73,40 +73,40 @@ function generateTutorialContent(project: ProcessedRepo): TutorialSection[] {
     steps: quickStartSteps
   });
 
-  // 部署指南
+  // Deployment guide
   const deploymentSteps: TutorialStep[] = [
     {
-      title: "生产环境准备",
-      description: "配置生产环境的基础设施和依赖",
+      title: "Production Environment Setup",
+      description: "Configure production environment infrastructure and dependencies",
       code: project.language === 'Python' 
-        ? `# 生产环境依赖\npip install gunicorn\n\n# 环境变量设置\nexport FLASK_ENV=production\nexport MCP_SERVER_URL=your_production_url`
-        : `# 构建生产版本\nnpm run build\n\n# 设置环境变量\nexport NODE_ENV=production\nexport MCP_SERVER_URL=your_production_url`,
+        ? `# Production dependencies\npip install gunicorn\n\n# Environment variables setup\nexport FLASK_ENV=production\nexport MCP_SERVER_URL=your_production_url`
+        : `# Build production version\nnpm run build\n\n# Set environment variables\nexport NODE_ENV=production\nexport MCP_SERVER_URL=your_production_url`,
       tips: [
-        "使用专用的生产服务器",
-        "配置SSL证书和安全设置",
-        "设置监控和日志记录"
+        "Use dedicated production servers",
+        "Configure SSL certificates and security settings",
+        "Set up monitoring and logging"
       ]
     },
     {
       title: "Containerized Deployment",
       description: "Deploy using Docker containers",
-      code: `# Dockerfile示例\nFROM ${project.language === 'Python' ? 'python:3.9-slim' : 'node:16-alpine'}\n\nWORKDIR /app\nCOPY . .\n\n${project.language === 'Python' 
+      code: `# Dockerfile example\nFROM ${project.language === 'Python' ? 'python:3.9-slim' : 'node:16-alpine'}\n\nWORKDIR /app\nCOPY . .\n\n${project.language === 'Python' 
         ? 'RUN pip install -r requirements.txt\nCMD ["python", "main.py"]'
-        : 'RUN npm install\nCMD ["npm", "start"]'}\n\n# 构建和运行\ndocker build -t mcp-${project.name.toLowerCase()} .\ndocker run -p 3000:3000 mcp-${project.name.toLowerCase()}`,
+        : 'RUN npm install\nCMD ["npm", "start"]'}\n\n# Build and run\ndocker build -t mcp-${project.name.toLowerCase()} .\ndocker run -p 3000:3000 mcp-${project.name.toLowerCase()}`,
       tips: [
-        "优化Docker镜像大小",
-        "使用多阶段构建",
-        "配置健康检查"
+        "Optimize Docker image size",
+        "Use multi-stage builds",
+        "Configure health checks"
       ]
     },
     {
       title: "Cloud Platform Deployment",
       description: "Deploy to mainstream cloud platforms",
-      code: `# Vercel部署 (适合JavaScript/TypeScript项目)\nvercel --prod\n\n# 或使用Heroku\nheroku create mcp-${project.name.toLowerCase()}\ngit push heroku main\n\n# AWS Lambda部署\naws lambda create-function --function-name mcp-${project.name.toLowerCase()}`,
+      code: `# Vercel deployment (suitable for JavaScript/TypeScript projects)\nvercel --prod\n\n# or use Heroku\nheroku create mcp-${project.name.toLowerCase()}\ngit push heroku main\n\n# AWS Lambda deployment\naws lambda create-function --function-name mcp-${project.name.toLowerCase()}`,
       tips: [
-        "选择合适的云平台方案",
-        "配置自动扩展策略",
-        "设置监控和告警"
+        "Choose appropriate cloud platform solutions",
+        "Configure auto-scaling strategies",
+        "Set up monitoring and alerting"
       ]
     }
   ];
@@ -118,86 +118,86 @@ function generateTutorialContent(project: ProcessedRepo): TutorialSection[] {
     steps: deploymentSteps
   });
 
-  // 最佳实践
+  // Best practices
   const bestPracticesSteps: TutorialStep[] = [
     {
-      title: "性能优化",
-      description: "优化项目性能和响应速度",
+      title: "Performance Optimization",
+      description: "Optimize project performance and response speed",
       code: project.language === 'Python' 
-        ? `# 使用缓存优化\nfrom functools import lru_cache\n\n@lru_cache(maxsize=128)\ndef get_mcp_data(query):\n    # 缓存MCP查询结果\n    return fetch_from_mcp(query)\n\n# 异步处理\nimport asyncio\n\nasync def process_mcp_requests():\n    # 并发处理多个MCP请求\n    tasks = [process_request(req) for req in requests]\n    await asyncio.gather(*tasks)`
-        : `// 使用缓存优化\nconst mcpCache = new Map();\n\nfunction getMCPData(query) {\n  if (mcpCache.has(query)) {\n    return mcpCache.get(query);\n  }\n  const result = fetchFromMCP(query);\n  mcpCache.set(query, result);\n  return result;\n}\n\n// 批量处理\nconst batchProcessor = new BatchProcessor({\n  maxBatchSize: 10,\n  flushInterval: 100\n});`,
+        ? `# Use caching optimization\nfrom functools import lru_cache\n\n@lru_cache(maxsize=128)\ndef get_mcp_data(query):\n    # Cache MCP query results\n    return fetch_from_mcp(query)\n\n# Async processing\nimport asyncio\n\nasync def process_mcp_requests():\n    # Process multiple MCP requests concurrently\n    tasks = [process_request(req) for req in requests]\n    await asyncio.gather(*tasks)`
+        : `// Use caching optimization\nconst mcpCache = new Map();\n\nfunction getMCPData(query) {\n  if (mcpCache.has(query)) {\n    return mcpCache.get(query);\n  }\n  const result = fetchFromMCP(query);\n  mcpCache.set(query, result);\n  return result;\n}\n\n// Batch processing\nconst batchProcessor = new BatchProcessor({\n  maxBatchSize: 10,\n  flushInterval: 100\n});`,
       tips: [
-        "合理使用缓存机制",
-        "实现请求批处理",
-        "监控内存使用情况"
+        "Use caching mechanisms appropriately",
+        "Implement request batching",
+        "Monitor memory usage"
       ]
     },
     {
-      title: "错误处理",
-      description: "实现健壮的错误处理机制",
+      title: "Error Handling",
+      description: "Implement robust error handling mechanisms",
       code: project.language === 'Python' 
-        ? `# 异常处理示例\nimport logging\nfrom functools import wraps\n\ndef mcp_error_handler(func):\n    @wraps(func)\n    def wrapper(*args, **kwargs):\n        try:\n            return func(*args, **kwargs)\n        except MCPConnectionError as e:\n            logging.error(f"MCP连接错误: {e}")\n            return {"error": "MCP服务暂时不可用"}\n        except Exception as e:\n            logging.error(f"未知错误: {e}")\n            return {"error": "处理请求时发生错误"}\n    return wrapper\n\n@mcp_error_handler\ndef process_mcp_request(data):\n    # 处理MCP请求\n    pass`
-        : `// 错误处理示例\nclass MCPErrorHandler {\n  static handle(error) {\n    if (error instanceof MCPConnectionError) {\n      console.error('MCP连接错误:', error.message);\n      return { error: 'MCP服务暂时不可用' };\n    }\n    \n    console.error('未知错误:', error);\n    return { error: '处理请求时发生错误' };\n  }\n}\n\n// 使用中间件\napp.use((error, req, res, next) => {\n  const result = MCPErrorHandler.handle(error);\n  res.status(500).json(result);\n});`,
+        ? `# Exception handling example\nimport logging\nfrom functools import wraps\n\ndef mcp_error_handler(func):\n    @wraps(func)\n    def wrapper(*args, **kwargs):\n        try:\n            return func(*args, **kwargs)\n        except MCPConnectionError as e:\n            logging.error(f"MCP connection error: {e}")\n            return {"error": "MCP service temporarily unavailable"}\n        except Exception as e:\n            logging.error(f"Unknown error: {e}")\n            return {"error": "Error occurred while processing request"}\n    return wrapper\n\n@mcp_error_handler\ndef process_mcp_request(data):\n    # Process MCP request\n    pass`
+        : `// Error handling example\nclass MCPErrorHandler {\n  static handle(error) {\n    if (error instanceof MCPConnectionError) {\n      console.error('MCP connection error:', error.message);\n      return { error: 'MCP service temporarily unavailable' };\n    }\n    \n    console.error('Unknown error:', error);\n    return { error: 'Error occurred while processing request' };\n  }\n}\n\n// Use middleware\napp.use((error, req, res, next) => {\n  const result = MCPErrorHandler.handle(error);\n  res.status(500).json(result);\n});`,
       tips: [
-        "分类处理不同类型的错误",
-        "记录详细的错误日志",
-        "为用户提供友好的错误信息"
+        "Categorize and handle different types of errors",
+        "Log detailed error information",
+        "Provide user-friendly error messages"
       ]
     },
     {
-      title: "安全最佳实践",
-      description: "确保项目的安全性",
-      code: `# 安全配置示例\n# 1. 环境变量管理\nMCP_API_KEY=your_secure_api_key\nALLOWED_HOSTS=your_domain.com\n\n# 2. 输入验证\n${project.language === 'Python' 
+      title: "Security Best Practices",
+      description: "Ensure project security",
+      code: `# Security configuration example\n# 1. Environment variable management\nMCP_API_KEY=your_secure_api_key\nALLOWED_HOSTS=your_domain.com\n\n# 2. Input validation\n${project.language === 'Python' 
         ? `from marshmallow import Schema, fields, validate\n\nclass MCPRequestSchema(Schema):\n    query = fields.Str(required=True, validate=validate.Length(min=1, max=1000))\n    user_id = fields.Str(required=True, validate=validate.UUID())`
         : `const joi = require('joi');\n\nconst mcpRequestSchema = joi.object({\n  query: joi.string().min(1).max(1000).required(),\n  userId: joi.string().uuid().required()\n});`}`,
       tips: [
-        "始终验证输入数据",
-        "使用HTTPS加密传输",
-        "定期更新依赖项",
-        "实施访问控制和速率限制"
+        "Always validate input data",
+        "Use HTTPS encryption for transmission",
+        "Regularly update dependencies",
+        "Implement access control and rate limiting"
       ]
     }
   ];
 
   tutorials.push({
-    title: "最佳实践",
+    title: "Best Practices",
     icon: <FaLightbulb className="w-5 h-5" />,
-    description: "遵循行业最佳实践，构建高质量的MCP应用",
+    description: "Follow industry best practices to build high-quality MCP applications",
     steps: bestPracticesSteps
   });
 
-  // 集成示例
+  // Integration examples
   const integrationSteps: TutorialStep[] = [
     {
-      title: "与LangChain集成",
-      description: "将项目与LangChain框架集成",
+      title: "LangChain Integration",
+      description: "Integrate project with LangChain framework",
       code: project.language === 'Python' 
-        ? `# LangChain集成示例\nfrom langchain.llms import OpenAI\nfrom langchain.chains import ConversationChain\nfrom langchain.memory import ConversationBufferMemory\n\n# 设置MCP作为上下文提供者\nclass MCPContextProvider:\n    def __init__(self, mcp_client):\n        self.mcp_client = mcp_client\n    \n    def get_context(self, query):\n        return self.mcp_client.fetch_context(query)\n\n# 创建对话链\nllm = OpenAI(temperature=0.7)\nmemory = ConversationBufferMemory()\nconversation = ConversationChain(\n    llm=llm,\n    memory=memory,\n    verbose=True\n)`
-        : `// LangChain集成示例\nconst { OpenAI } = require('langchain/llms/openai');\nconst { ConversationChain } = require('langchain/chains');\nconst { BufferMemory } = require('langchain/memory');\n\nclass MCPContextProvider {\n  constructor(mcpClient) {\n    this.mcpClient = mcpClient;\n  }\n  \n  async getContext(query) {\n    return await this.mcpClient.fetchContext(query);\n  }\n}\n\n// 创建对话链\nconst llm = new OpenAI({ temperature: 0.7 });\nconst memory = new BufferMemory();\nconst conversation = new ConversationChain({ llm, memory });`,
+        ? `# LangChain integration example\nfrom langchain.llms import OpenAI\nfrom langchain.chains import ConversationChain\nfrom langchain.memory import ConversationBufferMemory\n\n# Set up MCP as context provider\nclass MCPContextProvider:\n    def __init__(self, mcp_client):\n        self.mcp_client = mcp_client\n    \n    def get_context(self, query):\n        return self.mcp_client.fetch_context(query)\n\n# Create conversation chain\nllm = OpenAI(temperature=0.7)\nmemory = ConversationBufferMemory()\nconversation = ConversationChain(\n    llm=llm,\n    memory=memory,\n    verbose=True\n)`
+        : `// LangChain integration example\nconst { OpenAI } = require('langchain/llms/openai');\nconst { ConversationChain } = require('langchain/chains');\nconst { BufferMemory } = require('langchain/memory');\n\nclass MCPContextProvider {\n  constructor(mcpClient) {\n    this.mcpClient = mcpClient;\n  }\n  \n  async getContext(query) {\n    return await this.mcpClient.fetchContext(query);\n  }\n}\n\n// Create conversation chain\nconst llm = new OpenAI({ temperature: 0.7 });\nconst memory = new BufferMemory();\nconst conversation = new ConversationChain({ llm, memory });`,
       tips: [
-        "合理设置LLM参数",
-        "优化上下文窗口大小",
-        "实现智能的上下文筛选"
+        "Properly configure LLM parameters",
+        "Optimize context window size",
+        "Implement intelligent context filtering"
       ]
     },
     {
-      title: "API集成",
-      description: "与其他API服务集成",
-      code: `# RESTful API集成示例\n${project.language === 'Python' 
+      title: "API Integration",
+      description: "Integration with other API services",
+      code: `# RESTful API integration example\n${project.language === 'Python' 
         ? `import requests\nfrom typing import Dict, Any\n\nclass MCPAPIClient:\n    def __init__(self, base_url: str, api_key: str):\n        self.base_url = base_url\n        self.headers = {\n            'Authorization': f'Bearer {api_key}',\n            'Content-Type': 'application/json'\n        }\n    \n    def send_context(self, context: Dict[str, Any]):\n        response = requests.post(\n            f'{self.base_url}/context',\n            json=context,\n            headers=self.headers\n        )\n        return response.json()`
         : `class MCPAPIClient {\n  constructor(baseUrl, apiKey) {\n    this.baseUrl = baseUrl;\n    this.headers = {\n      'Authorization': \`Bearer \${apiKey}\`,\n      'Content-Type': 'application/json'\n    };\n  }\n  \n  async sendContext(context) {\n    const response = await fetch(\`\${this.baseUrl}/context\`, {\n      method: 'POST',\n      headers: this.headers,\n      body: JSON.stringify(context)\n    });\n    return await response.json();\n  }\n}`}`,
       tips: [
-        "实现API调用的重试机制",
-        "处理API限流和超时",
-        "缓存API响应结果"
+        "Implement retry mechanisms for API calls",
+        "Handle API rate limiting and timeouts",
+        "Cache API response results"
       ]
     }
   ];
 
   tutorials.push({
-    title: "集成示例",
+    title: "Integration Examples",
     icon: <FaCode className="w-5 h-5" />,
-    description: "与主流AI框架和服务的集成示例",
+    description: "Integration examples with mainstream AI frameworks and services",
     steps: integrationSteps
   });
 
@@ -274,11 +274,11 @@ const TutorialGuide: React.FC<TutorialGuideProps> = ({ project }) => {
                     )}
                     
                     {step.tips && step.tips.length > 0 && (
-                      <div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-3 border border-yellow-200 dark:border-yellow-800">
-                                                 <div className="flex items-center mb-2">
+                                              <div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-3 border border-yellow-200 dark:border-yellow-800">
+                         <div className="flex items-center mb-2">
                            <FaLightbulb className="text-yellow-600 dark:text-yellow-400 mr-2" />
                            <span className="text-sm font-medium text-yellow-800 dark:text-yellow-300">
-                             实用提示
+                             Practical Tips
                            </span>
                          </div>
                         <ul className="space-y-1">
@@ -299,12 +299,12 @@ const TutorialGuide: React.FC<TutorialGuideProps> = ({ project }) => {
         ))}
       </div>
       
-      <div className="mt-8 p-4 bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-lg border border-purple-200 dark:border-purple-800">
+            <div className="mt-8 p-4 bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-lg border border-purple-200 dark:border-purple-800">
         <h4 className="font-semibold text-purple-800 dark:text-purple-300 mb-2">
-          需要帮助？
+          Need Help?
         </h4>
         <p className="text-purple-700 dark:text-purple-400 text-sm mb-3">
-          如果在使用过程中遇到问题，建议查看以下资源：
+          If you encounter issues while using the project, we recommend checking the following resources:
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
           <a 
@@ -314,7 +314,7 @@ const TutorialGuide: React.FC<TutorialGuideProps> = ({ project }) => {
             className="flex items-center text-purple-600 dark:text-purple-400 hover:underline"
           >
             <FaBook className="mr-2" />
-            项目文档
+            Project Documentation
           </a>
           <a 
             href={`${project.url}/issues`} 
@@ -323,17 +323,17 @@ const TutorialGuide: React.FC<TutorialGuideProps> = ({ project }) => {
             className="flex items-center text-purple-600 dark:text-purple-400 hover:underline"
           >
             <FaTerminal className="mr-2" />
-            问题反馈
+            Issue Reporting
           </a>
-                     <a 
-             href={`${project.url}/discussions`} 
-             target="_blank" 
-             rel="noopener noreferrer"
-             className="flex items-center text-purple-600 dark:text-purple-400 hover:underline"
-           >
-             <FaUser className="mr-2" />
-             社区讨论
-           </a>
+          <a 
+            href={`${project.url}/discussions`} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="flex items-center text-purple-600 dark:text-purple-400 hover:underline"
+          >
+            <FaUser className="mr-2" />
+            Community Discussions
+          </a>
         </div>
       </div>
     </div>
