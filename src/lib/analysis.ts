@@ -68,12 +68,25 @@ const model = new ChatVertexAI(getVertexAIOptions());
 
 // 分析项目内容，评估与MCP的相关性
 export async function analyzeProjectRelevance(
-  repo: ProcessedRepo
+  repo: ProcessedRepo,
+  forceAnalysis = false
 ): Promise<AnalysisResult> {
+  // 优先使用数据库中已有的分析结果
+  if (!forceAnalysis && repo.relevance && repo.relevance !== 'Low') {
+    console.log(`使用已有分析结果: ${repo.name}`);
+    return {
+      relevanceScore: getScoreFromRelevance(repo.relevance),
+      relevanceCategory: repo.relevance as 'High' | 'Medium' | 'Related',
+      summary: `${repo.name} 是一个与模型上下文协议相关的项目。${repo.description || ''}`,
+      keyFeatures: extractKeyFeatures(repo),
+      useCases: extractUseCases(repo)
+    };
+  }
+
   // 检查是否有 Google Vertex AI 凭证
   if (!process.env.GOOGLE_CLOUD_PROJECT || 
       (!process.env.GOOGLE_APPLICATION_CREDENTIALS && !process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON)) {
-    console.warn("No Google Vertex AI credentials found. Skipping AI analysis.");
+    console.warn("No Google Vertex AI credentials found. Using default analysis.");
     return getDefaultAnalysis(repo);
   }
 
@@ -128,6 +141,66 @@ export async function analyzeProjectRelevance(
     console.error("Error during AI analysis:", error);
     return getDefaultAnalysis(repo);
   }
+}
+
+// 从相关性级别获取数字分数
+function getScoreFromRelevance(relevance: string): number {
+  switch (relevance) {
+    case 'High': return 85;
+    case 'Medium': return 65;
+    case 'Related': return 45;
+    default: return 30;
+  }
+}
+
+// 从项目信息提取关键特性
+function extractKeyFeatures(repo: ProcessedRepo): string[] {
+  const features = [];
+  
+  if (repo.topics.some(topic => topic.toLowerCase().includes('mcp'))) {
+    features.push('支持模型上下文协议');
+  }
+  if (repo.topics.some(topic => topic.toLowerCase().includes('server'))) {
+    features.push('MCP 服务器实现');
+  }
+  if (repo.topics.some(topic => topic.toLowerCase().includes('client'))) {
+    features.push('MCP 客户端工具');
+  }
+  if (repo.language === 'Python') {
+    features.push('Python 语言实现');
+  }
+  if (repo.language === 'TypeScript' || repo.language === 'JavaScript') {
+    features.push('JavaScript/TypeScript 实现');
+  }
+  
+  // 确保至少有3个特性
+  while (features.length < 3) {
+    features.push('MCP 生态系统组件');
+  }
+  
+  return features.slice(0, 5);
+}
+
+// 从项目信息提取使用案例
+function extractUseCases(repo: ProcessedRepo): string[] {
+  const useCases = [];
+  
+  if (repo.topics.some(topic => topic.toLowerCase().includes('server'))) {
+    useCases.push('构建 MCP 服务端应用');
+  }
+  if (repo.topics.some(topic => topic.toLowerCase().includes('client'))) {
+    useCases.push('开发 MCP 客户端工具');
+  }
+  if (repo.description?.toLowerCase().includes('integration')) {
+    useCases.push('集成到现有系统');
+  }
+  
+  // 确保至少有2个使用案例
+  while (useCases.length < 2) {
+    useCases.push('增强语言模型上下文处理');
+  }
+  
+  return useCases.slice(0, 3);
 }
 
 // 根据仓库属性生成默认分析结果

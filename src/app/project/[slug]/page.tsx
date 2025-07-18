@@ -20,13 +20,13 @@ export const revalidate = 3600; // 每小时重新验证一次数据
 
 interface ProjectPageProps {
   params: Promise<{
-    id: string;
+    slug: string;
   }>;
 }
 
 export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
   const resolvedParams = await params;
-  const slug = resolvedParams.id;
+  const slug = resolvedParams.slug;
   
   // 验证slug格式
   if (!isValidProjectSlug(slug)) {
@@ -62,7 +62,7 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
 
 export default async function ProjectPage({ params }: ProjectPageProps) {
   const resolvedParams = await params;
-  const slug = resolvedParams.id;
+  const slug = resolvedParams.slug;
   
   // 验证slug格式
   if (!isValidProjectSlug(slug)) {
