@@ -102,7 +102,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-6">
-        <Link href="/" className="text-purple-600 hover:text-purple-800 flex items-center">
+        <Link href="/projects" className="text-purple-600 hover:text-purple-800 flex items-center">
           ← Back to projects
         </Link>
       </div>
