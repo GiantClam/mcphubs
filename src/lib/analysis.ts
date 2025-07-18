@@ -77,7 +77,7 @@ export async function analyzeProjectRelevance(
     return {
       relevanceScore: getScoreFromRelevance(repo.relevance),
       relevanceCategory: repo.relevance as 'High' | 'Medium' | 'Related',
-      summary: `${repo.name} 是一个与模型上下文协议相关的项目。${repo.description || ''}`,
+      summary: `${repo.name} is a project related to the Model Context Protocol. ${repo.description || ''}`,
       keyFeatures: extractKeyFeatures(repo),
       useCases: extractUseCases(repo)
     };
@@ -158,24 +158,24 @@ function extractKeyFeatures(repo: ProcessedRepo): string[] {
   const features = [];
   
   if (repo.topics.some(topic => topic.toLowerCase().includes('mcp'))) {
-    features.push('支持模型上下文协议');
+    features.push('Model Context Protocol support');
   }
   if (repo.topics.some(topic => topic.toLowerCase().includes('server'))) {
-    features.push('MCP 服务器实现');
+    features.push('MCP server implementation');
   }
   if (repo.topics.some(topic => topic.toLowerCase().includes('client'))) {
-    features.push('MCP 客户端工具');
+    features.push('MCP client tools');
   }
   if (repo.language === 'Python') {
-    features.push('Python 语言实现');
+    features.push('Python language implementation');
   }
   if (repo.language === 'TypeScript' || repo.language === 'JavaScript') {
-    features.push('JavaScript/TypeScript 实现');
+    features.push('JavaScript/TypeScript implementation');
   }
   
   // 确保至少有3个特性
   while (features.length < 3) {
-    features.push('MCP 生态系统组件');
+    features.push('MCP ecosystem component');
   }
   
   return features.slice(0, 5);
@@ -186,18 +186,18 @@ function extractUseCases(repo: ProcessedRepo): string[] {
   const useCases = [];
   
   if (repo.topics.some(topic => topic.toLowerCase().includes('server'))) {
-    useCases.push('构建 MCP 服务端应用');
+    useCases.push('Building MCP server applications');
   }
   if (repo.topics.some(topic => topic.toLowerCase().includes('client'))) {
-    useCases.push('开发 MCP 客户端工具');
+    useCases.push('Developing MCP client tools');
   }
   if (repo.description?.toLowerCase().includes('integration')) {
-    useCases.push('集成到现有系统');
+    useCases.push('Integration with existing systems');
   }
   
   // 确保至少有2个使用案例
   while (useCases.length < 2) {
-    useCases.push('增强语言模型上下文处理');
+    useCases.push('Enhancing language model context processing');
   }
   
   return useCases.slice(0, 3);
