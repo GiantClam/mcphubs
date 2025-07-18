@@ -160,7 +160,7 @@ const ComparisonTool: React.FC<ComparisonToolProps> = ({ projects }) => {
     return (
       <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-6 border border-purple-200 dark:border-purple-800">
         <h3 className="text-lg font-semibold mb-4 text-purple-800 dark:text-purple-300">
-          专家建议
+          Expert Recommendation
         </h3>
         <div className="space-y-3 text-sm">
           <div className="flex items-start">

@@ -67,9 +67,9 @@ function generateTutorialContent(project: ProcessedRepo): TutorialSection[] {
   ];
 
   tutorials.push({
-    title: "快速入门",
+    title: "Quick Start",
     icon: <FaRocket className="w-5 h-5" />,
-    description: "从零开始快速上手该MCP项目",
+    description: "Get started with this MCP project from scratch",
     steps: quickStartSteps
   });
 
@@ -88,8 +88,8 @@ function generateTutorialContent(project: ProcessedRepo): TutorialSection[] {
       ]
     },
     {
-      title: "容器化部署",
-      description: "使用Docker进行容器化部署",
+      title: "Containerized Deployment",
+      description: "Deploy using Docker containers",
       code: `# Dockerfile示例\nFROM ${project.language === 'Python' ? 'python:3.9-slim' : 'node:16-alpine'}\n\nWORKDIR /app\nCOPY . .\n\n${project.language === 'Python' 
         ? 'RUN pip install -r requirements.txt\nCMD ["python", "main.py"]'
         : 'RUN npm install\nCMD ["npm", "start"]'}\n\n# 构建和运行\ndocker build -t mcp-${project.name.toLowerCase()} .\ndocker run -p 3000:3000 mcp-${project.name.toLowerCase()}`,
@@ -100,8 +100,8 @@ function generateTutorialContent(project: ProcessedRepo): TutorialSection[] {
       ]
     },
     {
-      title: "云平台部署",
-      description: "部署到主流云平台",
+      title: "Cloud Platform Deployment",
+      description: "Deploy to mainstream cloud platforms",
       code: `# Vercel部署 (适合JavaScript/TypeScript项目)\nvercel --prod\n\n# 或使用Heroku\nheroku create mcp-${project.name.toLowerCase()}\ngit push heroku main\n\n# AWS Lambda部署\naws lambda create-function --function-name mcp-${project.name.toLowerCase()}`,
       tips: [
         "选择合适的云平台方案",
@@ -112,9 +112,9 @@ function generateTutorialContent(project: ProcessedRepo): TutorialSection[] {
   ];
 
   tutorials.push({
-    title: "部署指南",
+    title: "Deployment Guide",
     icon: <FaCog className="w-5 h-5" />,
-    description: "将项目部署到生产环境的完整指南",
+    description: "Complete guide to deploy the project to production environment",
     steps: deploymentSteps
   });
 
@@ -212,13 +212,13 @@ const TutorialGuide: React.FC<TutorialGuideProps> = ({ project }) => {
       <div className="flex items-center mb-6">
         <FaBook className="w-6 h-6 text-blue-600 mr-3" />
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-          实用教程指南
+          Practical Tutorial Guide
         </h2>
       </div>
       
       <div className="mb-4">
         <p className="text-gray-600 dark:text-gray-400">
-          这里提供了{project.name}项目的详细教程和最佳实践，帮助您快速上手并成功部署到生产环境。
+          Here you'll find detailed tutorials and best practices for the {project.name} project, helping you get started quickly and successfully deploy to production.
         </p>
       </div>
 

@@ -167,12 +167,12 @@ const ExpertAnalysis: React.FC<ExpertAnalysisProps> = ({ project }) => {
     <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 mb-6">
       <div className="flex items-center mb-6">
         <FaLightbulb className="w-6 h-6 text-purple-600 mr-3" />
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">专家深度分析</h2>
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Expert In-Depth Analysis</h2>
       </div>
 
       {/* 专家见解 */}
       <div className="mb-8">
-        <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">专业见解</h3>
+        <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Professional Insights</h3>
         <div className="space-y-4">
           {insights.map((insight, index) => (
             <div 
@@ -217,10 +217,10 @@ const ExpertAnalysis: React.FC<ExpertAnalysisProps> = ({ project }) => {
 
       {/* 技术评估 */}
       <div className="mb-8">
-        <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">技术评估</h3>
+        <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Technical Assessment</h3>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <h4 className="font-medium mb-3 text-green-700 dark:text-green-400">项目优势</h4>
+            <h4 className="font-medium mb-3 text-green-700 dark:text-green-400">Project Strengths</h4>
             <ul className="space-y-2">
               {strengths.map((strength, index) => (
                 <li key={index} className="flex items-start">
@@ -231,7 +231,7 @@ const ExpertAnalysis: React.FC<ExpertAnalysisProps> = ({ project }) => {
             </ul>
           </div>
           <div>
-            <h4 className="font-medium mb-3 text-orange-700 dark:text-orange-400">考虑因素</h4>
+            <h4 className="font-medium mb-3 text-orange-700 dark:text-orange-400">Considerations</h4>
             <ul className="space-y-2">
               {considerations.map((consideration, index) => (
                 <li key={index} className="flex items-start">
@@ -246,7 +246,7 @@ const ExpertAnalysis: React.FC<ExpertAnalysisProps> = ({ project }) => {
 
       {/* 实用建议 */}
       <div className="mb-8">
-        <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">实用建议</h3>
+        <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Practical Recommendations</h3>
         <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
           <ul className="space-y-2">
             {practicalAdvice.map((advice, index) => (
@@ -261,7 +261,7 @@ const ExpertAnalysis: React.FC<ExpertAnalysisProps> = ({ project }) => {
 
       {/* 发展前景 */}
       <div>
-        <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">发展前景</h3>
+        <h3 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Future Outlook</h3>
         <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4 border border-purple-200 dark:border-purple-800">
           <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
             {futureOutlook}

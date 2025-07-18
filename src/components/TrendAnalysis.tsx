@@ -196,7 +196,7 @@ const TrendAnalysis: React.FC<TrendAnalysisProps> = ({ projects }) => {
         <div className="flex items-center mb-6">
           <FaChartLine className="w-6 h-6 text-purple-600 mr-3" />
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-            MCP生态系统趋势概览
+            MCP Ecosystem Trend Overview
           </h2>
         </div>
         
@@ -375,7 +375,7 @@ const TrendAnalysis: React.FC<TrendAnalysisProps> = ({ projects }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
             <h3 className="font-semibold text-gray-900 dark:text-white mb-3">
-              技术创新机会
+              Technical Innovation Opportunities
             </h3>
             <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
               <li>• MCP协议优化和扩展</li>
@@ -387,7 +387,7 @@ const TrendAnalysis: React.FC<TrendAnalysisProps> = ({ projects }) => {
           
           <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
             <h3 className="font-semibold text-gray-900 dark:text-white mb-3">
-              市场应用机会
+              Market Application Opportunities
             </h3>
             <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
               <li>• 企业知识管理系统</li>
