@@ -6,10 +6,10 @@ import { ProcessedRepo } from '@/lib/github';
 import Link from 'next/link';
 
 interface ProjectShowcaseProps {
-  initialProjects: ProcessedRepo[];
+  initialProjects?: ProcessedRepo[]; // 改为可选参数
 }
 
-export default function ProjectShowcase({ initialProjects }: ProjectShowcaseProps) {
+export default function ProjectShowcase({ initialProjects = [] }: ProjectShowcaseProps) {
   const [projects, setProjects] = useState<ProcessedRepo[]>(initialProjects);
   const [loading, setLoading] = useState(false);
 
