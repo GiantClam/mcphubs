@@ -91,6 +91,20 @@ export async function GET() {
       importance: 'medium'
     },
     {
+      url: '/privacy-policy',
+      changefreq: 'monthly',
+      priority: '0.7',
+      lastmod: currentDate,
+      importance: 'high' // 重要法律页面
+    },
+    {
+      url: '/terms-of-service',
+      changefreq: 'monthly',
+      priority: '0.7',
+      lastmod: currentDate,
+      importance: 'high' // 重要法律页面
+    },
+    {
       url: '/monitoring',
       changefreq: 'weekly',
       priority: '0.5',

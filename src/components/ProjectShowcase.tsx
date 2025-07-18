@@ -11,6 +11,27 @@ interface ProjectShowcaseProps {
 
 export default function ProjectShowcase({ initialProjects }: ProjectShowcaseProps) {
   const [projects, setProjects] = useState<ProcessedRepo[]>(initialProjects);
+  const [loading, setLoading] = useState(false);
+
+  // 如果没有初始项目数据，则从API获取
+  useEffect(() => {
+    if (initialProjects.length === 0) {
+      setLoading(true);
+      fetch('/api/projects')
+        .then(response => response.json())
+        .then(data => {
+          if (data.projects && Array.isArray(data.projects)) {
+            setProjects(data.projects);
+          }
+        })
+        .catch(error => {
+          console.error('获取项目数据失败:', error);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  }, [initialProjects.length]);
 
   return (
     <section className="py-16 bg-white dark:bg-gray-800">
@@ -32,10 +53,17 @@ export default function ProjectShowcase({ initialProjects }: ProjectShowcaseProp
           </div>
         </div>
         
-        {projects.length === 0 ? (
+        {loading ? (
+          <div className="text-center py-12">
+            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
+            <p className="text-gray-500 dark:text-gray-400 mt-4">
+              正在加载项目数据...
+            </p>
+          </div>
+        ) : projects.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-gray-500 dark:text-gray-400">
-              加载项目中或未找到项目。请稍后再试。
+              暂无项目数据。请稍后再试。
             </p>
           </div>
         ) : (

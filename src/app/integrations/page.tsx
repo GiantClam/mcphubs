@@ -222,7 +222,7 @@ export default function IntegrationsPage() {
   };
 
   return (
-    <main className="flex-grow container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8">
       <div className="max-w-7xl mx-auto">
         {/* 页面标题 */}
         <section className="text-center mb-12">
@@ -372,6 +372,6 @@ export default function IntegrationsPage() {
           </div>
         </section>
       </div>
-    </main>
+    </div>
   );
 } 

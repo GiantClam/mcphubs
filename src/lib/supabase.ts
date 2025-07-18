@@ -1,6 +1,47 @@
 import { createClient } from '@supabase/supabase-js';
 import { ProcessedRepo } from './github';
 
+// 简单的关键字分析函数，作为AI分析的备用方案
+function getSimpleAnalysis(project: ProcessedRepo) {
+  const mcpKeywords = [
+    'mcp', 'model context protocol', 'anthropic', 'claude',
+    'context protocol', 'mcp-server', 'mcp-client',
+    'model-context-protocol', 'awesome-mcp'
+  ];
+  
+  const projectText = `${project.name} ${project.description} ${project.topics.join(' ')}`.toLowerCase();
+  
+  // 计算关键字匹配分数
+  let score = 0;
+  const matchedKeywords: string[] = [];
+  
+  mcpKeywords.forEach(keyword => {
+    if (projectText.includes(keyword.toLowerCase())) {
+      score += keyword === 'mcp' ? 30 : keyword.length > 10 ? 25 : 15;
+      matchedKeywords.push(keyword);
+    }
+  });
+  
+  // 基于项目特征调整分数
+  if (project.topics.some(topic => topic.toLowerCase().includes('mcp'))) {
+    score += 20;
+  }
+  
+  if (project.name.toLowerCase().includes('mcp')) {
+    score += 25;
+  }
+  
+  score = Math.min(score, 100);
+  
+  return {
+    relevanceScore: score,
+    relevanceCategory: score >= 70 ? 'High' : score >= 40 ? 'Medium' : 'Related',
+    summary: `基于关键字分析的相关性评估 (匹配关键字: ${matchedKeywords.join(', ')})`,
+    keyFeatures: matchedKeywords.slice(0, 3),
+    useCases: ['MCP相关项目']
+  };
+}
+
 // Supabase配置 - 添加安全检查
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -180,12 +221,30 @@ export async function upsertProjects(projects: ProcessedRepo[]): Promise<{ inser
         if (needsAnalysis) {
           try {
             console.log(`🤖 正在分析项目: ${project.name}`);
-            const { analyzeProjectRelevance } = await import('./analysis');
-            geminiAnalysis = await analyzeProjectRelevance(project);
-            console.log(`✅ 分析完成: ${project.name} (得分: ${geminiAnalysis.relevanceScore})`);
+            
+            // 检查是否在支持分析的环境中
+            if (typeof window !== 'undefined') {
+              console.warn(`⚠️ 跳过客户端环境的AI分析: ${project.name}`);
+            } else {
+              // 动态导入分析模块，使用更安全的导入方式
+              const analysisModule = await import('./analysis').catch(importError => {
+                console.warn(`⚠️ 无法导入分析模块: ${importError.message}`);
+                return null;
+              });
+              
+              if (analysisModule && analysisModule.analyzeProjectRelevance) {
+                geminiAnalysis = await analysisModule.analyzeProjectRelevance(project);
+                console.log(`✅ 分析完成: ${project.name} (得分: ${geminiAnalysis.relevanceScore})`);
+              } else {
+                console.warn(`⚠️ 分析模块不可用，使用默认分析: ${project.name}`);
+                // 使用简单的关键字分析作为备用
+                geminiAnalysis = getSimpleAnalysis(project);
+              }
+            }
           } catch (analysisError) {
             console.warn(`⚠️ 分析项目 ${project.name} 失败:`, analysisError);
-            // 分析失败时继续入库，但不设置分析结果
+            // 分析失败时使用简单的关键字分析
+            geminiAnalysis = getSimpleAnalysis(project);
           }
         }
 

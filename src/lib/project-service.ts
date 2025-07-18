@@ -92,11 +92,20 @@ export async function getProjects(config: Partial<ProjectServiceConfig> = {}): P
   const cachedProjects = projectCache.get(finalConfig.cacheTimeout);
   if (cachedProjects && cachedProjects.length > 0) {
     console.log(`💾 使用缓存数据 (${cachedProjects.length} 个项目)`);
+    
+    // 计算缓存数据的实际最新更新时间
+    const latestUpdateTime = cachedProjects.reduce((latest, project) => {
+      const projectTime = new Date(project.updatedAt).getTime();
+      return projectTime > latest ? projectTime : latest;
+    }, 0);
+    
+    const actualTimestamp = latestUpdateTime > 0 ? new Date(latestUpdateTime).toISOString() : timestamp;
+    
     return {
       projects: cachedProjects,
       source: 'database', // 缓存的数据通常来自数据库
       cached: true,
-      timestamp,
+      timestamp: actualTimestamp,
       stats: {
         total: cachedProjects.length,
         fromDatabase: cachedProjects.length,
@@ -173,6 +182,14 @@ async function getDatabaseFirstProjects(config: ProjectServiceConfig, timestamp:
     if (dbProjects.length > 0) {
       console.log(`✅ 从数据库获取到 ${dbProjects.length} 个项目`);
       
+      // 计算数据的实际最新更新时间
+      const latestUpdateTime = dbProjects.reduce((latest, project) => {
+        const projectTime = new Date(project.updatedAt).getTime();
+        return projectTime > latest ? projectTime : latest;
+      }, 0);
+      
+      const actualTimestamp = latestUpdateTime > 0 ? new Date(latestUpdateTime).toISOString() : timestamp;
+      
       // 缓存结果
       projectCache.set(dbProjects);
       
@@ -180,7 +197,7 @@ async function getDatabaseFirstProjects(config: ProjectServiceConfig, timestamp:
         projects: dbProjects,
         source: 'database',
         cached: false,
-        timestamp,
+        timestamp: actualTimestamp,
         stats: {
           total: dbProjects.length,
           fromDatabase: dbProjects.length,
@@ -295,6 +312,14 @@ async function getDatabaseOnlyProjects(timestamp: string): Promise<ProjectFetchR
   
   const dbProjects = await getAllProjects();
   
+  // 计算数据的实际最新更新时间
+  const latestUpdateTime = dbProjects.reduce((latest, project) => {
+    const projectTime = new Date(project.updatedAt).getTime();
+    return projectTime > latest ? projectTime : latest;
+  }, 0);
+  
+  const actualTimestamp = latestUpdateTime > 0 ? new Date(latestUpdateTime).toISOString() : timestamp;
+  
   // 缓存结果
   if (dbProjects.length > 0) {
     projectCache.set(dbProjects);
@@ -304,7 +329,7 @@ async function getDatabaseOnlyProjects(timestamp: string): Promise<ProjectFetchR
     projects: dbProjects,
     source: 'database',
     cached: false,
-    timestamp,
+    timestamp: actualTimestamp,
     stats: {
       total: dbProjects.length,
       fromDatabase: dbProjects.length,

@@ -3,8 +3,6 @@
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 import { 
   FaSync, FaDatabase, FaGithub, FaPlay, FaStop, FaClock, 
   FaCheckCircle, FaExclamationTriangle, FaInfoCircle, FaChartBar, FaChartLine, FaCog
@@ -173,9 +171,8 @@ export default function SyncAdminPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <Header />
       
-      <main className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
             同步任务管理
@@ -355,9 +352,8 @@ export default function SyncAdminPage() {
             )}
           </div>
         </div>
-      </main>
+      </div>
 
-      <Footer />
     </div>
   );
 } 

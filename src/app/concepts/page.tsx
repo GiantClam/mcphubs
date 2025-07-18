@@ -1,9 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { FaCode, FaRocket, FaUsers, FaCogs, FaBook, FaLightbulb, FaNetworkWired, FaPlug, FaCheckCircle, FaCopy, FaDesktop, FaServer } from 'react-icons/fa';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import { FaCode, FaRocket, FaUsers, FaCogs, FaBook, FaLightbulb, FaNetworkWired, FaPlug, FaCheckCircle, FaCopy, FaDesktop, FaServer, FaDatabase, FaArrowRight, FaArrowLeft, FaExclamationTriangle, FaGithub, FaBug } from 'react-icons/fa';
+import Link from 'next/link';
 
 export default function ConceptsPage() {
   const [activeSection, setActiveSection] = useState('overview');
@@ -45,12 +44,9 @@ export default function ConceptsPage() {
   );
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900">
-      <Header />
-      
-      <main className="flex-grow">
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex flex-col lg:flex-row gap-8">
+    <div className="bg-gray-50 dark:bg-gray-900">
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex flex-col lg:flex-row gap-8">
             {/* 侧边导航栏 */}
             <aside className="lg:w-64 bg-white dark:bg-gray-800 rounded-lg p-6 h-fit lg:sticky lg:top-24">
               <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-6">学习目录</h2>
@@ -74,6 +70,939 @@ export default function ConceptsPage() {
 
             {/* 主内容区 */}
             <div className="flex-grow">
+              {activeSection === 'overview' && (
+                <section className="bg-white dark:bg-gray-800 rounded-lg p-8">
+                  <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">MCP 概述</h1>
+                  
+                  <div className="space-y-8">
+                    <div>
+                      <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">什么是 Model Context Protocol？</h2>
+                      <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
+                        Model Context Protocol (MCP) 是由 Anthropic 开发的开放协议，它使 AI 助手能够安全地访问外部数据源和工具。
+                        通过标准化的接口，MCP 让 AI 应用程序能够与文件系统、数据库、API 服务等各种资源进行交互，
+                        极大地扩展了 AI 的能力边界。
+                      </p>
+                      
+                      <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-lg p-6 mb-6">
+                        <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">核心优势</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="flex items-start space-x-3">
+                            <div className="bg-green-100 dark:bg-green-900 w-8 h-8 rounded-full flex items-center justify-center mt-1">
+                              <FaCheckCircle className="w-4 h-4 text-green-600 dark:text-green-400" />
+                            </div>
+                            <div>
+                              <h4 className="font-medium text-gray-900 dark:text-white">标准化接口</h4>
+                              <p className="text-sm text-gray-600 dark:text-gray-300">统一的协议规范，简化集成开发</p>
+                            </div>
+                          </div>
+                          <div className="flex items-start space-x-3">
+                            <div className="bg-blue-100 dark:bg-blue-900 w-8 h-8 rounded-full flex items-center justify-center mt-1">
+                              <FaCheckCircle className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                            </div>
+                            <div>
+                              <h4 className="font-medium text-gray-900 dark:text-white">安全可靠</h4>
+                              <p className="text-sm text-gray-600 dark:text-gray-300">内置安全机制和权限控制</p>
+                            </div>
+                          </div>
+                          <div className="flex items-start space-x-3">
+                            <div className="bg-purple-100 dark:bg-purple-900 w-8 h-8 rounded-full flex items-center justify-center mt-1">
+                              <FaCheckCircle className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                            </div>
+                            <div>
+                              <h4 className="font-medium text-gray-900 dark:text-white">易于扩展</h4>
+                              <p className="text-sm text-gray-600 dark:text-gray-300">支持自定义工具和资源</p>
+                            </div>
+                          </div>
+                          <div className="flex items-start space-x-3">
+                            <div className="bg-yellow-100 dark:bg-yellow-900 w-8 h-8 rounded-full flex items-center justify-center mt-1">
+                              <FaCheckCircle className="w-4 h-4 text-yellow-600 dark:text-yellow-400" />
+                            </div>
+                            <div>
+                              <h4 className="font-medium text-gray-900 dark:text-white">开放生态</h4>
+                              <p className="text-sm text-gray-600 dark:text-gray-300">开源协议，社区驱动发展</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">应用场景</h2>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div className="bg-white dark:bg-gray-700 rounded-lg p-6 border border-gray-200 dark:border-gray-600">
+                          <FaCode className="w-8 h-8 text-blue-600 dark:text-blue-400 mb-4" />
+                          <h3 className="font-semibold text-gray-900 dark:text-white mb-2">代码助手</h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-300">
+                            连接 IDE、版本控制系统，提供智能代码分析和自动化开发工具
+                          </p>
+                        </div>
+                        <div className="bg-white dark:bg-gray-700 rounded-lg p-6 border border-gray-200 dark:border-gray-600">
+                          <FaDatabase className="w-8 h-8 text-green-600 dark:text-green-400 mb-4" />
+                          <h3 className="font-semibold text-gray-900 dark:text-white mb-2">数据分析</h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-300">
+                            访问数据库、API，进行复杂的数据查询和分析任务
+                          </p>
+                        </div>
+                        <div className="bg-white dark:bg-gray-700 rounded-lg p-6 border border-gray-200 dark:border-gray-600">
+                          <FaCogs className="w-8 h-8 text-purple-600 dark:text-purple-400 mb-4" />
+                          <h3 className="font-semibold text-gray-900 dark:text-white mb-2">工作流自动化</h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-300">
+                            整合各种工具和服务，构建智能化的工作流程
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">快速开始</h2>
+                      <p className="text-gray-600 dark:text-gray-300 mb-4">
+                        开始使用 MCP 只需几个简单步骤：
+                      </p>
+                      
+                      <div className="space-y-4">
+                        <div className="flex items-start space-x-4">
+                          <div className="bg-blue-100 dark:bg-blue-900 w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                            <span className="text-blue-600 dark:text-blue-400 font-semibold text-sm">1</span>
+                          </div>
+                          <div>
+                            <h4 className="font-medium text-gray-900 dark:text-white mb-1">了解架构</h4>
+                            <p className="text-gray-600 dark:text-gray-300 text-sm">学习 MCP 的三层架构设计和核心概念</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start space-x-4">
+                          <div className="bg-green-100 dark:bg-green-900 w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                            <span className="text-green-600 dark:text-green-400 font-semibold text-sm">2</span>
+                          </div>
+                          <div>
+                            <h4 className="font-medium text-gray-900 dark:text-white mb-1">选择工具</h4>
+                            <p className="text-gray-600 dark:text-gray-300 text-sm">根据需求选择合适的 MCP 服务器或开发自己的实现</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start space-x-4">
+                          <div className="bg-purple-100 dark:bg-purple-900 w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                            <span className="text-purple-600 dark:text-purple-400 font-semibold text-sm">3</span>
+                          </div>
+                          <div>
+                            <h4 className="font-medium text-gray-900 dark:text-white mb-1">集成应用</h4>
+                            <p className="text-gray-600 dark:text-gray-300 text-sm">将 MCP 服务器连接到 AI 客户端，开始体验增强功能</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              )}
+
+              {activeSection === 'protocol' && (
+                <section className="bg-white dark:bg-gray-800 rounded-lg p-8">
+                  <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">MCP 协议详解</h1>
+                  
+                  <div className="space-y-8">
+                    <div>
+                      <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">协议架构</h2>
+                      <p className="text-gray-600 dark:text-gray-300 mb-6">
+                        MCP 基于 JSON-RPC 2.0 协议，提供双向通信能力。协议定义了客户端和服务器之间的标准交互方式。
+                      </p>
+                      
+                      <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 mb-6">
+                        <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">核心组件</h3>
+                        <div className="space-y-4">
+                          <div className="border-l-4 border-blue-500 pl-4">
+                            <h4 className="font-medium text-gray-900 dark:text-white">Transport Layer</h4>
+                            <p className="text-sm text-gray-600 dark:text-gray-300">
+                              支持多种传输方式：stdio、HTTP、WebSocket 等
+                            </p>
+                          </div>
+                          <div className="border-l-4 border-green-500 pl-4">
+                            <h4 className="font-medium text-gray-900 dark:text-white">Message Protocol</h4>
+                            <p className="text-sm text-gray-600 dark:text-gray-300">
+                              基于 JSON-RPC 2.0 的消息格式和处理机制
+                            </p>
+                          </div>
+                          <div className="border-l-4 border-purple-500 pl-4">
+                            <h4 className="font-medium text-gray-900 dark:text-white">Capability Discovery</h4>
+                            <p className="text-sm text-gray-600 dark:text-gray-300">
+                              动态发现和协商服务器提供的功能
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">消息类型</h2>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-6">
+                          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center">
+                            <FaArrowRight className="w-4 h-4 mr-2 text-blue-600 dark:text-blue-400" />
+                            请求消息
+                          </h3>
+                          <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                            <li>• initialize - 初始化连接</li>
+                            <li>• tools/list - 获取工具列表</li>
+                            <li>• tools/call - 调用工具</li>
+                            <li>• resources/list - 获取资源列表</li>
+                            <li>• resources/read - 读取资源</li>
+                          </ul>
+                        </div>
+                        <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-6">
+                          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center">
+                            <FaArrowLeft className="w-4 h-4 mr-2 text-green-600 dark:text-green-400" />
+                            响应消息
+                          </h3>
+                          <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                            <li>• result - 成功响应</li>
+                            <li>• error - 错误响应</li>
+                            <li>• notification - 通知消息</li>
+                            <li>• progress - 进度更新</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">协议示例</h2>
+                      
+                      <CodeBlock 
+                        id="protocol-example"
+                        language="json"
+                        code={`// 初始化请求
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "initialize",
+  "params": {
+    "protocolVersion": "2024-11-05",
+    "capabilities": {
+      "experimental": {},
+      "sampling": {}
+    },
+    "clientInfo": {
+      "name": "my-client",
+      "version": "1.0.0"
+    }
+  }
+}
+
+// 工具调用请求
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "method": "tools/call",
+  "params": {
+    "name": "read-file",
+    "arguments": {
+      "path": "/path/to/file.txt"
+    }
+  }
+}
+
+// 成功响应
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "文件内容..."
+      }
+    ]
+  }
+}`}
+                      />
+                    </div>
+                  </div>
+                </section>
+              )}
+
+              {activeSection === 'servers' && (
+                <section className="bg-white dark:bg-gray-800 rounded-lg p-8">
+                  <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">MCP 服务器开发</h1>
+                  
+                  <div className="space-y-8">
+                    <div>
+                      <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">服务器基础</h2>
+                      <p className="text-gray-600 dark:text-gray-300 mb-6">
+                        MCP 服务器是提供工具和资源的后端组件，它们响应客户端的请求并执行具体的操作。
+                      </p>
+                      
+                      <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-lg p-6">
+                        <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">服务器职责</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div className="space-y-3">
+                            <div className="flex items-center space-x-3">
+                              <FaServer className="w-5 h-5 text-green-600 dark:text-green-400" />
+                              <span className="font-medium text-gray-900 dark:text-white">工具注册</span>
+                            </div>
+                            <div className="flex items-center space-x-3">
+                              <FaDatabase className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                              <span className="font-medium text-gray-900 dark:text-white">资源管理</span>
+                            </div>
+                          </div>
+                          <div className="space-y-3">
+                            <div className="flex items-center space-x-3">
+                              <FaCogs className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                              <span className="font-medium text-gray-900 dark:text-white">请求处理</span>
+                            </div>
+                            <div className="flex items-center space-x-3">
+                              <FaNetworkWired className="w-5 h-5 text-orange-600 dark:text-orange-400" />
+                              <span className="font-medium text-gray-900 dark:text-white">通信管理</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">开发流程</h2>
+                      <div className="space-y-6">
+                        <div className="border-l-4 border-blue-500 pl-6">
+                          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">1. 环境准备</h3>
+                          <p className="text-gray-600 dark:text-gray-300 mb-4">
+                            安装 MCP SDK 和必要的依赖包，设置开发环境。
+                          </p>
+                          
+                          <CodeBlock 
+                            id="server-setup"
+                            language="bash"
+                            code={`# 安装 MCP SDK
+npm install @anthropic-ai/mcp-sdk
+
+# 或使用 Python
+pip install mcp`}
+                          />
+                        </div>
+
+                        <div className="border-l-4 border-green-500 pl-6">
+                          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">2. 创建服务器</h3>
+                          <p className="text-gray-600 dark:text-gray-300 mb-4">
+                            使用 SDK 创建基础的服务器实例。
+                          </p>
+                          
+                          <CodeBlock 
+                            id="server-basic"
+                            code={`import { Server } from '@anthropic-ai/mcp-sdk/server/index.js';
+import { StdioServerTransport } from '@anthropic-ai/mcp-sdk/server/stdio.js';
+
+const server = new Server({
+  name: 'my-server',
+  version: '1.0.0'
+});
+
+// 连接传输层
+const transport = new StdioServerTransport();
+await server.connect(transport);`}
+                          />
+                        </div>
+
+                        <div className="border-l-4 border-purple-500 pl-6">
+                          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">3. 注册功能</h3>
+                          <p className="text-gray-600 dark:text-gray-300 mb-4">
+                            定义和注册服务器提供的工具和资源。
+                          </p>
+                          
+                          <CodeBlock 
+                            id="server-tools"
+                            code={`// 注册工具列表
+server.setRequestHandler('tools/list', async () => {
+  return {
+    tools: [{
+      name: 'calculate',
+      description: '执行数学计算',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          expression: { type: 'string' }
+        }
+      }
+    }]
+  };
+});
+
+// 处理工具调用
+server.setRequestHandler('tools/call', async (request) => {
+  const { name, arguments: args } = request.params;
+  
+  if (name === 'calculate') {
+    const result = eval(args.expression);
+    return { content: [{ type: 'text', text: String(result) }] };
+  }
+  
+  throw new Error(\`Unknown tool: \${name}\`);
+});`}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">最佳实践</h2>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-6">
+                          <h3 className="font-semibold text-gray-900 dark:text-white mb-3">安全性</h3>
+                          <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                            <li>• 输入验证和清理</li>
+                            <li>• 权限检查和限制</li>
+                            <li>• 错误处理和日志记录</li>
+                            <li>• 资源访问控制</li>
+                          </ul>
+                        </div>
+                        <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-6">
+                          <h3 className="font-semibold text-gray-900 dark:text-white mb-3">性能优化</h3>
+                          <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                            <li>• 异步处理和并发</li>
+                            <li>• 缓存机制</li>
+                            <li>• 资源池管理</li>
+                            <li>• 超时和重试策略</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              )}
+
+              {activeSection === 'clients' && (
+                <section className="bg-white dark:bg-gray-800 rounded-lg p-8">
+                  <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">MCP 客户端开发</h1>
+                  
+                  <div className="space-y-8">
+                    <div>
+                      <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">客户端概述</h2>
+                      <p className="text-gray-600 dark:text-gray-300 mb-6">
+                        MCP 客户端是连接和使用 MCP 服务器的应用程序。它们负责发现服务器功能、发送请求并处理响应。
+                      </p>
+                      
+                      <div className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-lg p-6">
+                        <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">客户端类型</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          <div className="text-center">
+                            <FaDesktop className="w-8 h-8 text-blue-600 dark:text-blue-400 mx-auto mb-2" />
+                            <h4 className="font-medium text-gray-900 dark:text-white">桌面应用</h4>
+                            <p className="text-sm text-gray-600 dark:text-gray-300">Claude Desktop, VS Code等</p>
+                          </div>
+                          <div className="text-center">
+                            <FaCode className="w-8 h-8 text-green-600 dark:text-green-400 mx-auto mb-2" />
+                            <h4 className="font-medium text-gray-900 dark:text-white">开发工具</h4>
+                            <p className="text-sm text-gray-600 dark:text-gray-300">IDE插件, CLI工具等</p>
+                          </div>
+                          <div className="text-center">
+                            <FaNetworkWired className="w-8 h-8 text-purple-600 dark:text-purple-400 mx-auto mb-2" />
+                            <h4 className="font-medium text-gray-900 dark:text-white">Web应用</h4>
+                            <p className="text-sm text-gray-600 dark:text-gray-300">浏览器扩展, Web应用等</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">开发步骤</h2>
+                      <div className="space-y-6">
+                        <div className="border-l-4 border-blue-500 pl-6">
+                          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">1. 初始化客户端</h3>
+                          
+                          <CodeBlock 
+                            id="client-init"
+                            code={`import { Client } from '@anthropic-ai/mcp-sdk/client/index.js';
+import { StdioClientTransport } from '@anthropic-ai/mcp-sdk/client/stdio.js';
+
+const client = new Client({
+  name: 'my-client',
+  version: '1.0.0'
+});
+
+// 连接到服务器
+const transport = new StdioClientTransport({
+  command: 'node',
+  args: ['path/to/server.js']
+});
+
+await client.connect(transport);`}
+                          />
+                        </div>
+
+                        <div className="border-l-4 border-green-500 pl-6">
+                          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">2. 发现服务器功能</h3>
+                          
+                          <CodeBlock 
+                            id="client-discovery"
+                            code={`// 初始化连接
+const initResult = await client.request('initialize', {
+  protocolVersion: '2024-11-05',
+  capabilities: {},
+  clientInfo: {
+    name: 'my-client',
+    version: '1.0.0'
+  }
+});
+
+// 获取可用工具
+const tools = await client.request('tools/list', {});
+console.log('可用工具:', tools.tools);
+
+// 获取可用资源
+const resources = await client.request('resources/list', {});
+console.log('可用资源:', resources.resources);`}
+                          />
+                        </div>
+
+                        <div className="border-l-4 border-purple-500 pl-6">
+                          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">3. 使用服务器功能</h3>
+                          
+                          <CodeBlock 
+                            id="client-usage"
+                            code={`// 调用工具
+const toolResult = await client.request('tools/call', {
+  name: 'read-file',
+  arguments: {
+    path: '/path/to/file.txt'
+  }
+});
+
+// 读取资源
+const resourceResult = await client.request('resources/read', {
+  uri: 'file:///config/app.json'
+});
+
+// 处理结果
+console.log('工具结果:', toolResult.content);
+console.log('资源内容:', resourceResult.contents);`}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">高级功能</h2>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-6">
+                          <h3 className="font-semibold text-gray-900 dark:text-white mb-3 flex items-center">
+                            <FaRocket className="w-4 h-4 mr-2 text-yellow-600 dark:text-yellow-400" />
+                            异步处理
+                          </h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
+                            支持异步工具调用和进度通知
+                          </p>
+                          <CodeBlock 
+                            id="client-async"
+                            language="javascript"
+                            code={`// 处理进度通知
+client.setNotificationHandler('notifications/progress', (params) => {
+  console.log(\`进度: \${params.progress}%\`);
+});`}
+                          />
+                        </div>
+                        <div className="bg-red-50 dark:bg-red-900/20 rounded-lg p-6">
+                          <h3 className="font-semibold text-gray-900 dark:text-white mb-3 flex items-center">
+                            <FaExclamationTriangle className="w-4 h-4 mr-2 text-red-600 dark:text-red-400" />
+                            错误处理
+                          </h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
+                            完善的错误处理和重试机制
+                          </p>
+                          <CodeBlock 
+                            id="client-error"
+                            language="javascript"
+                            code={`try {
+  const result = await client.request('tools/call', params);
+} catch (error) {
+  if (error.code === -32601) {
+    console.log('方法不存在');
+  }
+}`}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              )}
+
+              {activeSection === 'integration' && (
+                <section className="bg-white dark:bg-gray-800 rounded-lg p-8">
+                  <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">MCP 集成指南</h1>
+                  
+                  <div className="space-y-8">
+                    <div>
+                      <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">集成策略</h2>
+                      <p className="text-gray-600 dark:text-gray-300 mb-6">
+                        将 MCP 集成到现有应用程序中需要考虑架构设计、性能优化和用户体验等多个方面。
+                      </p>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-6 text-center">
+                          <FaPlug className="w-12 h-12 text-blue-600 dark:text-blue-400 mx-auto mb-4" />
+                          <h3 className="font-semibold text-gray-900 dark:text-white mb-2">插件模式</h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-300">
+                            作为插件或扩展集成到现有应用中
+                          </p>
+                        </div>
+                        <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-6 text-center">
+                          <FaNetworkWired className="w-12 h-12 text-green-600 dark:text-green-400 mx-auto mb-4" />
+                          <h3 className="font-semibold text-gray-900 dark:text-white mb-2">微服务架构</h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-300">
+                            作为独立服务在分布式架构中运行
+                          </p>
+                        </div>
+                        <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-6 text-center">
+                          <FaCogs className="w-12 h-12 text-purple-600 dark:text-purple-400 mx-auto mb-4" />
+                          <h3 className="font-semibold text-gray-900 dark:text-white mb-2">嵌入式集成</h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-300">
+                            直接嵌入到应用程序的核心功能中
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">常见集成场景</h2>
+                      
+                      <div className="space-y-6">
+                        <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-6">
+                          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                            <FaCode className="w-5 h-5 mr-3 text-blue-600 dark:text-blue-400" />
+                            IDE 集成
+                          </h3>
+                          <p className="text-gray-600 dark:text-gray-300 mb-4">
+                            在代码编辑器中集成 MCP 服务器，提供智能代码分析和自动化功能。
+                          </p>
+                          
+                          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                            <h4 className="font-medium text-gray-900 dark:text-white mb-2">实现要点：</h4>
+                            <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                              <li>• 通过插件API集成MCP客户端</li>
+                              <li>• 监听文件变化事件触发分析</li>
+                              <li>• 在编辑器UI中显示分析结果</li>
+                              <li>• 提供配置界面管理MCP服务器</li>
+                            </ul>
+                          </div>
+                        </div>
+
+                        <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-6">
+                          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                            <FaUsers className="w-5 h-5 mr-3 text-green-600 dark:text-green-400" />
+                            团队协作工具
+                          </h3>
+                          <p className="text-gray-600 dark:text-gray-300 mb-4">
+                            在团队协作平台中集成 MCP，实现智能化的项目管理和自动化工作流。
+                          </p>
+                          
+                          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                            <h4 className="font-medium text-gray-900 dark:text-white mb-2">集成功能：</h4>
+                            <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                              <li>• 自动化任务分配和跟踪</li>
+                              <li>• 智能代码审查和反馈</li>
+                              <li>• 项目进度分析和预测</li>
+                              <li>• 团队绩效监控和优化建议</li>
+                            </ul>
+                          </div>
+                        </div>
+
+                        <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-6">
+                          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                            <FaRocket className="w-5 h-5 mr-3 text-purple-600 dark:text-purple-400" />
+                            CI/CD 流水线
+                          </h3>
+                          <p className="text-gray-600 dark:text-gray-300 mb-4">
+                            在持续集成和部署流程中使用 MCP 服务器进行智能化的构建和测试。
+                          </p>
+                          
+                          <CodeBlock 
+                            id="cicd-integration"
+                            language="yaml"
+                            code={`# .github/workflows/mcp-analysis.yml
+name: MCP Code Analysis
+on: [push, pull_request]
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup MCP Server
+      run: |
+        npm install @my-org/mcp-code-analyzer
+    - name: Run Analysis
+      run: |
+        mcp-analyzer --config .mcp-config.json --output analysis.json
+    - name: Upload Results
+      uses: actions/upload-artifact@v3
+      with:
+        name: analysis-results
+        path: analysis.json`}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">集成最佳实践</h2>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-4">
+                          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">技术考虑</h3>
+                          <div className="space-y-3">
+                            <div className="flex items-start space-x-3">
+                              <FaCheckCircle className="w-5 h-5 text-green-600 dark:text-green-400 mt-0.5" />
+                              <div>
+                                <h4 className="font-medium text-gray-900 dark:text-white">性能优化</h4>
+                                <p className="text-sm text-gray-600 dark:text-gray-300">使用连接池、缓存和异步处理</p>
+                              </div>
+                            </div>
+                            <div className="flex items-start space-x-3">
+                              <FaCheckCircle className="w-5 h-5 text-green-600 dark:text-green-400 mt-0.5" />
+                              <div>
+                                <h4 className="font-medium text-gray-900 dark:text-white">错误处理</h4>
+                                <p className="text-sm text-gray-600 dark:text-gray-300">实现重试机制和故障转移</p>
+                              </div>
+                            </div>
+                            <div className="flex items-start space-x-3">
+                              <FaCheckCircle className="w-5 h-5 text-green-600 dark:text-green-400 mt-0.5" />
+                              <div>
+                                <h4 className="font-medium text-gray-900 dark:text-white">安全性</h4>
+                                <p className="text-sm text-gray-600 dark:text-gray-300">权限控制和数据加密</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="space-y-4">
+                          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">用户体验</h3>
+                          <div className="space-y-3">
+                            <div className="flex items-start space-x-3">
+                              <FaLightbulb className="w-5 h-5 text-yellow-600 dark:text-yellow-400 mt-0.5" />
+                              <div>
+                                <h4 className="font-medium text-gray-900 dark:text-white">渐进式集成</h4>
+                                <p className="text-sm text-gray-600 dark:text-gray-300">分阶段引入新功能</p>
+                              </div>
+                            </div>
+                            <div className="flex items-start space-x-3">
+                              <FaLightbulb className="w-5 h-5 text-yellow-600 dark:text-yellow-400 mt-0.5" />
+                              <div>
+                                <h4 className="font-medium text-gray-900 dark:text-white">透明度</h4>
+                                <p className="text-sm text-gray-600 dark:text-gray-300">清晰的状态反馈和进度指示</p>
+                              </div>
+                            </div>
+                            <div className="flex items-start space-x-3">
+                              <FaLightbulb className="w-5 h-5 text-yellow-600 dark:text-yellow-400 mt-0.5" />
+                              <div>
+                                <h4 className="font-medium text-gray-900 dark:text-white">可配置性</h4>
+                                <p className="text-sm text-gray-600 dark:text-gray-300">允许用户自定义集成行为</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              )}
+
+              {activeSection === 'community' && (
+                <section className="bg-white dark:bg-gray-800 rounded-lg p-8">
+                  <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">社区资源</h1>
+                  
+                  <div className="space-y-8">
+                    <div>
+                      <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">官方资源</h2>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-lg p-6">
+                          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center">
+                            <FaBook className="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" />
+                            官方文档
+                          </h3>
+                          <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm">
+                            完整的协议规范、API 参考和开发指南
+                          </p>
+                          <a 
+                            href="https://modelcontextprotocol.io/" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="text-blue-600 dark:text-blue-400 hover:underline text-sm"
+                          >
+                            访问官方文档 →
+                          </a>
+                        </div>
+                        
+                        <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 rounded-lg p-6">
+                          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center">
+                            <FaGithub className="w-5 h-5 mr-2 text-gray-800 dark:text-gray-200" />
+                            GitHub 仓库
+                          </h3>
+                          <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm">
+                            SDK 源码、示例项目和 Issue 跟踪
+                          </p>
+                          <a 
+                            href="https://github.com/anthropics/mcp" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="text-gray-800 dark:text-gray-200 hover:underline text-sm"
+                          >
+                            查看 GitHub →
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">社区项目</h2>
+                      <p className="text-gray-600 dark:text-gray-300 mb-6">
+                        社区贡献的优秀 MCP 项目和工具，涵盖各种使用场景和编程语言。
+                      </p>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-6 hover:shadow-lg transition-shadow">
+                          <div className="flex items-center space-x-2 mb-3">
+                            <FaCode className="w-4 h-4 text-green-600 dark:text-green-400" />
+                            <span className="text-sm font-medium text-green-600 dark:text-green-400">Python</span>
+                          </div>
+                          <h3 className="font-semibold text-gray-900 dark:text-white mb-2">文件系统服务器</h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
+                            提供文件读写、目录浏览等功能的 Python 实现
+                          </p>
+                          <div className="flex justify-between items-center">
+                            <div className="flex items-center space-x-3 text-xs text-gray-500 dark:text-gray-400">
+                              <span>⭐ 245</span>
+                              <span>🍴 42</span>
+                            </div>
+                            <Link href="/projects" className="text-blue-600 dark:text-blue-400 hover:underline text-sm">
+                              查看详情 →
+                            </Link>
+                          </div>
+                        </div>
+                        
+                        <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-6 hover:shadow-lg transition-shadow">
+                          <div className="flex items-center space-x-2 mb-3">
+                            <FaCode className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                            <span className="text-sm font-medium text-blue-600 dark:text-blue-400">TypeScript</span>
+                          </div>
+                          <h3 className="font-semibold text-gray-900 dark:text-white mb-2">数据库连接器</h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
+                            支持多种数据库的 MCP 服务器实现
+                          </p>
+                          <div className="flex justify-between items-center">
+                            <div className="flex items-center space-x-3 text-xs text-gray-500 dark:text-gray-400">
+                              <span>⭐ 189</span>
+                              <span>🍴 31</span>
+                            </div>
+                            <Link href="/projects" className="text-blue-600 dark:text-blue-400 hover:underline text-sm">
+                              查看详情 →
+                            </Link>
+                          </div>
+                        </div>
+                        
+                        <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-6 hover:shadow-lg transition-shadow">
+                          <div className="flex items-center space-x-2 mb-3">
+                            <FaCode className="w-4 h-4 text-orange-600 dark:text-orange-400" />
+                            <span className="text-sm font-medium text-orange-600 dark:text-orange-400">Rust</span>
+                          </div>
+                          <h3 className="font-semibold text-gray-900 dark:text-white mb-2">高性能计算</h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
+                            专注于高性能计算场景的 Rust 实现
+                          </p>
+                          <div className="flex justify-between items-center">
+                            <div className="flex items-center space-x-3 text-xs text-gray-500 dark:text-gray-400">
+                              <span>⭐ 156</span>
+                              <span>🍴 23</span>
+                            </div>
+                            <Link href="/projects" className="text-blue-600 dark:text-blue-400 hover:underline text-sm">
+                              查看详情 →
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">学习资源</h2>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-4">
+                          <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
+                            <FaLightbulb className="w-5 h-5 mr-2 text-yellow-600 dark:text-yellow-400" />
+                            教程文章
+                          </h3>
+                          <div className="space-y-3">
+                            <div className="border-l-4 border-blue-500 pl-4">
+                              <h4 className="font-medium text-gray-900 dark:text-white text-sm">MCP 入门指南</h4>
+                              <p className="text-xs text-gray-600 dark:text-gray-300">从零开始学习 MCP 协议和实现</p>
+                            </div>
+                            <div className="border-l-4 border-green-500 pl-4">
+                              <h4 className="font-medium text-gray-900 dark:text-white text-sm">最佳实践分享</h4>
+                              <p className="text-xs text-gray-600 dark:text-gray-300">社区经验总结和开发技巧</p>
+                            </div>
+                            <div className="border-l-4 border-purple-500 pl-4">
+                              <h4 className="font-medium text-gray-900 dark:text-white text-sm">高级用法指南</h4>
+                              <p className="text-xs text-gray-600 dark:text-gray-300">深入探索 MCP 的高级特性</p>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="space-y-4">
+                          <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
+                            <FaUsers className="w-5 h-5 mr-2 text-green-600 dark:text-green-400" />
+                            社区交流
+                          </h3>
+                          <div className="space-y-3">
+                            <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                              <h4 className="font-medium text-gray-900 dark:text-white text-sm mb-2">讨论论坛</h4>
+                              <p className="text-xs text-gray-600 dark:text-gray-300 mb-2">
+                                加入我们的社区论坛，与其他开发者交流经验
+                              </p>
+                              <Link href="/community" className="text-blue-600 dark:text-blue-400 hover:underline text-xs">
+                                访问论坛 →
+                              </Link>
+                            </div>
+                            <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                              <h4 className="font-medium text-gray-900 dark:text-white text-sm mb-2">技术支持</h4>
+                              <p className="text-xs text-gray-600 dark:text-gray-300 mb-2">
+                                遇到问题？查看 FAQ 或提交 Issue
+                              </p>
+                              <a 
+                                href="https://github.com/anthropics/mcp/issues" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="text-blue-600 dark:text-blue-400 hover:underline text-xs"
+                              >
+                                获取帮助 →
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">贡献指南</h2>
+                      <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-lg p-6">
+                        <p className="text-gray-600 dark:text-gray-300 mb-4">
+                          MCP 是一个开源项目，我们欢迎社区的贡献！无论是代码贡献、文档改进还是 Bug 报告，都是对项目的宝贵支持。
+                        </p>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          <div className="text-center">
+                            <FaCode className="w-8 h-8 text-blue-600 dark:text-blue-400 mx-auto mb-2" />
+                            <h4 className="font-medium text-gray-900 dark:text-white mb-1">代码贡献</h4>
+                            <p className="text-xs text-gray-600 dark:text-gray-300">提交 PR 改进核心功能</p>
+                          </div>
+                          <div className="text-center">
+                            <FaBook className="w-8 h-8 text-green-600 dark:text-green-400 mx-auto mb-2" />
+                            <h4 className="font-medium text-gray-900 dark:text-white mb-1">文档改进</h4>
+                            <p className="text-xs text-gray-600 dark:text-gray-300">完善文档和示例</p>
+                          </div>
+                          <div className="text-center">
+                            <FaBug className="w-8 h-8 text-red-600 dark:text-red-400 mx-auto mb-2" />
+                            <h4 className="font-medium text-gray-900 dark:text-white mb-1">问题反馈</h4>
+                            <p className="text-xs text-gray-600 dark:text-gray-300">报告 Bug 和功能请求</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              )}
+
               {activeSection === 'architecture' && (
                 <section className="bg-white dark:bg-gray-800 rounded-lg p-8">
                   <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">MCP 架构与设计原则</h1>
@@ -789,9 +1718,6 @@ console.log('提示内容:', prompt);`}
             </div>
           </div>
         </div>
-      </main>
-      
-      <Footer />
     </div>
   );
 } 

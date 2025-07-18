@@ -1,16 +1,54 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { FaGithub, FaCode, FaUsers, FaLightbulb, FaRocket, FaBolt } from 'react-icons/fa';
 import ProjectShowcase from '@/components/ProjectShowcase';
-import { getProjects } from '@/lib/project-service';
+import { ProcessedRepo } from '@/lib/github';
 
-export default async function Home() {
-  // 使用新的项目服务获取数据
-  const projectResult = await getProjects({ 
-    strategy: 'database-first',
-    cacheTimeout: 30 // 30分钟缓存
-  });
-  
-  const projects = projectResult.projects;
+interface ProjectFetchResult {
+  projects: ProcessedRepo[];
+  source: 'database' | 'github';
+  cached: boolean;
+  timestamp: string;
+  stats: {
+    total: number;
+    fromDatabase: number;
+    fromGitHub: number;
+  };
+}
+
+export default function Homepage() {
+  const [projectResult, setProjectResult] = useState<ProjectFetchResult | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Fetch project data
+    fetch('/api/projects')
+      .then(response => response.json())
+      .then(data => {
+        setProjectResult(data);
+      })
+      .catch(error => {
+        console.error('Failed to fetch project data:', error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-400">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  const projects = projectResult?.projects || [];
 
   return (
     <>
@@ -22,143 +60,160 @@ export default async function Home() {
             MCPHubs
           </h1>
           <p className="text-xl md:text-2xl mb-8 text-purple-100 max-w-3xl mx-auto leading-relaxed">
-            探索 <span className="font-semibold text-yellow-300">Model Context Protocol</span> 的无限可能
+            Explore the endless possibilities of <span className="font-semibold text-yellow-300">Model Context Protocol</span>
             <br />
-            发现最新的 MCP 项目、工具和集成案例
+            Discover the latest MCP projects, tools and integration examples
           </p>
           
-          {/* 数据统计 */}
-          <div className="flex justify-center space-x-8 mb-8">
+          {/* Statistics */}
+          <div className="grid grid-cols-3 gap-8 mb-8 max-w-2xl mx-auto">
             <div className="text-center">
               <div className="text-3xl font-bold text-yellow-300">{projects.length}+</div>
-              <div className="text-purple-200">精选项目</div>
+              <div className="text-purple-200">Featured Projects</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-green-300">
-                {projectResult.source === 'database' ? '⚡' : '🔄'}
+                {projectResult?.source === 'database' ? '⚡' : '🔄'}
               </div>
               <div className="text-purple-200">
-                {projectResult.cached ? '缓存加速' : projectResult.source === 'database' ? '数据库' : 'GitHub API'}
+                {projectResult?.cached ? 'Cache Accelerated' : projectResult?.source === 'database' ? 'Database' : 'GitHub API'}
               </div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-blue-300">24/7</div>
-              <div className="text-purple-200">自动更新</div>
+              <div className="text-3xl font-bold text-blue-300">
+                {projectResult?.timestamp ? 
+                  new Date(projectResult.timestamp).toLocaleDateString('en-US', { 
+                    timeZone: 'Asia/Shanghai',
+                    month: '2-digit',
+                    day: '2-digit'
+                  }) : 
+                  new Date().toLocaleDateString('en-US', { 
+                    timeZone: 'Asia/Shanghai',
+                    month: '2-digit',
+                    day: '2-digit'
+                  })
+                }
+              </div>
+              <div className="text-purple-200">Auto Updates</div>
+              {projectResult?.timestamp && (
+                <div className="text-xs text-purple-300 mt-1">
+                  Last: {new Date(projectResult.timestamp).toLocaleString('en-US', { 
+                    timeZone: 'Asia/Shanghai',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  })}
+                </div>
+              )}
+              <div className="text-xs text-gray-400 mt-1">
+                Next: Daily at 6:00 AM
+              </div>
             </div>
           </div>
 
-          {/* 热门搜索关键词 */}
+          {/* Popular search keywords */}
           <div className="mb-8">
-            <p className="text-purple-200 mb-4">🔥 热门搜索：</p>
+            <p className="text-purple-200 mb-4">Popular Search Keywords</p>
             <div className="flex flex-wrap justify-center gap-3">
               {[
-                'mcp 是 什麼', 'awesome-mcp-servers', 'claude mcp', 
-                'mcp server教程', 'anthropic mcp', 'model context protocol'
-              ].map((keyword, index) => (
+                'MCP Server', 'Claude MCP', 'Playwright MCP', 'FastAPI MCP',
+                'Browser Tools', 'Grafana MCP', 'MCP Client', 'Awesome MCP'
+              ].map((keyword) => (
                 <span 
-                  key={index}
-                  className="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm hover:bg-white/30 transition-colors cursor-pointer"
+                  key={keyword}
+                  className="px-4 py-2 bg-purple-500/20 rounded-full text-sm hover:bg-purple-500/30 transition-colors cursor-pointer"
                 >
                   {keyword}
                 </span>
               ))}
             </div>
           </div>
-          
-          <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 
-              href="/projects" 
-              className="bg-white text-purple-600 px-8 py-3 rounded-lg font-semibold hover:bg-purple-50 transition-colors inline-flex items-center justify-center"
+              href="/projects"
+              className="inline-flex items-center px-8 py-3 bg-white text-purple-600 rounded-lg font-semibold hover:bg-purple-50 transition-colors shadow-lg"
             >
               <FaCode className="mr-2" />
-              浏览项目
+              Browse Projects
             </Link>
             <Link 
-              href="/what-is-mcp" 
-              className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-purple-600 transition-colors inline-flex items-center justify-center"
+              href="/what-is-mcp"
+              className="inline-flex items-center px-8 py-3 bg-transparent border-2 border-white text-white rounded-lg font-semibold hover:bg-white hover:text-purple-600 transition-colors"
             >
               <FaLightbulb className="mr-2" />
-              了解 MCP
+              Learn About MCP
             </Link>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-16 bg-white dark:bg-gray-800">
+      <section className="py-20 bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900 dark:text-white">
-            为什么选择 MCPHubs？
+            Why Choose MCPHubs?
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-lg hover:shadow-xl transition-shadow">
-              <div className="bg-purple-100 dark:bg-purple-900 w-16 h-16 rounded-full flex items-center justify-center mb-6">
+            <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg">
+              <div className="flex items-center justify-center w-16 h-16 bg-purple-100 dark:bg-purple-900 rounded-lg mb-6">
                 <FaRocket className="w-8 h-8 text-purple-600 dark:text-purple-400" />
               </div>
-              <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">智能项目发现</h3>
+              <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Smart Project Discovery</h3>
               <p className="text-gray-600 dark:text-gray-300 mb-4">
-                我们的 AI 系统自动分析和评估 GitHub 上的 MCP 相关项目，为您推荐最相关的工具和资源。
+                Through advanced algorithms and community contributions, help you quickly discover high-quality projects related to MCP.
               </p>
-              <Link href="/projects" className="text-purple-600 dark:text-purple-400 hover:underline">
-                探索项目 →
-              </Link>
+              <Link href="/projects" className="text-purple-600 dark:text-purple-400 hover:underline">Explore Projects</Link>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-lg hover:shadow-xl transition-shadow">
-              <div className="bg-blue-100 dark:bg-blue-900 w-16 h-16 rounded-full flex items-center justify-center mb-6">
+            <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg">
+              <div className="flex items-center justify-center w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-lg mb-6">
                 <FaBolt className="w-8 h-8 text-blue-600 dark:text-blue-400" />
               </div>
-              <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">实时数据同步</h3>
+              <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Real-time Data Sync</h3>
               <p className="text-gray-600 dark:text-gray-300 mb-4">
-                每天早上6点自动同步最新的项目信息，确保您始终获得最新、最准确的 MCP 生态系统数据。
+                Our data sources are continuously updated to ensure you get the latest and most accurate MCP project information.
               </p>
-              <Link href="/monitoring" className="text-blue-600 dark:text-blue-400 hover:underline">
-                查看监控 →
-              </Link>
+              <Link href="/monitoring" className="text-blue-600 dark:text-blue-400 hover:underline">View Monitoring</Link>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-lg hover:shadow-xl transition-shadow">
-              <div className="bg-green-100 dark:bg-green-900 w-16 h-16 rounded-full flex items-center justify-center mb-6">
+            <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg">
+              <div className="flex items-center justify-center w-16 h-16 bg-green-100 dark:bg-green-900 rounded-lg mb-6">
                 <FaUsers className="w-8 h-8 text-green-600 dark:text-green-400" />
               </div>
-              <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">社区互动</h3>
+              <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Community Interaction</h3>
               <p className="text-gray-600 dark:text-gray-300 mb-4">
-                参与 MCP 社区讨论，分享经验，获取支持，与其他开发者交流合作。
+                Join our community to communicate with MCP developers, users and project maintainers, and jointly promote the development of MCP ecosystem.
               </p>
-              <Link href="/community" className="text-green-600 dark:text-green-400 hover:underline">
-                加入社区 →
-              </Link>
+              <Link href="/community" className="text-green-600 dark:text-green-400 hover:underline">Join Community</Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 项目展示 */}
-      <ProjectShowcase initialProjects={projects} />
-
-      {/* 快速链接区 */}
-      <section className="py-16 bg-gray-100 dark:bg-gray-900">
+      {/* Quick Navigation */}
+      <section className="py-20 bg-white dark:bg-gray-800">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-white">
-            快速导航
+            Quick Navigation
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             <Link href="/awesome-mcp-servers" className="group bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
               <div className="text-2xl mb-3">🌟</div>
-              <h3 className="font-semibold mb-2 text-gray-900 dark:text-white group-hover:text-purple-600">Awesome MCP</h3>
-              <p className="text-gray-600 dark:text-gray-300 text-sm">精选的 MCP 服务器项目合集</p>
+              <h3 className="font-semibold mb-2 text-gray-900 dark:text-white group-hover:text-purple-600">Awesome MCP Servers</h3>
+              <p className="text-gray-600 dark:text-gray-300 text-sm">Curated list of MCP servers and configuration guides.</p>
             </Link>
             
             <Link href="/integrations" className="group bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
               <div className="text-2xl mb-3">🔗</div>
-              <h3 className="font-semibold mb-2 text-gray-900 dark:text-white group-hover:text-purple-600">集成案例</h3>
-              <p className="text-gray-600 dark:text-gray-300 text-sm">真实的 MCP 集成应用场景</p>
+              <h3 className="font-semibold mb-2 text-gray-900 dark:text-white group-hover:text-purple-600">Integration Cases</h3>
+              <p className="text-gray-600 dark:text-gray-300 text-sm">Integration examples of various MCP projects with mainstream AI models.</p>
             </Link>
             
             <Link href="/troubleshooting" className="group bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
               <div className="text-2xl mb-3">🛠️</div>
-              <h3 className="font-semibold mb-2 text-gray-900 dark:text-white group-hover:text-purple-600">故障排除</h3>
-              <p className="text-gray-600 dark:text-gray-300 text-sm">常见问题解决方案</p>
+              <h3 className="font-semibold mb-2 text-gray-900 dark:text-white group-hover:text-purple-600">Troubleshooting</h3>
+              <p className="text-gray-600 dark:text-gray-300 text-sm">Common problems and solutions to help you quickly resolve MCP-related issues.</p>
             </Link>
             
             <a 
@@ -168,12 +223,15 @@ export default async function Home() {
               className="group bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow"
             >
               <div className="text-2xl mb-3"><FaGithub /></div>
-              <h3 className="font-semibold mb-2 text-gray-900 dark:text-white group-hover:text-purple-600">GitHub 搜索</h3>
-              <p className="text-gray-600 dark:text-gray-300 text-sm">在 GitHub 上搜索更多项目</p>
+              <h3 className="font-semibold mb-2 text-gray-900 dark:text-white group-hover:text-purple-600">GitHub Search</h3>
+              <p className="text-gray-600 dark:text-gray-300 text-sm">Search for MCP-related projects and discussions on GitHub.</p>
             </a>
           </div>
         </div>
       </section>
+
+      {/* Project Showcase */}
+      <ProjectShowcase initialProjects={projects} />
     </>
   );
 }

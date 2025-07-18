@@ -100,7 +100,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   const hasTableOfContents = headings.length > 3; // 只有当有足够多的标题时才显示目录
   
   return (
-    <main className="flex-grow container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8">
       <div className="mb-6">
         <Link href="/" className="text-purple-600 hover:text-purple-800 flex items-center">
           ← Back to projects
@@ -445,6 +445,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       
       {/* 社区评论 */}
       <CommunityComments project={project} />
-    </main>
+    </div>
   );
 } 

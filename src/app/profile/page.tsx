@@ -16,17 +16,17 @@ export default function ProfilePage() {
 
   if (isLoading) {
     return (
-      <main className="flex-grow container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8">
         <div className="flex justify-center items-center min-h-[400px]">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
         </div>
-      </main>
+      </div>
     );
   }
 
   if (!session) {
     return (
-      <main className="flex-grow container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8">
         <div className="max-w-md mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 text-center">
           <FaUser className="w-16 h-16 text-gray-400 mx-auto mb-4" />
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
@@ -44,12 +44,12 @@ export default function ProfilePage() {
             <FaSignInAlt className="w-4 h-4" />
           </button>
         </div>
-      </main>
+      </div>
     );
   }
 
   return (
-    <main className="flex-grow container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8">
           <div className="flex items-center space-x-6 mb-8">
@@ -145,6 +145,6 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 } 

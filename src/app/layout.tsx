@@ -66,7 +66,7 @@ export const metadata: Metadata = {
     images: ["/images/og-mcphubs.jpg"]
   },
   other: {
-    'google-adsense-account': 'ca-pub-7958390626430202',
+    'google-adsense-account': 'ca-pub-XXXXXXXXXXXXXXXXX',
     'google-site-verification': 'adsense-verification',
     // 地理定位 - 针对高价值地区
     'geo.region': 'US-CA',
@@ -186,7 +186,7 @@ export default function RootLayout({
         
         <Script
           async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7958390626430202"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXXX"
           crossOrigin="anonymous"
           strategy="lazyOnload"
         />

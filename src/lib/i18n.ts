@@ -183,7 +183,10 @@ export const uiTranslations = {
       integrations: '集成案例',
       community: '社区论坛',
       troubleshooting: '故障排除',
-      monitoring: '系统监控'
+      monitoring: '系统监控',
+      'tools-services': '工具服务',
+      profile: '个人资料',
+      logout: '退出登录'
     },
     'en-US': {
       home: 'Home',
@@ -194,7 +197,10 @@ export const uiTranslations = {
       integrations: 'Integrations',
       community: 'Community',
       troubleshooting: 'Troubleshooting',
-      monitoring: 'Monitoring'
+      monitoring: 'Monitoring',
+      'tools-services': 'Tools & Services',
+      profile: 'Profile',
+      logout: 'Logout'
     },
     'ja-JP': {
       home: 'ホーム',
@@ -248,109 +254,265 @@ export const uiTranslations = {
       'awesome-mcp': 'Awesome MCP',
       integrations: 'Integraciones',
       community: 'Comunidad',
-      troubleshooting: 'Solución de problemas',
+      troubleshooting: 'Resolución de problemas',
       monitoring: 'Monitoreo'
-    },
-    'sv-SE': {
-      home: 'Hem',
-      'what-is-mcp': 'Vad är MCP?',
-      concepts: 'Kärnbegrepp',
-      projects: 'Projekt',
-      'awesome-mcp': 'Awesome MCP',
-      integrations: 'Integrationer',
-      community: 'Gemenskap',
-      troubleshooting: 'Felsökning',
-      monitoring: 'Övervakning'
-    },
-    'en-CA': {
-      home: 'Home',
-      'what-is-mcp': 'What is MCP?',
-      concepts: 'Core Concepts',
-      projects: 'Projects',
-      'awesome-mcp': 'Awesome MCP',
-      integrations: 'Integrations',
-      community: 'Community',
-      troubleshooting: 'Troubleshooting',
-      monitoring: 'Monitoring'
-    },
-    'en-AU': {
-      home: 'Home',
-      'what-is-mcp': 'What is MCP?',
-      concepts: 'Core Concepts',
-      projects: 'Projects',
-      'awesome-mcp': 'Awesome MCP',
-      integrations: 'Integrations',
-      community: 'Community',
-      troubleshooting: 'Troubleshooting',
-      monitoring: 'Monitoring'
-    },
-    'ar-SA': {
-      home: 'الرئيسية',
-      'what-is-mcp': 'ما هو MCP؟',
-      concepts: 'المفاهيم الأساسية',
-      projects: 'المشاريع',
-      'awesome-mcp': 'Awesome MCP',
-      integrations: 'التكامل',
-      community: 'المجتمع',
-      troubleshooting: 'حل المشاكل',
-      monitoring: 'المراقبة'
     }
   },
-  seo: {
+  homepage: {
     'zh-CN': {
-      title: 'MCPHubs - MCP是什麼？Model Context Protocol开发者资源中心',
-      description: 'MCPHubs是专业的Model Context Protocol (MCP)开发者平台。了解MCP是什麼、awesome-mcp-servers项目集合、Claude MCP集成教程。',
-      keywords: 'mcp 是 什麼,awesome-mcp-servers,claude mcp,mcp server教程,MCP协议'
+      title: 'MCPHubs',
+      subtitle: '探索 Model Context Protocol 的无限可能',
+      description: '发现最新的 MCP 项目、工具和集成案例',
+      dataLastUpdate: '数据最后更新时间',
+      featuredProjects: '精选项目',
+      autoUpdate: '自动更新',
+      viewAll: '查看全部',
+      projectsCount: '个项目',
+      lastUpdate: '最后更新',
+      from: '来源',
+      database: '数据库',
+      githubApi: 'GitHub API',
+      cached: '缓存数据',
+      realtime: '实时数据',
+      total: '共'
     },
     'en-US': {
-      title: 'MCPHubs - What is MCP? Model Context Protocol Developer Hub',
-      description: 'MCPHubs is the professional Model Context Protocol (MCP) developer platform. Learn what is MCP, discover awesome-mcp-servers, and master Claude MCP integration.',
-      keywords: 'what is mcp,awesome-mcp-servers,claude mcp,mcp server tutorial,Model Context Protocol'
+      title: 'MCPHubs',
+      subtitle: 'Explore the infinite possibilities of Model Context Protocol',
+      description: 'Discover the latest MCP projects, tools and integration cases',
+      dataLastUpdate: 'Data last updated',
+      featuredProjects: 'Featured Projects',
+      autoUpdate: 'Auto Update',
+      viewAll: 'View All',
+      projectsCount: 'projects',
+      lastUpdate: 'Last Updated',
+      from: 'Source',
+      database: 'Database',
+      githubApi: 'GitHub API',
+      cached: 'Cached Data',
+      realtime: 'Real-time Data',
+      total: 'Total'
     },
     'ja-JP': {
-      title: 'MCPHubs - MCPとは？Model Context Protocol開発者ハブ',
-      description: 'MCPHubsは専門的なModel Context Protocol (MCP)開発者プラットフォームです。MCPとは何か、awesome-mcp-servers、Claude MCP統合を学びましょう。',
-      keywords: 'MCPとは,awesome-mcp-servers,Claude MCP,MCPサーバーチュートリアル'
+      title: 'MCPHubs',
+      subtitle: 'Model Context Protocolの無限の可能性を探る',
+      description: '最新のMCPプロジェクト、ツール、統合事例を発見',
+      dataLastUpdate: 'データ最終更新時刻',
+      featuredProjects: '注目プロジェクト',
+      autoUpdate: '自動更新',
+      viewAll: '全て見る',
+      projectsCount: 'プロジェクト',
+      lastUpdate: '最終更新',
+      from: 'ソース',
+      database: 'データベース',
+      githubApi: 'GitHub API',
+      cached: 'キャッシュデータ',
+      realtime: 'リアルタイムデータ',
+      total: '合計'
     },
     'ko-KR': {
-      title: 'MCPHubs - MCP란 무엇? Model Context Protocol 개발자 허브',
-      description: 'MCPHubs는 전문적인 Model Context Protocol (MCP) 개발자 플랫폼입니다. MCP란 무엇인지, awesome-mcp-servers, Claude MCP 통합을 배워보세요.',
-      keywords: 'MCP란 무엇,awesome-mcp-servers,Claude MCP,MCP 서버 튜토리얼'
+      title: 'MCPHubs',
+      subtitle: 'Model Context Protocol의 무한한 가능성을 탐색',
+      description: '최신 MCP 프로젝트, 도구 및 통합 사례 발견',
+      dataLastUpdate: '데이터 마지막 업데이트 시간',
+      featuredProjects: '주요 프로젝트',
+      autoUpdate: '자동 업데이트',
+      viewAll: '전체 보기',
+      projectsCount: '프로젝트',
+      lastUpdate: '마지막 업데이트',
+      from: '소스',
+      database: '데이터베이스',
+      githubApi: 'GitHub API',
+      cached: '캐시된 데이터',
+      realtime: '실시간 데이터',
+      total: '총'
     },
     'de-DE': {
-      title: 'MCPHubs - Was ist MCP? Model Context Protocol Entwickler Hub',
-      description: 'MCPHubs ist die professionelle Model Context Protocol (MCP) Entwicklerplattform. Lernen Sie was MCP ist, entdecken Sie awesome-mcp-servers und meistern Sie Claude MCP Integration.',
-      keywords: 'Was ist MCP,awesome-mcp-servers,Claude MCP,MCP Server Tutorial'
+      title: 'MCPHubs',
+      subtitle: 'Entdecke die unendlichen Möglichkeiten des Model Context Protocol',
+      description: 'Entdecke die neuesten MCP-Projekte, Tools und Integrationsfälle',
+      dataLastUpdate: 'Daten zuletzt aktualisiert',
+      featuredProjects: 'Ausgewählte Projekte',
+      autoUpdate: 'Automatische Aktualisierung',
+      viewAll: 'Alle anzeigen',
+      projectsCount: 'Projekte',
+      lastUpdate: 'Letzte Aktualisierung',
+      from: 'Quelle',
+      database: 'Datenbank',
+      githubApi: 'GitHub API',
+      cached: 'Zwischengespeicherte Daten',
+      realtime: 'Echtzeitdaten',
+      total: 'Gesamt'
     },
     'fr-FR': {
-      title: 'MCPHubs - Qu\'est-ce que MCP? Hub développeur Model Context Protocol',
-      description: 'MCPHubs est la plateforme professionnelle de développeurs Model Context Protocol (MCP). Apprenez ce qu\'est MCP, découvrez awesome-mcp-servers et maîtrisez l\'intégration Claude MCP.',
-      keywords: 'Qu\'est-ce que MCP,awesome-mcp-servers,Claude MCP,tutoriel serveur MCP'
+      title: 'MCPHubs',
+      subtitle: 'Explorez les possibilités infinies du Model Context Protocol',
+      description: 'Découvrez les derniers projets MCP, outils et cas d\'intégration',
+      dataLastUpdate: 'Données mises à jour pour la dernière fois',
+      featuredProjects: 'Projets en vedette',
+      autoUpdate: 'Mise à jour automatique',
+      viewAll: 'Voir tout',
+      projectsCount: 'projets',
+      lastUpdate: 'Dernière mise à jour',
+      from: 'Source',
+      database: 'Base de données',
+      githubApi: 'API GitHub',
+      cached: 'Données en cache',
+      realtime: 'Données en temps réel',
+      total: 'Total'
     },
     'es-ES': {
-      title: 'MCPHubs - ¿Qué es MCP? Hub de desarrolladores Model Context Protocol',
-      description: 'MCPHubs es la plataforma profesional de desarrolladores Model Context Protocol (MCP). Aprende qué es MCP, descubre awesome-mcp-servers y domina la integración Claude MCP.',
-      keywords: 'Qué es MCP,awesome-mcp-servers,Claude MCP,tutorial servidor MCP'
+      title: 'MCPHubs',
+      subtitle: 'Explora las posibilidades infinitas del Model Context Protocol',
+      description: 'Descubre los últimos proyectos MCP, herramientas y casos de integración',
+      dataLastUpdate: 'Datos actualizados por última vez',
+      featuredProjects: 'Proyectos destacados',
+      autoUpdate: 'Actualización automática',
+      viewAll: 'Ver todo',
+      projectsCount: 'proyectos',
+      lastUpdate: 'Última actualización',
+      from: 'Fuente',
+      database: 'Base de datos',
+      githubApi: 'API de GitHub',
+      cached: 'Datos en caché',
+      realtime: 'Datos en tiempo real',
+      total: 'Total'
+    }
+  },
+  common: {
+    'zh-CN': {
+      loading: '加载中...',
+      error: '错误',
+      retry: '重试',
+      back: '返回',
+      next: '下一步',
+      previous: '上一步',
+      save: '保存',
+      cancel: '取消',
+      confirm: '确认',
+      edit: '编辑',
+      delete: '删除',
+      search: '搜索',
+      filter: '筛选',
+      sort: '排序',
+      clear: '清除'
     },
-    'sv-SE': {
-      title: 'MCPHubs - Vad är MCP? Model Context Protocol utvecklarhubb',
-      description: 'MCPHubs är den professionella Model Context Protocol (MCP) utvecklarplattformen. Lär dig vad MCP är, upptäck awesome-mcp-servers och bemästra Claude MCP integration.',
-      keywords: 'Vad är MCP,awesome-mcp-servers,Claude MCP,MCP server handledning'
+    'en-US': {
+      loading: 'Loading...',
+      error: 'Error',
+      retry: 'Retry',
+      back: 'Back',
+      next: 'Next',
+      previous: 'Previous',
+      save: 'Save',
+      cancel: 'Cancel',
+      confirm: 'Confirm',
+      edit: 'Edit',
+      delete: 'Delete',
+      search: 'Search',
+      filter: 'Filter',
+      sort: 'Sort',
+      clear: 'Clear'
+    }
+  },
+  hero: {
+    'zh-CN': {
+      description: '探索 Model Context Protocol 的无限可能',
+      discover: '发现最新的 MCP 项目、工具和集成案例',
+      featured_projects: '精选项目',
+      cached_acceleration: '缓存加速',
+      database: '数据库',
+      github_api: 'GitHub API',
+      auto_update: '24/7',
+      auto_update_description: '自动更新',
+      last_updated: '数据最后更新时间',
+      source: '来源',
+      cached_data: '缓存数据',
+      real_time_data: '实时数据',
+      projects: '个项目',
+      hot_searches_title: '🔥 热门搜索：',
+      what_is_mcp: 'mcp 是 什麼',
+      awesome_mcp_servers: 'awesome-mcp-servers',
+      claude_mcp: 'claude mcp',
+      mcp_tutorial: 'mcp server教程',
+      anthropic_mcp: 'anthropic mcp',
+      model_context_protocol: 'model context protocol',
+      browse_projects: '浏览项目',
+      learn_mcp: '了解 MCP'
     },
-    'en-CA': {
-      title: 'MCPHubs - What is MCP? Model Context Protocol Developer Hub',
-      description: 'MCPHubs is the professional Model Context Protocol (MCP) developer platform. Learn what is MCP, discover awesome-mcp-servers, and master Claude MCP integration.',
-      keywords: 'what is mcp,awesome-mcp-servers,claude mcp,mcp server tutorial,Model Context Protocol'
+    'en-US': {
+      description: 'Explore the infinite possibilities of Model Context Protocol',
+      discover: 'Discover the latest MCP projects, tools and integration cases',
+      featured_projects: 'Featured Projects',
+      cached_acceleration: 'Cache Acceleration',
+      database: 'Database',
+      github_api: 'GitHub API',
+      auto_update: '24/7',
+      auto_update_description: 'Auto Update',
+      last_updated: 'Data last updated',
+      source: 'Source',
+      cached_data: 'Cached Data',
+      real_time_data: 'Real-time Data',
+      projects: 'projects',
+      hot_searches_title: '🔥 Hot Searches:',
+      what_is_mcp: 'what is mcp',
+      awesome_mcp_servers: 'awesome-mcp-servers',
+      claude_mcp: 'claude mcp',
+      mcp_tutorial: 'mcp server tutorial',
+      anthropic_mcp: 'anthropic mcp',
+      model_context_protocol: 'model context protocol',
+      browse_projects: 'Browse Projects',
+      learn_mcp: 'Learn MCP'
+    }
+  },
+  features: {
+    'zh-CN': {
+      why_choose_us: '为什么选择 MCPHubs？',
+      smart_project_discovery: '智能项目发现',
+      smart_project_description: '我们的 AI 系统自动分析和评估 GitHub 上的 MCP 相关项目，为您推荐最相关的工具和资源。',
+      explore_projects: '探索项目',
+      real_time_sync: '实时数据同步',
+      real_time_sync_description: '每天早上6点自动同步最新的项目信息，确保您始终获得最新、最准确的 MCP 生态系统数据。',
+      view_monitoring: '查看监控',
+      community_interaction: '社区互动',
+      community_interaction_description: '参与 MCP 社区讨论，分享经验，获取支持，与其他开发者交流合作。',
+      join_community: '加入社区'
     },
-    'en-AU': {
-      title: 'MCPHubs - What is MCP? Model Context Protocol Developer Hub',
-      description: 'MCPHubs is the professional Model Context Protocol (MCP) developer platform. Learn what is MCP, discover awesome-mcp-servers, and master Claude MCP integration.',
-      keywords: 'what is mcp,awesome-mcp-servers,claude mcp,mcp server tutorial,Model Context Protocol'
+    'en-US': {
+      why_choose_us: 'Why Choose MCPHubs?',
+      smart_project_discovery: 'Smart Project Discovery',
+      smart_project_description: 'Our AI system automatically analyzes and evaluates MCP-related projects on GitHub, recommending the most relevant tools and resources for you.',
+      explore_projects: 'Explore Projects',
+      real_time_sync: 'Real-time Data Sync',
+      real_time_sync_description: 'Automatically sync the latest project information at 6 AM daily, ensuring you always get the latest and most accurate MCP ecosystem data.',
+      view_monitoring: 'View Monitoring',
+      community_interaction: 'Community Interaction',
+      community_interaction_description: 'Participate in MCP community discussions, share experiences, get support, and collaborate with other developers.',
+      join_community: 'Join Community'
+    }
+  },
+  quick_links: {
+    'zh-CN': {
+      title: '快速导航',
+      awesome_mcp: 'Awesome MCP',
+      awesome_mcp_description: '精选的 MCP 服务器项目合集',
+      integrations: '集成案例',
+      integrations_description: '真实的 MCP 集成应用场景',
+      troubleshooting: '故障排除',
+      troubleshooting_description: '常见问题解决方案',
+      github_search: 'GitHub 搜索',
+      github_search_description: '在 GitHub 上搜索更多项目'
     },
-    'ar-SA': {
-      title: 'MCPHubs - ما هو MCP؟ مركز مطوري Model Context Protocol',
-      description: 'MCPHubs هو منصة مطوري Model Context Protocol (MCP) المهنية. تعلم ما هو MCP، اكتشف awesome-mcp-servers، وأتقن تكامل Claude MCP.',
-      keywords: 'ما هو MCP,awesome-mcp-servers,Claude MCP,دروس خادم MCP'
+    'en-US': {
+      title: 'Quick Navigation',
+      awesome_mcp: 'Awesome MCP',
+      awesome_mcp_description: 'Curated collection of MCP server projects',
+      integrations: 'Integrations',
+      integrations_description: 'Real MCP integration use cases',
+      troubleshooting: 'Troubleshooting',
+      troubleshooting_description: 'Common problem solutions',
+      github_search: 'GitHub Search',
+      github_search_description: 'Search for more projects on GitHub'
     }
   }
 } as const;
