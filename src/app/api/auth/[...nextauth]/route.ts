@@ -3,16 +3,21 @@ import { NextAuthOptions } from "next-auth"
 import GitHubProvider from "next-auth/providers/github"
 import GoogleProvider from "next-auth/providers/google"
 
+// 检查是否有OAuth配置
+const hasGitHubConfig = process.env.GITHUB_ID && process.env.GITHUB_SECRET;
+const hasGoogleConfig = process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET;
+
 const authOptions: NextAuthOptions = {
   providers: [
-    GitHubProvider({
-      clientId: process.env.GITHUB_ID || "",
-      clientSecret: process.env.GITHUB_SECRET || "",
-    }),
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID || "",
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
-    }),
+    // 只有在有配置的情况下才添加providers
+    ...(hasGitHubConfig ? [GitHubProvider({
+      clientId: process.env.GITHUB_ID!,
+      clientSecret: process.env.GITHUB_SECRET!,
+    })] : []),
+    ...(hasGoogleConfig ? [GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    })] : []),
   ],
   callbacks: {
     async session({ session, token, user }) {
@@ -37,7 +42,9 @@ const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  // 提供默认的secret，避免500错误
+  secret: process.env.NEXTAUTH_SECRET || "development-secret-please-change-in-production",
+  debug: process.env.NODE_ENV === "development",
 }
 
 const handler = NextAuth(authOptions)
