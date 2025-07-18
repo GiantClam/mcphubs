@@ -218,7 +218,7 @@ const TutorialGuide: React.FC<TutorialGuideProps> = ({ project }) => {
       
       <div className="mb-4">
         <p className="text-gray-600 dark:text-gray-400">
-          Here you'll find detailed tutorials and best practices for the {project.name} project, helping you get started quickly and successfully deploy to production.
+          Here you&apos;ll find detailed tutorials and best practices for the {project.name} project, helping you get started quickly and successfully deploy to production.
         </p>
       </div>
 
