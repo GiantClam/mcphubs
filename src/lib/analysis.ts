@@ -74,12 +74,34 @@ export async function analyzeProjectRelevance(
   // Prioritize existing analysis results from database
   if (!forceAnalysis && repo.relevance && repo.relevance !== 'Low') {
     console.log(`Using existing analysis results: ${repo.name}`);
+    
+    // Use database fields if available, otherwise fallback to extracted features
+    let keyFeatures = extractKeyFeatures(repo);
+    let useCases = extractUseCases(repo);
+    let summary = `${repo.name} is a project related to the Model Context Protocol. ${repo.description || ''}`;
+    
+    // Use database gemini fields if available
+    if (repo.geminiKeyFeatures && Array.isArray(repo.geminiKeyFeatures) && repo.geminiKeyFeatures.length > 0) {
+      keyFeatures = repo.geminiKeyFeatures;
+      console.log(`Using database key features for ${repo.name}`);
+    }
+    
+    if (repo.geminiUseCases && Array.isArray(repo.geminiUseCases) && repo.geminiUseCases.length > 0) {
+      useCases = repo.geminiUseCases;
+      console.log(`Using database use cases for ${repo.name}`);
+    }
+    
+    if (repo.geminiSummary && repo.geminiSummary.trim()) {
+      summary = repo.geminiSummary;
+      console.log(`Using database summary for ${repo.name}`);
+    }
+    
     return {
       relevanceScore: getScoreFromRelevance(repo.relevance),
       relevanceCategory: repo.relevance as 'High' | 'Medium' | 'Related',
-      summary: `${repo.name} is a project related to the Model Context Protocol. ${repo.description || ''}`,
-      keyFeatures: extractKeyFeatures(repo),
-      useCases: extractUseCases(repo)
+      summary: summary,
+      keyFeatures: keyFeatures,
+      useCases: useCases
     };
   }
 
