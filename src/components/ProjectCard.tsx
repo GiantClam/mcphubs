@@ -98,7 +98,10 @@ export default function ProjectCard({
   };
 
   return (
-    <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 bg-white dark:bg-gray-800 h-full flex flex-col group">
+    <Link 
+      href={`/project/${generateProjectSlug(owner, name)}`}
+      className="block border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 bg-white dark:bg-gray-800 h-full flex flex-col group"
+    >
       {/* 项目图片 */}
       <div className="relative h-40 w-full">
         <Image 
@@ -134,11 +137,11 @@ export default function ProjectCard({
       {/* 项目信息 */}
       <div className="p-5 flex-grow">
         <div className="flex items-start justify-between mb-3">
-          <Link href={`/project/${generateProjectSlug(owner, name)}`} className="flex-grow">
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2 hover:text-purple-600 dark:hover:text-purple-400 transition-colors line-clamp-1">
+          <div className="flex-grow">
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors line-clamp-1">
               {name}
             </h3>
-          </Link>
+          </div>
           
           {githubUrl && (
             <a 
@@ -207,7 +210,7 @@ export default function ProjectCard({
         )}
       </div>
 
-      {/* 底部操作区 */}
+              {/* 底部操作区 */}
       <div className="px-5 py-3 bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-2">
@@ -235,6 +238,7 @@ export default function ProjectCard({
             <Link 
               href={`/project/${generateProjectSlug(owner, name)}#comments`}
               className="flex items-center text-gray-500 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              onClick={(e) => e.stopPropagation()}
             >
               <FaComment className="w-4 h-4" />
               <span>{comments}</span>
@@ -242,6 +246,6 @@ export default function ProjectCard({
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 } 

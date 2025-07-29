@@ -5,12 +5,12 @@ export default function AwesomeMCPServersPage() {
   const mcpServers = [
     {
       name: 'awesome-mcp-servers',
-      description: '精选的 Model Context Protocol 服务器项目合集',
+      description: 'Curated collection of Model Context Protocol server projects',
       url: 'https://github.com/modelcontextprotocol/servers',
       stars: '2.1k',
-      category: '官方项目',
+      category: 'Official Project',
       language: 'TypeScript',
-      tags: ['官方', '合集', 'TypeScript']
+      tags: ['Official', 'Collection', 'TypeScript']
     },
     // ... more servers
   ];
@@ -22,12 +22,12 @@ export default function AwesomeMCPServersPage() {
           Awesome MCP Servers
         </h1>
         <p className="text-lg text-gray-600 dark:text-gray-300 max-w-4xl">
-          精选的 Model Context Protocol 服务器项目合集，涵盖各种用途和编程语言的实现。
-          这里汇集了社区贡献的优秀 MCP 服务器项目，帮助开发者快速找到合适的工具。
+          Curated collection of Model Context Protocol server projects, covering implementations in various use cases and programming languages.
+          This collection brings together excellent MCP server projects contributed by the community, helping developers quickly find suitable tools.
         </p>
       </div>
 
-      {/* 项目网格 */}
+      {/* Project grid */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {mcpServers.map((server, index) => (
           <div key={index} className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow">
@@ -60,7 +60,7 @@ export default function AwesomeMCPServersPage() {
                 className="flex items-center space-x-1 text-purple-600 dark:text-purple-400 hover:underline"
               >
                 <FaGithub className="w-4 h-4" />
-                <span>查看项目</span>
+                <span>View Project</span>
                 <FaExternalLinkAlt className="w-3 h-3" />
               </a>
             </div>

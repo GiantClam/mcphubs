@@ -2,16 +2,16 @@ import { ChatVertexAI } from "@langchain/google-vertexai";
 import { ProcessedRepo } from "./github";
 
 interface AnalysisResult {
-  relevanceScore: number; // 0-100的得分
+  relevanceScore: number; // Score from 0-100
   relevanceCategory: 'High' | 'Medium' | 'Related';
   summary: string;
   keyFeatures: string[];
   useCases: string[];
 }
 
-// 从环境变量或文件获取Google凭据
+// Get Google credentials from environment variables or file
 function getGoogleCredentials() {
-  // 优先使用环境变量中的JSON凭据（Vercel部署方式）
+  // Prioritize JSON credentials from environment variables (Vercel deployment)
   if (process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
     try {
       const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
@@ -22,7 +22,7 @@ function getGoogleCredentials() {
     }
   }
   
-  // 回退到文件路径方式（本地开发环境）
+  // Fallback to file path method (local development environment)
   if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
     console.log('Using Google credentials from file path');
     return {
@@ -34,46 +34,46 @@ function getGoogleCredentials() {
   return {};
 }
 
-// 构建 Vertex AI 选项，根据环境添加代理和凭据
+// Build Vertex AI options, add proxy and credentials based on environment
 function getVertexAIOptions() {
-  // 基础配置
+  // Base configuration
   const baseOptions = {
-    modelName: "gemini-2.5-flash", // Google 的 Gemini 2.5 Flash 模型（更快更高效）
+    modelName: "gemini-2.5-flash", // Google's Gemini 2.5 Flash model (faster and more efficient)
     temperature: 0,
-    // Vertex AI 项目配置
+    // Vertex AI project configuration
     project: process.env.GOOGLE_CLOUD_PROJECT,
     location: process.env.VERTEX_LOCATION || process.env.GOOGLE_CLOUD_LOCATION || "us-central1",
-    ...getGoogleCredentials() // 添加凭据配置
+    ...getGoogleCredentials() // Add credentials configuration
   };
 
-  // 在开发环境中添加代理配置
+  // Add proxy configuration in development environment
   if (process.env.NODE_ENV === 'development') {
     console.log('Using development proxy for Vertex AI');
-    // 使用当前网站的域名作为基础 URL
+    // Use current website domain as base URL
     const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001';
     
     return {
       ...baseOptions,
-      apiEndpoint: `${baseUrl}/api/vertex`, // 使用完整的 URL 代理
+      apiEndpoint: `${baseUrl}/api/vertex`, // Use complete URL proxy
     };
   }
 
-  // 在生产环境中直接使用 Google API
+  // Use Google API directly in production environment
   console.log('Using direct Google API connection for Vertex AI in production');
   return baseOptions;
 }
 
-// 初始化 Vertex AI 模型
+// Initialize Vertex AI model
 const model = new ChatVertexAI(getVertexAIOptions());
 
-// 分析项目内容，评估与MCP的相关性
+// Analyze project content, evaluate relevance to MCP
 export async function analyzeProjectRelevance(
   repo: ProcessedRepo,
   forceAnalysis = false
 ): Promise<AnalysisResult> {
-  // 优先使用数据库中已有的分析结果
+  // Prioritize existing analysis results from database
   if (!forceAnalysis && repo.relevance && repo.relevance !== 'Low') {
-    console.log(`使用已有分析结果: ${repo.name}`);
+    console.log(`Using existing analysis results: ${repo.name}`);
     return {
       relevanceScore: getScoreFromRelevance(repo.relevance),
       relevanceCategory: repo.relevance as 'High' | 'Medium' | 'Related',
@@ -83,7 +83,7 @@ export async function analyzeProjectRelevance(
     };
   }
 
-  // 检查是否有 Google Vertex AI 凭证
+  // Check if Google Vertex AI credentials are available
   if (!process.env.GOOGLE_CLOUD_PROJECT || 
       (!process.env.GOOGLE_APPLICATION_CREDENTIALS && !process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON)) {
     console.warn("No Google Vertex AI credentials found. Using default analysis.");
@@ -91,7 +91,7 @@ export async function analyzeProjectRelevance(
   }
 
   try {
-    // 准备分析内容
+    // Prepare analysis content
     const content = `
     Repository Name: ${repo.name}
     Description: ${repo.description}
@@ -143,7 +143,7 @@ export async function analyzeProjectRelevance(
   }
 }
 
-// 从相关性级别获取数字分数
+// Get numeric score from relevance level
 function getScoreFromRelevance(relevance: string): number {
   switch (relevance) {
     case 'High': return 85;
@@ -153,7 +153,7 @@ function getScoreFromRelevance(relevance: string): number {
   }
 }
 
-// 从项目信息提取关键特性
+// Extract key features from project information
 function extractKeyFeatures(repo: ProcessedRepo): string[] {
   const features = [];
   
@@ -173,7 +173,7 @@ function extractKeyFeatures(repo: ProcessedRepo): string[] {
     features.push('JavaScript/TypeScript implementation');
   }
   
-  // 确保至少有3个特性
+  // Ensure at least 3 features
   while (features.length < 3) {
     features.push('MCP ecosystem component');
   }
@@ -181,7 +181,7 @@ function extractKeyFeatures(repo: ProcessedRepo): string[] {
   return features.slice(0, 5);
 }
 
-// 从项目信息提取使用案例
+// Extract use cases from project information
 function extractUseCases(repo: ProcessedRepo): string[] {
   const useCases = [];
   
@@ -195,7 +195,7 @@ function extractUseCases(repo: ProcessedRepo): string[] {
     useCases.push('Integration with existing systems');
   }
   
-  // 确保至少有2个使用案例
+  // Ensure at least 2 use cases
   while (useCases.length < 2) {
     useCases.push('Enhancing language model context processing');
   }
@@ -203,9 +203,9 @@ function extractUseCases(repo: ProcessedRepo): string[] {
   return useCases.slice(0, 3);
 }
 
-// 根据仓库属性生成默认分析结果
+// Generate default analysis results based on repository properties
 function getDefaultAnalysis(repo: ProcessedRepo): AnalysisResult {
-  // 根据简单规则确定相关性
+  // Determine relevance based on simple rules
   let relevanceScore = 50;
   let category: 'High' | 'Medium' | 'Related' = 'Medium';
   

@@ -16,7 +16,7 @@ import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
 import { ComponentPropsWithoutRef } from 'react';
 
-export const revalidate = 3600; // 每小时重新验证一次数据
+export const revalidate = 3600; // Revalidate data every hour
 
 interface ProjectPageProps {
   params: Promise<{
@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
   const resolvedParams = await params;
   const slug = resolvedParams.slug;
   
-  // 验证slug格式
+  // Validate slug format
   if (!isValidProjectSlug(slug)) {
     return {
       title: 'Invalid Project URL - MCPHubs',
@@ -64,7 +64,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   const resolvedParams = await params;
   const slug = resolvedParams.slug;
   
-  // 验证slug格式
+  // Validate slug format
   if (!isValidProjectSlug(slug)) {
     console.error(`Invalid project slug format: ${slug}`);
     notFound();
@@ -76,10 +76,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     notFound();
   }
   
-  // 分析项目与MCP的相关性
+  // Analyze project relevance to MCP
   const analysis = await analyzeProjectRelevance(project);
   
-  // 提取README中的标题，用于生成目录
+  // Extract headings from README for table of contents
   const extractHeadings = (markdown: string) => {
     const headingRegex = /^(#{1,3})\s+(.+)$/gm;
     const headings: {level: number; text: string; id: string}[] = [];
@@ -88,7 +88,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     while ((match = headingRegex.exec(markdown)) !== null) {
       const level = match[1].length;
       const text = match[2].trim();
-      // 创建锚点ID
+      // Create anchor ID
       const id = text.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-');
       headings.push({ level, text, id });
     }
@@ -97,7 +97,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   };
   
   const headings = project.readmeContent ? extractHeadings(project.readmeContent) : [];
-  const hasTableOfContents = headings.length > 3; // 只有当有足够多的标题时才显示目录
+  const hasTableOfContents = headings.length > 3; // Only show TOC when there are enough headings
   
   return (
     <div className="container mx-auto px-4 py-8">
@@ -107,14 +107,14 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         </Link>
       </div>
       
-      {/* 专家深度分析 */}
+      {/* Expert Deep Analysis */}
       <ExpertAnalysis project={project} />
       
-      {/* 实用教程指南 */}
+      {/* Practical Tutorial Guide */}
       <TutorialGuide project={project} />
       
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
-        {/* 项目头部信息 */}
+        {/* Project header information */}
         <div className="relative h-64 w-full">
           <Image 
             src={project.imageUrl || '/images/default-project.jpg'} 
@@ -130,7 +130,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           </div>
         </div>
         
-        {/* 项目元数据 */}
+        {/* Project metadata */}
         <div className="p-6 border-b border-gray-200 dark:border-gray-700 flex flex-wrap justify-between items-center">
           <div className="flex items-center mb-4 md:mb-0">
             <Image 
@@ -216,7 +216,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           </div>
         </div>
         
-        {/* 项目链接 */}
+        {/* Project links */}
         <div className="p-6 border-b border-gray-200 dark:border-gray-700">
           <a 
             href={project.url} 
@@ -229,14 +229,14 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           </a>
         </div>
         
-        {/* README 内容 */}
+        {/* README content */}
         {project.readmeContent && (
           <div className="p-6">
             <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white border-l-4 border-purple-600 pl-3">
               README
             </h2>
             
-            {/* 目录部分 - 仅当有足够的标题时显示 */}
+            {/* Table of contents - only show when there are enough headings */}
             {hasTableOfContents && (
               <div className="mb-8 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
                 <div className="flex items-center text-purple-600 dark:text-purple-400 font-medium mb-2">
@@ -365,7 +365,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                     </a>
                   ),
                   
-                  // 增强表格样式
+                  // Enhanced table styles
                   table: (props) => (
                     <div className="my-6 overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
                       <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -389,7 +389,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                     </td>
                   ),
                   
-                  // 增强列表样式
+                  // Enhanced list styles
                   ul: (props) => (
                     <ul className="list-disc pl-6 space-y-2 my-4">
                       {props.children}
@@ -406,19 +406,19 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                     </li>
                   ),
                   
-                  // 增强引用块样式
+                  // Enhanced blockquote styles
                   blockquote: (props) => (
                     <blockquote className="border-l-4 border-purple-400 dark:border-purple-600 pl-4 py-1 my-4 italic bg-gray-50 dark:bg-gray-800 rounded-r-md">
                       {props.children}
                     </blockquote>
                   ),
                   
-                  // 增强水平分割线
+                  // Enhanced horizontal rule
                   hr: () => (
                     <hr className="my-8 h-px border-0 bg-gradient-to-r from-purple-500/10 via-purple-500/50 to-purple-500/10 dark:from-purple-400/10 dark:via-purple-400/50 dark:to-purple-400/10" />
                   ),
                   
-                  // 强调段落
+                  // Emphasized paragraphs
                   p: (props) => (
                     <p className="leading-relaxed my-4">
                       {props.children}
@@ -430,7 +430,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               </ReactMarkdown>
             </div>
             
-            {/* 返回顶部按钮 */}
+            {/* Back to top button */}
             <div className="flex justify-end mt-8">
               <a 
                 href="#" 
@@ -443,7 +443,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         )}
       </div>
       
-      {/* 社区评论 */}
+      {/* Community comments */}
       <CommunityComments project={project} />
     </div>
   );
