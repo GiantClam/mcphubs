@@ -140,7 +140,7 @@ export default function WhatIsMCP() {
             <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
               <h3 className="font-semibold text-gray-900 dark:text-white mb-3">Microsoft Certified Professional</h3>
               <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
-                Microsoft Certified Professional, Microsoft's technical certification program
+                Microsoft Certified Professional, Microsoft&apos;s technical certification program
               </p>
               <a 
                 href="https://learn.microsoft.com/en-us/certifications/" 
@@ -200,7 +200,7 @@ export default function WhatIsMCP() {
             About This Website
           </h2>
           <p className="text-gray-700 dark:text-gray-300 mb-6">
-            <strong>MCPHubs.com</strong> focuses on Anthropic's Model Context Protocol (MCP).
+            <strong>MCPHubs.com</strong> focuses on Anthropic&apos;s Model Context Protocol (MCP).
             All content on this website revolves around this specific MCP protocol, including project showcases, development guides, community discussions, and more.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
