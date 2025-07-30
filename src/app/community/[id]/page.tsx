@@ -13,25 +13,25 @@ export default function CommunityDiscussionPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // 模拟获取讨论详情
+    // Mock fetching discussion details
     const mockDiscussion = {
       id: id,
-      title: 'MCP 服务器开发最佳实践',
-      content: `# MCP 服务器开发最佳实践
+      title: 'MCP Server Development Best Practices',
+      content: `# MCP Server Development Best Practices
 
-在开发 Model Context Protocol 服务器时，有几个关键的最佳实践需要遵循...
+When developing Model Context Protocol servers, there are several key best practices to follow...
 
-## 1. 错误处理
+## 1. Error Handling
 ...
 
-## 2. 安全性考虑
+## 2. Security Considerations
 ...`,
       author: 'Alice Johnson',
-      category: '技术讨论',
+      category: 'Technical Discussion',
       replies: 15,
       likes: 42,
-      time: '2小时前',
-      tags: ['mcp-server', '最佳实践', '开发指南']
+      time: '2 hours ago',
+      tags: ['mcp-server', 'best-practices', 'development-guide']
     };
     
     setDiscussion(mockDiscussion);
@@ -49,9 +49,9 @@ export default function CommunityDiscussionPage() {
   if (!discussion) {
     return (
       <div className="container mx-auto px-4 py-8 text-center">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">讨论不存在</h1>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Discussion Not Found</h1>
         <Link href="/community" className="text-purple-600 hover:underline">
-          返回社区
+          Back to Community
         </Link>
       </div>
     );
@@ -59,16 +59,16 @@ export default function CommunityDiscussionPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* 返回按钮 */}
+      {/* Back button */}
       <Link 
         href="/community"
         className="inline-flex items-center space-x-2 text-purple-600 dark:text-purple-400 hover:underline mb-6"
       >
         <FaArrowLeft className="w-4 h-4" />
-        <span>返回社区</span>
+        <span>Back to Community</span>
       </Link>
 
-      {/* 讨论标题和元信息 */}
+      {/* Discussion title and metadata */}
       <div className="bg-white dark:bg-gray-800 rounded-lg p-6 mb-8 shadow-md">
         <div className="flex items-start justify-between mb-4">
           <div className="flex-1">
@@ -82,11 +82,11 @@ export default function CommunityDiscussionPage() {
               </div>
               <div className="flex items-center space-x-1">
                 <FaComments className="w-4 h-4" />
-                <span>{discussion.replies} 回复</span>
+                <span>{discussion.replies} replies</span>
               </div>
               <div className="flex items-center space-x-1">
                 <FaThumbsUp className="w-4 h-4" />
-                <span>{discussion.likes} 点赞</span>
+                <span>{discussion.likes} likes</span>
               </div>
               <div className="flex items-center space-x-1">
                 <FaClock className="w-4 h-4" />
@@ -99,7 +99,7 @@ export default function CommunityDiscussionPage() {
           </span>
         </div>
 
-        {/* 标签 */}
+        {/* Tags */}
         <div className="flex flex-wrap gap-2 mb-6">
           {discussion.tags.map((tag: string, index: number) => (
             <span key={index} className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs rounded">
@@ -108,25 +108,25 @@ export default function CommunityDiscussionPage() {
           ))}
         </div>
 
-        {/* 讨论内容 */}
+        {/* Discussion content */}
         <div className="prose dark:prose-invert max-w-none">
           <div dangerouslySetInnerHTML={{ __html: discussion.content.replace(/\n/g, '<br>') }} />
         </div>
 
-        {/* 操作按钮 */}
+        {/* Action buttons */}
         <div className="flex items-center space-x-4 mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
           <button className="flex items-center space-x-2 px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors">
             <FaThumbsUp className="w-4 h-4" />
-            <span>点赞</span>
+            <span>Like</span>
           </button>
           <button className="flex items-center space-x-2 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
             <FaReply className="w-4 h-4" />
-            <span>回复</span>
+            <span>Reply</span>
           </button>
         </div>
       </div>
 
-      {/* 评论组件 */}
+      {/* Comments component */}
       <CommunityComments project={{
         id: String(id),
         name: 'Community Discussion',

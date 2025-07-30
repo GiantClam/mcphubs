@@ -11,7 +11,7 @@ export default function Header() {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isToolsMenuOpen, setIsToolsMenuOpen] = useState(false);
 
-  // 简化的翻译函数 - 使用固定的英文值
+  // Simplified translation function - using fixed English values
   const t = (key: string): string => {
     const translations: Record<string, string> = {
       'home': 'Home',
@@ -27,11 +27,11 @@ export default function Header() {
     return translations[key] || key;
   };
 
-  // 检查是否有认证配置（避免在没有OAuth配置时显示登录按钮）
+  // Check if authentication is configured (avoid showing login button when no OAuth config)
   const hasAuthConfig = status !== 'loading';
   const showAuthFeatures = hasAuthConfig;
 
-  // 检查是否是管理员
+  // Check if user is admin
   const isAdmin = session?.user?.email?.includes('admin') || session?.user?.email?.includes('owner');
 
   useEffect(() => {
@@ -202,7 +202,7 @@ export default function Header() {
               <span className="hidden xl:block">GitHub</span>
             </Link>
 
-            {/* User Authentication - 只在有配置时显示 */}
+            {/* User Authentication - only show when configured */}
             {showAuthFeatures && (
               <>
                 {session ? (
@@ -324,7 +324,7 @@ export default function Header() {
                   <span>GitHub</span>
                 </Link>
 
-                {/* 移动端认证部分 - 只在有配置时显示 */}
+                {/* Mobile authentication section - only show when configured */}
                 {showAuthFeatures && (
                   <>
                     {session ? (

@@ -262,7 +262,7 @@ const TutorialGuide: React.FC<TutorialGuideProps> = ({ project }) => {
                         <div className="bg-gray-900 text-gray-100 rounded-lg overflow-hidden">
                           <div className="px-4 py-2 bg-gray-800 text-gray-400 text-xs font-mono flex items-center">
                             <FaTerminal className="mr-2" />
-                            代码示例
+                            Code Example
                           </div>
                           <pre className="p-4 overflow-x-auto">
                             <code className="text-sm">

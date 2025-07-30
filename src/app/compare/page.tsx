@@ -3,8 +3,8 @@ import { searchMCPProjects } from '@/lib/github';
 import ComparisonTool from '@/components/ComparisonTool';
 
 export const metadata = {
-  title: '项目对比 | MCPHubs',
-  description: '对比不同的 MCP 项目，找到最适合您需求的解决方案',
+  title: 'Project Comparison | MCPHubs',
+  description: 'Compare different MCP projects to find the best solution for your needs',
 };
 
 export default async function ComparePage() {
@@ -15,10 +15,10 @@ export default async function ComparePage() {
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            项目对比
+            Project Comparison
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300">
-            对比不同的 MCP 项目，找到最适合您需求的解决方案
+            Compare different MCP projects to find the best solution for your needs
           </p>
         </div>
         

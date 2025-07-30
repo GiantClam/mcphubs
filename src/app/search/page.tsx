@@ -8,10 +8,10 @@ function SearchPageContent() {
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-          项目搜索
+          Project Search
         </h1>
         <p className="text-lg text-gray-600 dark:text-gray-300">
-          搜索和发现 Model Context Protocol 相关项目
+          Search and discover Model Context Protocol related projects
         </p>
       </div>
       <SearchInterface />

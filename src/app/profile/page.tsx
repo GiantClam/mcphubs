@@ -30,17 +30,17 @@ export default function ProfilePage() {
         <div className="max-w-md mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 text-center">
           <FaUser className="w-16 h-16 text-gray-400 mx-auto mb-4" />
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-            个人中心
+            Profile Center
           </h1>
           <p className="text-gray-600 dark:text-gray-300 mb-6">
-            请先登录以查看和管理您的个人信息
+            Please sign in to view and manage your personal information
           </p>
           <button
             onClick={() => signIn('github')}
             className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors inline-flex items-center gap-2"
           >
             <FaGithub className="w-5 h-5" />
-            使用 GitHub 登录
+            Sign in with GitHub
             <FaSignInAlt className="w-4 h-4" />
           </button>
         </div>
@@ -56,13 +56,13 @@ export default function ProfilePage() {
             {session.user?.image && (
               <img
                 src={session.user.image}
-                alt={session.user.name || '用户头像'}
+                alt={session.user.name || 'User Avatar'}
                 className="w-20 h-20 rounded-full"
               />
             )}
             <div>
               <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-                {session.user?.name || '用户'}
+                {session.user?.name || 'User'}
               </h1>
               <p className="text-gray-600 dark:text-gray-300">
                 {session.user?.email}
@@ -74,7 +74,7 @@ export default function ProfilePage() {
                 className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors inline-flex items-center gap-2"
               >
                 <FaSignOutAlt className="w-4 h-4" />
-                退出登录
+                Sign Out
               </button>
             </div>
           </div>
@@ -84,23 +84,23 @@ export default function ProfilePage() {
               <div>
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                   <FaUser className="w-5 h-5" />
-                  基本信息
+                  Basic Information
                 </h2>
                 <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 space-y-3">
                   <div>
                     <label className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                      用户名
+                      Username
                     </label>
                     <p className="text-gray-900 dark:text-white">
-                      {session.user?.name || '未设置'}
+                      {session.user?.name || 'Not set'}
                     </p>
                   </div>
                   <div>
                     <label className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                      邮箱
+                      Email
                     </label>
                     <p className="text-gray-900 dark:text-white">
-                      {session.user?.email || '未设置'}
+                      {session.user?.email || 'Not set'}
                     </p>
                   </div>
                 </div>
@@ -109,11 +109,11 @@ export default function ProfilePage() {
               <div>
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                   <FaCog className="w-5 h-5" />
-                  账户设置
+                  Account Settings
                 </h2>
                 <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
                   <p className="text-gray-600 dark:text-gray-300 text-sm">
-                    更多账户设置功能即将上线...
+                    More account settings features coming soon...
                   </p>
                 </div>
               </div>
@@ -122,22 +122,22 @@ export default function ProfilePage() {
             <div className="space-y-6">
               <div>
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                  活动统计
+                  Activity Statistics
                 </h2>
                 <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
                   <p className="text-gray-600 dark:text-gray-300 text-sm">
-                    活动统计功能即将上线...
+                    Activity statistics features coming soon...
                   </p>
                 </div>
               </div>
 
               <div>
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                  收藏的项目
+                  Favorite Projects
                 </h2>
                 <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
                   <p className="text-gray-600 dark:text-gray-300 text-sm">
-                    收藏功能即将上线...
+                    Favorite features coming soon...
                   </p>
                 </div>
               </div>

@@ -143,7 +143,7 @@ const ComparisonTool: React.FC<ComparisonToolProps> = ({ projects }) => {
     }
   };
 
-  // 生成专家建议
+  // Generate expert recommendations
   const generateExpertRecommendation = () => {
     if (selectedProjects.length < 2) return null;
 

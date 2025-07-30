@@ -52,7 +52,7 @@ const MonitoringPage = () => {
   const [showBugReportForm, setShowBugReportForm] = useState(false);
   const [activeTab, setActiveTab] = useState<'dashboard' | 'bugs' | 'logs'>('dashboard');
 
-  // 模拟数据
+  // Mock data
   const sampleSystemStatus: SystemStatus[] = [
     {
       service: 'MCP Hub API',
@@ -109,39 +109,39 @@ const MonitoringPage = () => {
   const sampleBugReports: BugReport[] = [
     {
       id: 'bug-001',
-      title: 'GitHub API速率限制导致项目加载失败',
-      description: '当频繁访问项目页面时，GitHub API返回429错误，导致项目数据无法加载。建议实现缓存机制或请求限流。',
+      title: 'GitHub API rate limit causing project loading failure',
+      description: 'When frequently accessing project pages, GitHub API returns 429 error, causing project data to fail loading. Suggest implementing cache mechanism or request throttling.',
       severity: 'high',
       category: 'API Integration',
       status: 'in_progress',
-      reporter: '系统管理员',
+      reporter: 'System Administrator',
       createdAt: '2024-01-15T10:30:00Z',
       updatedAt: '2024-01-15T14:20:00Z',
-      tags: ['GitHub API', '速率限制', '缓存']
+      tags: ['GitHub API', 'Rate Limit', 'Cache']
     },
     {
       id: 'bug-002',
-      title: '社区论坛回答提交后页面无响应',
-      description: '在社区论坛中提交回答后，页面可能出现无响应的情况，需要刷新页面才能看到提交的内容。',
+      title: 'Community forum answer submission causes page unresponsiveness',
+      description: 'After submitting answers in the community forum, the page may become unresponsive and requires refreshing to see the submitted content.',
       severity: 'medium',
       category: 'Community',
       status: 'open',
-      reporter: '用户反馈',
+      reporter: 'User Feedback',
       createdAt: '2024-01-14T16:45:00Z',
       updatedAt: '2024-01-14T16:45:00Z',
-      tags: ['社区论坛', '前端', '用户体验']
+      tags: ['Community Forum', 'Frontend', 'User Experience']
     },
     {
       id: 'bug-003',
-      title: '深色主题下某些文本颜色对比度不足',
-      description: '在深色主题模式下，部分文本颜色对比度不足，影响可读性。特别是在FAQ页面的代码块中。',
+      title: 'Insufficient text color contrast in dark theme',
+      description: 'In dark theme mode, some text colors have insufficient contrast, affecting readability. Especially in code blocks on FAQ pages.',
       severity: 'low',
       category: 'UI/UX',
       status: 'resolved',
-      reporter: '用户反馈',
+      reporter: 'User Feedback',
       createdAt: '2024-01-13T09:20:00Z',
       updatedAt: '2024-01-14T11:30:00Z',
-      tags: ['深色主题', '可访问性', '颜色对比']
+      tags: ['Dark Theme', 'Accessibility', 'Color Contrast']
     }
   ];
 
@@ -186,7 +186,7 @@ const MonitoringPage = () => {
     setBugReports(sampleBugReports);
     setLogs(sampleLogs);
 
-    // 模拟实时更新
+    // Simulate real-time updates
     const interval = setInterval(() => {
       setSystemStatus(prev => prev.map(service => ({
         ...service,
@@ -210,11 +210,11 @@ const MonitoringPage = () => {
 
   const getStatusText = (status: SystemStatus['status']) => {
     switch (status) {
-      case 'online': return '正常';
-      case 'degraded': return '降级';
-      case 'offline': return '离线';
-      case 'maintenance': return '维护';
-      default: return '未知';
+      case 'online': return 'Online';
+      case 'degraded': return 'Degraded';
+      case 'offline': return 'Offline';
+      case 'maintenance': return 'Maintenance';
+      default: return 'Unknown';
     }
   };
 
@@ -240,52 +240,52 @@ const MonitoringPage = () => {
 
   const BugReportForm = () => (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
-      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">报告Bug</h3>
+      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Report Bug</h3>
       <form className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">标题</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Title</label>
           <input 
             type="text" 
             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
-            placeholder="请简要描述问题..."
+            placeholder="Please briefly describe the issue..."
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">描述</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Description</label>
           <textarea 
             rows={4}
             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
-            placeholder="请详细描述问题的具体情况、复现步骤等..."
+            placeholder="Please describe the issue in detail, reproduction steps, etc..."
           />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">严重程度</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Severity</label>
             <select className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white">
-              <option value="low">低</option>
-              <option value="medium">中等</option>
-              <option value="high">高</option>
-              <option value="critical">严重</option>
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+              <option value="critical">Critical</option>
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">分类</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Category</label>
             <select className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white">
               <option value="UI/UX">UI/UX</option>
-              <option value="API Integration">API集成</option>
-              <option value="Community">社区功能</option>
-              <option value="Performance">性能问题</option>
-              <option value="Security">安全问题</option>
-              <option value="Other">其他</option>
+              <option value="API Integration">API Integration</option>
+              <option value="Community">Community Features</option>
+              <option value="Performance">Performance Issues</option>
+              <option value="Security">Security Issues</option>
+              <option value="Other">Other</option>
             </select>
           </div>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">环境信息</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Environment Information</label>
           <textarea 
             rows={3}
             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
-            placeholder="操作系统、浏览器版本、设备信息等..."
+            placeholder="Operating system, browser version, device information, etc..."
           />
         </div>
         <div className="flex space-x-4">
@@ -293,14 +293,14 @@ const MonitoringPage = () => {
             type="submit"
             className="px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
           >
-            提交报告
+            Submit Report
           </button>
           <button 
             type="button"
             className="px-6 py-2 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors"
             onClick={() => setShowBugReportForm(false)}
           >
-            取消
+            Cancel
           </button>
         </div>
       </form>
@@ -309,7 +309,7 @@ const MonitoringPage = () => {
 
   const DashboardView = () => (
     <div className="space-y-6">
-      {/* 系统状态概览 */}
+      {/* System Status Overview */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {systemStatus.map((service, index) => (
           <div key={index} className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
@@ -319,7 +319,7 @@ const MonitoringPage = () => {
             </div>
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
-                <span className="text-gray-600 dark:text-gray-400">状态</span>
+                <span className="text-gray-600 dark:text-gray-400">Status</span>
                 <span className={`font-medium ${
                   service.status === 'online' ? 'text-green-600 dark:text-green-400' :
                   service.status === 'degraded' ? 'text-yellow-600 dark:text-yellow-400' :
@@ -329,15 +329,15 @@ const MonitoringPage = () => {
                 </span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-gray-600 dark:text-gray-400">响应时间</span>
+                <span className="text-gray-600 dark:text-gray-400">Response Time</span>
                 <span className="text-gray-900 dark:text-white">{Math.round(service.responseTime)}ms</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-gray-600 dark:text-gray-400">可用性</span>
+                <span className="text-gray-600 dark:text-gray-400">Uptime</span>
                 <span className="text-gray-900 dark:text-white">{service.uptime}%</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-gray-600 dark:text-gray-400">错误数</span>
+                <span className="text-gray-600 dark:text-gray-400">Errors</span>
                 <span className={`font-medium ${
                   service.errors === 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
                 }`}>
@@ -349,40 +349,40 @@ const MonitoringPage = () => {
         ))}
       </div>
 
-      {/* 性能图表 */}
+      {/* Performance Charts */}
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">性能监控</h3>
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Performance Monitoring</h3>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div>
-            <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">CPU & 内存使用率</h4>
+            <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">CPU & Memory Usage</h4>
             <div className="h-40 bg-gray-100 dark:bg-gray-700 rounded-md flex items-center justify-center">
               <div className="text-center">
                 <div className="text-2xl font-bold text-gray-900 dark:text-white">49%</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">平均CPU使用率</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">Average CPU Usage</div>
               </div>
             </div>
           </div>
           <div>
-            <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">请求数 & 响应时间</h4>
+            <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Requests & Response Time</h4>
             <div className="h-40 bg-gray-100 dark:bg-gray-700 rounded-md flex items-center justify-center">
               <div className="text-center">
                 <div className="text-2xl font-bold text-gray-900 dark:text-white">185</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">平均请求数/5分钟</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">Average Requests/5min</div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* 最近的Bug报告 */}
+      {/* Recent Bug Reports */}
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">最近的Bug报告</h3>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Recent Bug Reports</h3>
           <button
             onClick={() => setActiveTab('bugs')}
             className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 text-sm font-medium"
           >
-            查看全部
+            View All
           </button>
         </div>
         <div className="space-y-3">
@@ -396,7 +396,7 @@ const MonitoringPage = () => {
                   <span className="text-sm font-medium text-gray-900 dark:text-white">{bug.title}</span>
                 </div>
                 <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                  {bug.category} • {new Date(bug.createdAt).toLocaleDateString('zh-CN')}
+                  {bug.category} • {new Date(bug.createdAt).toLocaleDateString('en-US')}
                 </div>
               </div>
               <div className={`px-2 py-1 rounded-full text-xs font-medium ${
@@ -404,7 +404,7 @@ const MonitoringPage = () => {
                 bug.status === 'in_progress' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
                 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
               }`}>
-                {bug.status === 'open' ? '待处理' : bug.status === 'in_progress' ? '处理中' : '已解决'}
+                {bug.status === 'open' ? 'Open' : bug.status === 'in_progress' ? 'In Progress' : 'Resolved'}
               </div>
             </div>
           ))}
@@ -416,12 +416,12 @@ const MonitoringPage = () => {
   const BugsView = () => (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Bug报告管理</h3>
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Bug Report Management</h3>
         <button
           onClick={() => setShowBugReportForm(true)}
           className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
         >
-          报告Bug
+          Report Bug
         </button>
       </div>
 
@@ -454,15 +454,15 @@ const MonitoringPage = () => {
                   bug.status === 'in_progress' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
                   'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
                 }`}>
-                  {bug.status === 'open' ? '待处理' : bug.status === 'in_progress' ? '处理中' : '已解决'}
+                  {bug.status === 'open' ? 'Open' : bug.status === 'in_progress' ? 'In Progress' : 'Resolved'}
                 </div>
                 <div className="text-xs text-gray-500 dark:text-gray-400">
-                  {new Date(bug.createdAt).toLocaleDateString('zh-CN')}
+                  {new Date(bug.createdAt).toLocaleDateString('en-US')}
                 </div>
               </div>
             </div>
             <div className="text-sm text-gray-500 dark:text-gray-400">
-              报告者: {bug.reporter}
+              Reporter: {bug.reporter}
             </div>
           </div>
         ))}
@@ -473,17 +473,17 @@ const MonitoringPage = () => {
   const LogsView = () => (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">系统日志</h3>
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">System Logs</h3>
         <div className="flex space-x-2">
           <select className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white text-sm">
-            <option value="all">全部级别</option>
-            <option value="error">错误</option>
-            <option value="warning">警告</option>
-            <option value="info">信息</option>
-            <option value="debug">调试</option>
+            <option value="all">All Levels</option>
+            <option value="error">Error</option>
+            <option value="warning">Warning</option>
+            <option value="info">Info</option>
+            <option value="debug">Debug</option>
           </select>
           <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm">
-            刷新
+            Refresh
           </button>
         </div>
       </div>
@@ -491,10 +491,10 @@ const MonitoringPage = () => {
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md">
         <div className="p-4 border-b border-gray-200 dark:border-gray-700">
           <div className="grid grid-cols-4 gap-4 text-sm font-medium text-gray-700 dark:text-gray-300">
-            <div>时间</div>
-            <div>级别</div>
-            <div>服务</div>
-            <div>消息</div>
+            <div>Time</div>
+            <div>Level</div>
+            <div>Service</div>
+            <div>Message</div>
           </div>
         </div>
         <div className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -502,7 +502,7 @@ const MonitoringPage = () => {
             <div key={log.id} className="p-4 hover:bg-gray-50 dark:hover:bg-gray-700">
               <div className="grid grid-cols-4 gap-4 text-sm">
                 <div className="text-gray-600 dark:text-gray-400">
-                  {new Date(log.timestamp).toLocaleTimeString('zh-CN')}
+                  {new Date(log.timestamp).toLocaleTimeString('en-US')}
                 </div>
                 <div className={`font-medium ${getLogLevelColor(log.level)}`}>
                   {log.level.toUpperCase()}
@@ -541,13 +541,13 @@ const MonitoringPage = () => {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">系统监控</h1>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">System Monitoring</h1>
           <p className="text-gray-600 dark:text-gray-300">
-            实时监控系统状态、性能指标和错误日志
+            Real-time monitoring of system status, performance metrics, and error logs
           </p>
         </div>
 
-        {/* 标签栏 */}
+        {/* Tab Bar */}
         <div className="mb-8">
           <div className="border-b border-gray-200 dark:border-gray-700">
             <nav className="flex space-x-8">
@@ -559,7 +559,7 @@ const MonitoringPage = () => {
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
                 }`}
               >
-                📊 监控面板
+                📊 Dashboard
               </button>
               <button
                 onClick={() => setActiveTab('bugs')}
@@ -569,7 +569,7 @@ const MonitoringPage = () => {
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
                 }`}
               >
-                🐛 Bug报告
+                🐛 Bug Reports
               </button>
               <button
                 onClick={() => setActiveTab('logs')}
@@ -579,13 +579,13 @@ const MonitoringPage = () => {
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
                 }`}
               >
-                📋 系统日志
+                📋 System Logs
               </button>
             </nav>
           </div>
         </div>
 
-        {/* 内容区域 */}
+        {/* Content Area */}
         {renderTabContent()}
       </div>
     </div>

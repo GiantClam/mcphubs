@@ -48,7 +48,7 @@ export default function SyncAdminPage() {
 
     // 简单的权限检查 - 可以根据需要扩展
     if (!session.user?.email?.includes('admin') && !session.user?.email?.includes('owner')) {
-      alert('无权限访问此页面');
+      alert('No permission to access this page');
       router.push('/');
       return;
     }
@@ -59,7 +59,7 @@ export default function SyncAdminPage() {
   const loadSyncStatus = async () => {
     try {
       if (!apiKey.trim()) {
-        addLog('❌ 请先输入API密钥');
+        addLog('❌ Please enter API key first');
         return;
       }
       
@@ -68,12 +68,12 @@ export default function SyncAdminPage() {
       if (response.ok) {
         const result = await response.json();
         setSyncStatus(result.data);
-        addLog(`✅ 成功获取同步状态`);
+        addLog(`✅ Successfully retrieved sync status`);
       } else {
-        addLog(`❌ 获取同步状态失败: ${response.status}`);
+        addLog(`❌ Failed to get sync status: ${response.status}`);
       }
     } catch (error: any) {
-      addLog(`❌ 获取同步状态出错: ${error.message}`);
+      addLog(`❌ Error getting sync status: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -83,12 +83,12 @@ export default function SyncAdminPage() {
     if (syncing) return;
     
     if (!apiKey.trim()) {
-      addLog('❌ 请先输入API密钥');
+      addLog('❌ Please enter API key first');
       return;
     }
     
     setSyncing(true);
-    addLog(`🚀 ${force ? '强制' : ''}启动同步任务...`);
+    addLog(`🚀 ${force ? 'Force ' : ''}Starting sync task...`);
 
     try {
       const response = await fetch(`/api/sync?key=${apiKey}`, {
@@ -106,33 +106,33 @@ export default function SyncAdminPage() {
       const result = await response.json();
       
       if (result.success) {
-        addLog(`✅ 同步任务完成: ${result.message}`);
+        addLog(`✅ Sync task completed: ${result.message}`);
         if (result.data?.result) {
           const stats = result.data.result.stats;
-          addLog(`📊 统计: 获取${stats.totalFetched} 新增${stats.inserted} 更新${stats.updated} 跳过${stats.skipped}`);
+          addLog(`📊 Stats: Fetched ${stats.totalFetched} Added ${stats.inserted} Updated ${stats.updated} Skipped ${stats.skipped}`);
         }
       } else {
-        addLog(`❌ 同步任务失败: ${result.message || result.error}`);
+        addLog(`❌ Sync task failed: ${result.message || result.error}`);
       }
 
-      // 重新加载状态
+      // Reload status
       await loadSyncStatus();
       
     } catch (error: any) {
-      addLog(`❌ 同步任务出错: ${error.message}`);
+      addLog(`❌ Sync task error: ${error.message}`);
     } finally {
       setSyncing(false);
     }
   };
 
   const addLog = (message: string) => {
-    const timestamp = new Date().toLocaleTimeString('zh-CN');
-    setLogs(prev => [`[${timestamp}] ${message}`, ...prev.slice(0, 49)]); // 保留最近50条日志
+    const timestamp = new Date().toLocaleTimeString('en-US');
+    setLogs(prev => [`[${timestamp}] ${message}`, ...prev.slice(0, 49)]); // Keep last 50 logs
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString('zh-CN', {
-      timeZone: 'Asia/Shanghai'
+    return new Date(dateString).toLocaleString('en-US', {
+      timeZone: 'America/New_York'
     });
   };
 
@@ -148,7 +148,7 @@ export default function SyncAdminPage() {
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
           <FaSync className="animate-spin text-4xl text-purple-600 mx-auto mb-4" />
-          <p className="text-gray-600 dark:text-gray-300">加载同步状态...</p>
+          <p className="text-gray-600 dark:text-gray-300">Loading sync status...</p>
         </div>
       </div>
     );
@@ -162,8 +162,8 @@ export default function SyncAdminPage() {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-red-600 mb-4">访问被拒绝</h1>
-          <p className="text-gray-600">您没有权限访问此页面。</p>
+          <h1 className="text-2xl font-bold text-red-600 mb-4">Access Denied</h1>
+          <p className="text-gray-600">You do not have permission to access this page.</p>
         </div>
       </div>
     );
@@ -175,22 +175,22 @@ export default function SyncAdminPage() {
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            同步任务管理
+            Sync Task Management
           </h1>
           <p className="text-gray-600 dark:text-gray-300">
-            管理GitHub项目数据同步，查看状态和手动触发同步任务
+            Manage GitHub project data synchronization, view status and manually trigger sync tasks
           </p>
         </div>
 
         {/* API密钥输入 */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
           <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
-            API配置
+            API Configuration
           </h2>
           <div className="flex gap-4">
             <input
               type="password"
-              placeholder="同步API密钥 (留空使用默认)"
+              placeholder="Sync API Key (leave empty to use default)"
               value={apiKey}
               onChange={(e) => setApiKey(e.target.value)}
               className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white"
@@ -208,43 +208,43 @@ export default function SyncAdminPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">同步状态</h3>
+              <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Sync Status</h3>
               {getStatusIcon(syncStatus?.lastSync?.success, syncStatus?.isRunning || syncing)}
             </div>
             <p className="text-lg font-semibold text-gray-900 dark:text-white">
-              {syncStatus?.isRunning || syncing ? '运行中' : 
-               syncStatus?.lastSync?.success === true ? '正常' :
-               syncStatus?.lastSync?.success === false ? '失败' : '未知'}
+              {syncStatus?.isRunning || syncing ? 'Running' : 
+               syncStatus?.lastSync?.success === true ? 'Normal' :
+               syncStatus?.lastSync?.success === false ? 'Failed' : 'Unknown'}
             </p>
           </div>
 
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">上次同步</h3>
+              <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Last Sync</h3>
               <FaClock className="text-gray-400" />
             </div>
             <p className="text-lg font-semibold text-gray-900 dark:text-white">
-              {syncStatus?.lastSync ? formatDate(syncStatus.lastSync.timestamp) : '从未同步'}
+              {syncStatus?.lastSync ? formatDate(syncStatus.lastSync.timestamp) : 'Never synced'}
             </p>
           </div>
 
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">下次定时</h3>
+              <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Next Scheduled</h3>
               <FaClock className="text-blue-400" />
             </div>
             <p className="text-lg font-semibold text-gray-900 dark:text-white">
-              {syncStatus?.nextScheduledSync ? formatDate(syncStatus.nextScheduledSync) : '未设置'}
+              {syncStatus?.nextScheduledSync ? formatDate(syncStatus.nextScheduledSync) : 'Not set'}
             </p>
           </div>
 
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">处理项目</h3>
+              <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Processed Projects</h3>
               <FaChartBar className="text-green-400" />
             </div>
             <p className="text-lg font-semibold text-gray-900 dark:text-white">
-              {syncStatus?.lastSync?.stats?.totalFetched || 0} 个
+              {syncStatus?.lastSync?.stats?.totalFetched || 0} items
             </p>
           </div>
         </div>
@@ -252,7 +252,7 @@ export default function SyncAdminPage() {
         {/* 操作按钮 */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
           <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
-            操作控制
+            Operation Control
           </h2>
           <div className="flex flex-wrap gap-4">
             <button
@@ -261,7 +261,7 @@ export default function SyncAdminPage() {
               className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors inline-flex items-center gap-2"
             >
               <FaPlay className="w-4 h-4" />
-              启动同步
+              Start Sync
             </button>
             
             <button
@@ -270,7 +270,7 @@ export default function SyncAdminPage() {
               className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors inline-flex items-center gap-2"
             >
               <FaSync className="w-4 h-4" />
-              强制同步
+              Force Sync
             </button>
 
             <button
@@ -278,7 +278,7 @@ export default function SyncAdminPage() {
               className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors inline-flex items-center gap-2"
             >
               <FaDatabase className="w-4 h-4" />
-              刷新状态
+              Refresh Status
             </button>
 
             <a
@@ -288,7 +288,7 @@ export default function SyncAdminPage() {
               className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors inline-flex items-center gap-2"
             >
               <FaGithub className="w-4 h-4" />
-              GitHub搜索
+              GitHub Search
             </a>
           </div>
         </div>
@@ -297,34 +297,34 @@ export default function SyncAdminPage() {
         {syncStatus?.lastSync && (
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
             <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
-              上次同步详情
+              Last Sync Details
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-4">
               <div className="text-center">
                 <div className="text-2xl font-bold text-blue-600">{syncStatus.lastSync.stats.totalFetched}</div>
-                <div className="text-sm text-gray-500">总获取</div>
+                <div className="text-sm text-gray-500">Total Fetched</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-green-600">{syncStatus.lastSync.stats.inserted}</div>
-                <div className="text-sm text-gray-500">新增</div>
+                <div className="text-sm text-gray-500">Added</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-yellow-600">{syncStatus.lastSync.stats.updated}</div>
-                <div className="text-sm text-gray-500">更新</div>
+                <div className="text-sm text-gray-500">Updated</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-gray-600">{syncStatus.lastSync.stats.skipped}</div>
-                <div className="text-sm text-gray-500">跳过</div>
+                <div className="text-sm text-gray-500">Skipped</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-red-600">{syncStatus.lastSync.stats.errors}</div>
-                <div className="text-sm text-gray-500">错误</div>
+                <div className="text-sm text-gray-500">Errors</div>
               </div>
             </div>
             <div className="text-sm text-gray-600 dark:text-gray-300">
-              <p><strong>消息:</strong> {syncStatus.lastSync.message}</p>
-              <p><strong>耗时:</strong> {syncStatus.lastSync.duration}ms</p>
-              <p><strong>时间:</strong> {formatDate(syncStatus.lastSync.timestamp)}</p>
+              <p><strong>Message:</strong> {syncStatus.lastSync.message}</p>
+              <p><strong>Duration:</strong> {syncStatus.lastSync.duration}ms</p>
+              <p><strong>Time:</strong> {formatDate(syncStatus.lastSync.timestamp)}</p>
             </div>
           </div>
         )}
@@ -333,13 +333,13 @@ export default function SyncAdminPage() {
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-              操作日志
+              Operation Logs
             </h2>
             <button
               onClick={() => setLogs([])}
               className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
             >
-              清除日志
+              Clear Logs
             </button>
           </div>
           <div className="bg-gray-900 text-green-400 p-4 rounded-lg font-mono text-sm max-h-64 overflow-y-auto">
@@ -348,7 +348,7 @@ export default function SyncAdminPage() {
                 <div key={index} className="mb-1">{log}</div>
               ))
             ) : (
-              <div className="text-gray-500">暂无日志...</div>
+              <div className="text-gray-500">No logs yet...</div>
             )}
           </div>
         </div>

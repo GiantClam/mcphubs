@@ -36,10 +36,10 @@ export default function DevelopmentGuidesPage() {
         {/* 页面标题 */}
         <section className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white">
-            MCP 开发指南
+            MCP Development Guides
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300">
-            学习如何构建 MCP 服务器和客户端，开发强大的 AI 集成应用
+            Learn how to build MCP servers and clients, develop powerful AI integration applications
           </p>
         </section>
 
@@ -55,7 +55,7 @@ export default function DevelopmentGuidesPage() {
               }`}
             >
               <FaServer className="w-4 h-4 inline mr-2" />
-              服务器开发
+              Server Development
             </button>
             <button
               onClick={() => setActiveTab('client')}
@@ -66,7 +66,7 @@ export default function DevelopmentGuidesPage() {
               }`}
             >
               <FaDesktop className="w-4 h-4 inline mr-2" />
-              客户端开发
+              Client Development
             </button>
           </div>
         </div>
@@ -78,7 +78,7 @@ export default function DevelopmentGuidesPage() {
             <section className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
               <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white flex items-center">
                 <FaRocket className="w-6 h-6 mr-2 text-purple-600" />
-                快速开始
+                Quick Start
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="text-center">
@@ -86,21 +86,21 @@ export default function DevelopmentGuidesPage() {
                     <FaPython className="w-8 h-8 text-blue-600 dark:text-blue-400" />
                   </div>
                   <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Python SDK</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">官方 Python SDK，易于使用</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">Official Python SDK, easy to use</p>
                 </div>
                 <div className="text-center">
                   <div className="bg-green-100 dark:bg-green-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                     <FaNodeJs className="w-8 h-8 text-green-600 dark:text-green-400" />
                   </div>
                   <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Node.js SDK</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">TypeScript/JavaScript 支持</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">TypeScript/JavaScript support</p>
                 </div>
                 <div className="text-center">
                   <div className="bg-purple-100 dark:bg-purple-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                     <FaCode className="w-8 h-8 text-purple-600 dark:text-purple-400" />
                   </div>
-                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">其他语言</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">Go, Rust, Java 等</p>
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Other Languages</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">Go, Rust, Java, etc.</p>
                 </div>
               </div>
             </section>
@@ -109,12 +109,12 @@ export default function DevelopmentGuidesPage() {
             <section className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
               <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white flex items-center">
                 <FaPython className="w-6 h-6 mr-2 text-blue-600" />
-                Python MCP 服务器开发
+                Python MCP Server Development
               </h2>
               
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">1. 安装 Python SDK</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">1. Install Python SDK</h3>
                   <CodeBlock
                     id="python-install"
                     language="bash"
@@ -123,7 +123,7 @@ export default function DevelopmentGuidesPage() {
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">2. 创建基础服务器</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">2. Create Basic Server</h3>
                   <CodeBlock
                     id="python-basic-server"
                     language="python"
@@ -140,26 +140,26 @@ from mcp.types import (
     LoggingLevel
 )
 
-# 创建 MCP 服务器实例
+# Create MCP server instance
 server = Server("my-mcp-server")
 
-# 注册资源
+# Register resources
 @server.list_resources()
 async def handle_list_resources() -> list[Resource]:
-    """返回可用资源列表"""
+    """Return list of available resources"""
     return [
         Resource(
             uri="config://app.json",
-            name="应用配置",
-            description="应用程序配置文件",
+            name="App Configuration",
+            description="Application configuration file",
             mimeType="application/json",
         )
     ]
 
-# 读取资源
+# Read resources
 @server.read_resource()
 async def handle_read_resource(uri: str) -> str:
-    """读取资源内容"""
+    """Read resource content"""
     if uri == "config://app.json":
         return json.dumps({
             "app_name": "MCP Server",
@@ -167,62 +167,62 @@ async def handle_read_resource(uri: str) -> str:
             "debug": True
         })
     else:
-        raise ValueError(f"未知资源: {uri}")
+        raise ValueError(f"Unknown resource: {uri}")
 
-# 注册工具
+# Register tools
 @server.list_tools()
 async def handle_list_tools() -> list[Tool]:
-    """返回可用工具列表"""
+    """Return list of available tools"""
     return [
         Tool(
             name="echo",
-            description="回显输入的文本",
+            description="Echo input text",
             inputSchema={
                 "type": "object",
                 "properties": {
-                    "text": {"type": "string", "description": "要回显的文本"}
+                    "text": {"type": "string", "description": "Text to echo"}
                 },
                 "required": ["text"]
             },
         ),
         Tool(
             name="get_weather",
-            description="获取天气信息",
+            description="Get weather information",
             inputSchema={
                 "type": "object",
                 "properties": {
-                    "location": {"type": "string", "description": "城市名称"}
+                    "location": {"type": "string", "description": "City name"}
                 },
                 "required": ["location"]
             },
         )
     ]
 
-# 调用工具
+# Call tools
 @server.call_tool()
 async def handle_call_tool(name: str, arguments: dict) -> list[TextContent]:
-    """处理工具调用"""
+    """Handle tool calls"""
     if name == "echo":
         return [TextContent(type="text", text=arguments["text"])]
     elif name == "get_weather":
         location = arguments["location"]
-        # 这里应该调用真实的天气API
+        # Here should call real weather API
         weather_data = {
             "location": location,
             "temperature": "22°C",
-            "description": "晴天",
+            "description": "Sunny",
             "humidity": "65%"
         }
         return [TextContent(
             type="text", 
-            text=f"天气信息 - {location}: {weather_data['temperature']}, {weather_data['description']}"
+            text=f"Weather info - {location}: {weather_data['temperature']}, {weather_data['description']}"
         )]
     else:
-        raise ValueError(f"未知工具: {name}")
+        raise ValueError(f"Unknown tool: {name}")
 
-# 运行服务器
+# Run server
 async def main():
-    # 使用 stdio 传输
+    # Use stdio transport
     async with stdio_server() as (read_stream, write_stream):
         await server.run(
             read_stream,
@@ -243,21 +243,21 @@ if __name__ == "__main__":
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">3. 高级功能示例</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">3. Advanced Features Example</h3>
                   <CodeBlock
                     id="python-advanced"
                     language="python"
-                    code={`# 添加提示 (Prompts)
+                    code={`# Add prompts (Prompts)
 @server.list_prompts()
 async def handle_list_prompts() -> list[Prompt]:
     return [
         Prompt(
             name="summarize",
-            description="总结文本内容",
+            description="Summarize text content",
             arguments=[
                 PromptArgument(
                     name="text",
-                    description="要总结的文本",
+                    description="Text to summarize",
                     required=True
                 )
             ]
@@ -268,9 +268,9 @@ async def handle_list_prompts() -> list[Prompt]:
 async def handle_get_prompt(name: str, arguments: dict) -> GetPromptResult:
     if name == "summarize":
         text = arguments["text"]
-        prompt = f"请总结以下文本：\\n\\n{text}\\n\\n总结："
+        prompt = f"Please summarize the following text:\\n\\n{text}\\n\\nSummary:"
         return GetPromptResult(
-            description="文本总结提示",
+            description="Text summarization prompt",
             messages=[
                 PromptMessage(
                     role="user",
@@ -279,17 +279,17 @@ async def handle_get_prompt(name: str, arguments: dict) -> GetPromptResult:
             ]
         )
 
-# 处理通知
+# Handle notifications
 @server.notification()
 async def handle_notification(notification):
-    """处理来自客户端的通知"""
-    print(f"收到通知: {notification}")
+    """Handle notifications from client"""
+    print(f"Received notification: {notification}")
 
-# 错误处理
+# Error handling
 @server.error()
 async def handle_error(error):
-    """处理错误"""
-    print(f"发生错误: {error}")
+    """Handle errors"""
+    print(f"Error occurred: {error}")
     return {"error": str(error)}`}
                   />
                 </div>
@@ -300,12 +300,12 @@ async def handle_error(error):
             <section className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
               <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white flex items-center">
                 <FaJs className="w-6 h-6 mr-2 text-yellow-600" />
-                TypeScript MCP 服务器开发
+                TypeScript MCP Server Development
               </h2>
               
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">1. 安装依赖</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">1. Install Dependencies</h3>
                   <CodeBlock
                     id="ts-install"
                     language="bash"
@@ -315,7 +315,7 @@ npm install -D typescript @types/node`}
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">2. 创建 TypeScript 服务器</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">2. Create TypeScript Server</h3>
                   <CodeBlock
                     id="ts-server"
                     language="typescript"
@@ -328,7 +328,7 @@ import {
   TextContent,
 } from '@modelcontextprotocol/sdk/types.js';
 
-// 创建服务器实例
+// Create server instance
 const server = new Server(
   {
     name: 'my-typescript-mcp-server',
@@ -342,19 +342,19 @@ const server = new Server(
   }
 );
 
-// 注册工具列表处理器
+// Register tool list handler
 server.setRequestHandler(ListToolsRequestSchema, async () => {
   return {
     tools: [
       {
         name: 'calculate',
-        description: '执行数学计算',
+        description: 'Perform mathematical calculations',
         inputSchema: {
           type: 'object',
           properties: {
             expression: {
               type: 'string',
-              description: '数学表达式 (例如: "2 + 3 * 4")',
+              description: 'Mathematical expression (e.g., "2 + 3 * 4")',
             },
           },
           required: ['expression'],
@@ -362,7 +362,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       },
       {
         name: 'get_time',
-        description: '获取当前时间',
+        description: 'Get current time',
         inputSchema: {
           type: 'object',
           properties: {},
@@ -372,7 +372,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
   };
 });
 
-// 注册工具调用处理器
+// Register tool call handler
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const { name, arguments: args } = request.params;
 
@@ -380,13 +380,13 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     case 'calculate':
       try {
         const expression = args.expression as string;
-        // 简单的数学计算 (生产环境应使用安全的表达式解析器)
+        // Simple math calculation (production should use safe expression parser)
         const result = eval(expression);
         return {
           content: [
             {
               type: 'text',
-              text: \`计算结果: \${expression} = \${result}\`,
+              text: \`Calculation result: \${expression} = \${result}\`,
             } as TextContent,
           ],
         };
@@ -395,7 +395,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           content: [
             {
               type: 'text',
-              text: \`计算错误: \${error.message}\`,
+              text: \`Calculation error: \${error.message}\`,
             } as TextContent,
           ],
         };
@@ -407,26 +407,26 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         content: [
           {
             type: 'text',
-            text: \`当前时间: \${now.toLocaleString('zh-CN')}\`,
+            text: \`Current time: \${now.toLocaleString('en-US')}\`,
           } as TextContent,
         ],
       };
 
     default:
-      throw new Error(\`未知工具: \${name}\`);
+      throw new Error(\`Unknown tool: \${name}\`);
   }
 });
 
-// 启动服务器
+// Start server
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
   
-  console.error('MCP 服务器已启动');
+  console.error('MCP server started');
 }
 
 main().catch((error) => {
-  console.error('服务器启动失败:', error);
+  console.error('Server startup failed:', error);
   process.exit(1);
 });`}
                   />
@@ -438,14 +438,14 @@ main().catch((error) => {
             <section className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
               <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white flex items-center">
                 <FaRocket className="w-6 h-6 mr-2 text-green-600" />
-                部署和配置
+                Deployment and Configuration
               </h2>
               
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Claude Desktop 配置</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Claude Desktop Configuration</h3>
                   <p className="text-gray-600 dark:text-gray-300 mb-4">
-                    在 Claude Desktop 中配置您的 MCP 服务器：
+                    Configure your MCP server in Claude Desktop:
                   </p>
                   <CodeBlock
                     id="claude-config"
@@ -465,11 +465,11 @@ main().catch((error) => {
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">环境变量配置</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Environment Variables Configuration</h3>
                   <CodeBlock
                     id="env-config"
                     language="bash"
-                    code={`# .env 文件
+                    code={`# .env file
 DATABASE_URL=postgresql://user:password@localhost/dbname
 API_KEY=your-api-key
 LOG_LEVEL=info
@@ -478,7 +478,7 @@ DEBUG=true`}
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Docker 部署</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Docker Deployment</h3>
                   <CodeBlock
                     id="dockerfile"
                     language="dockerfile"
@@ -506,36 +506,36 @@ CMD ["python", "server.py"]`}
             <section className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
               <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white flex items-center">
                 <FaDesktop className="w-6 h-6 mr-2 text-blue-600" />
-                MCP 客户端开发概述
+                MCP Client Development Overview
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">主要功能</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Main Features</h3>
                   <ul className="space-y-2 text-gray-600 dark:text-gray-300">
                     <li className="flex items-start">
                       <span className="text-purple-600 dark:text-purple-400 mr-2">•</span>
-                      连接到 MCP 服务器
+                      Connect to MCP servers
                     </li>
                     <li className="flex items-start">
                       <span className="text-purple-600 dark:text-purple-400 mr-2">•</span>
-                      发现和调用工具
+                      Discover and call tools
                     </li>
                     <li className="flex items-start">
                       <span className="text-purple-600 dark:text-purple-400 mr-2">•</span>
-                      访问资源
+                      Access resources
                     </li>
                     <li className="flex items-start">
                       <span className="text-purple-600 dark:text-purple-400 mr-2">•</span>
-                      使用提示模板
+                      Use prompt templates
                     </li>
                   </ul>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">支持的传输层</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Supported Transport Layers</h3>
                   <ul className="space-y-2 text-gray-600 dark:text-gray-300">
                     <li className="flex items-start">
                       <span className="text-blue-600 dark:text-blue-400 mr-2">•</span>
-                      Stdio (标准输入/输出)
+                      Stdio (Standard Input/Output)
                     </li>
                     <li className="flex items-start">
                       <span className="text-blue-600 dark:text-blue-400 mr-2">•</span>
@@ -558,12 +558,12 @@ CMD ["python", "server.py"]`}
             <section className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
               <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white flex items-center">
                 <FaPython className="w-6 h-6 mr-2 text-blue-600" />
-                Python 客户端开发
+                Python Client Development
               </h2>
               
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">1. 基础客户端</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">1. Basic Client</h3>
                   <CodeBlock
                     id="python-client"
                     language="python"
@@ -572,35 +572,35 @@ from mcp.client import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 
 async def main():
-    # 配置服务器参数
+    # Configure server parameters
     server_params = StdioServerParameters(
         command="python",
         args=["path/to/your/server.py"],
         env={"API_KEY": "your-api-key"}
     )
     
-    # 创建客户端会话
+    # Create client session
     async with stdio_client(server_params) as (read, write):
         async with ClientSession(read, write) as session:
-            # 初始化连接
+            # Initialize connection
             await session.initialize()
             
-            # 列出可用工具
+            # List available tools
             tools = await session.list_tools()
-            print(f"可用工具: {[tool.name for tool in tools.tools]}")
+            print(f"Available tools: {[tool.name for tool in tools.tools]}")
             
-            # 调用工具
+            # Call tool
             result = await session.call_tool("echo", {"text": "Hello MCP!"})
-            print(f"工具结果: {result.content}")
+            print(f"Tool result: {result.content}")
             
-            # 列出资源
+            # List resources
             resources = await session.list_resources()
-            print(f"可用资源: {[res.name for res in resources.resources]}")
+            print(f"Available resources: {[res.name for res in resources.resources]}")
             
-            # 读取资源
+            # Read resource
             if resources.resources:
                 resource_content = await session.read_resource(resources.resources[0].uri)
-                print(f"资源内容: {resource_content.contents}")
+                print(f"Resource content: {resource_content.contents}")
 
 if __name__ == "__main__":
     asyncio.run(main())`}
@@ -608,7 +608,7 @@ if __name__ == "__main__":
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">2. 高级客户端功能</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">2. Advanced Client Features</h3>
                   <CodeBlock
                     id="python-advanced-client"
                     language="python"
@@ -622,7 +622,7 @@ if __name__ == "__main__":
         async with ClientSession(read, write) as session:
             await session.initialize()
             
-            # 批量调用工具
+            # Batch tool calls
             tasks = []
             for i in range(5):
                 task = session.call_tool("calculate", {"expression": f"2 + {i}"})
@@ -630,26 +630,26 @@ if __name__ == "__main__":
             
             results = await asyncio.gather(*tasks)
             for i, result in enumerate(results):
-                print(f"计算 {i}: {result.content}")
+                print(f"Calculation {i}: {result.content}")
             
-            # 使用提示模板
+            # Use prompt templates
             prompts = await session.list_prompts()
             if prompts.prompts:
                 prompt_result = await session.get_prompt(
                     prompts.prompts[0].name,
-                    {"text": "这是一个需要总结的长文本..."}
+                    {"text": "This is a long text that needs summarization..."}
                 )
-                print(f"提示结果: {prompt_result.messages}")
+                print(f"Prompt result: {prompt_result.messages}")
             
-            # 错误处理
+            # Error handling
             try:
                 await session.call_tool("nonexistent_tool", {})
             except Exception as e:
-                print(f"工具调用失败: {e}")
+                print(f"Tool call failed: {e}")
             
-            # 监听通知
+            # Listen for notifications
             def notification_handler(notification):
-                print(f"收到通知: {notification}")
+                print(f"Received notification: {notification}")
             
             session.set_notification_handler(notification_handler)`}
                   />
@@ -661,12 +661,12 @@ if __name__ == "__main__":
             <section className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
               <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white flex items-center">
                 <FaJs className="w-6 h-6 mr-2 text-yellow-600" />
-                JavaScript 客户端开发
+                JavaScript Client Development
               </h2>
               
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">1. 基础客户端</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">1. Basic Client</h3>
                   <CodeBlock
                     id="js-client"
                     language="javascript"
@@ -674,14 +674,14 @@ if __name__ == "__main__":
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 
 async function main() {
-  // 创建传输层
+  // Create transport layer
   const transport = new StdioClientTransport({
     command: 'python',
     args: ['path/to/your/server.py'],
     env: { API_KEY: 'your-api-key' }
   });
 
-  // 创建客户端
+  // Create client
   const client = new Client(
     {
       name: 'my-mcp-client',
@@ -692,18 +692,18 @@ async function main() {
     }
   );
 
-  // 连接到服务器
+  // Connect to server
   await client.connect(transport);
 
   try {
-    // 列出工具
+    // List tools
     const toolsResponse = await client.request(
       { method: 'tools/list' },
       { tools: [] }
     );
-    console.log('可用工具:', toolsResponse.tools);
+    console.log('Available tools:', toolsResponse.tools);
 
-    // 调用工具
+    // Call tool
     const result = await client.request(
       {
         method: 'tools/call',
@@ -714,17 +714,17 @@ async function main() {
       },
       { content: [] }
     );
-    console.log('工具结果:', result.content);
+    console.log('Tool result:', result.content);
 
-    // 列出资源
+    // List resources
     const resourcesResponse = await client.request(
       { method: 'resources/list' },
       { resources: [] }
     );
-    console.log('可用资源:', resourcesResponse.resources);
+    console.log('Available resources:', resourcesResponse.resources);
 
   } catch (error) {
-    console.error('客户端错误:', error);
+    console.error('Client error:', error);
   } finally {
     await client.close();
   }
@@ -735,7 +735,7 @@ main().catch(console.error);`}
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">2. React 集成示例</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">2. React Integration Example</h3>
                   <CodeBlock
                     id="react-client"
                     language="tsx"
@@ -779,7 +779,7 @@ const MCPClient: React.FC = () => {
       await newClient.connect(transport);
       setClient(newClient);
 
-      // 获取工具列表
+      // Get tool list
       const toolsResponse = await newClient.request(
         { method: 'tools/list' },
         { tools: [] }
@@ -787,7 +787,7 @@ const MCPClient: React.FC = () => {
       setTools(toolsResponse.tools);
 
     } catch (error) {
-      console.error('初始化客户端失败:', error);
+      console.error('Failed to initialize client:', error);
     }
   };
 
@@ -806,7 +806,7 @@ const MCPClient: React.FC = () => {
       
       setResult(JSON.stringify(response.content, null, 2));
     } catch (error) {
-      setResult(\`错误: \${error.message}\`);
+      setResult(\`Error: \${error.message}\`);
     } finally {
       setLoading(false);
     }
@@ -814,10 +814,10 @@ const MCPClient: React.FC = () => {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">MCP 客户端演示</h1>
+      <h1 className="text-2xl font-bold mb-4">MCP Client Demo</h1>
       
       <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-2">可用工具</h2>
+        <h2 className="text-xl font-semibold mb-2">Available Tools</h2>
         <div className="space-y-2">
           {tools.map((tool) => (
             <button
@@ -834,9 +834,9 @@ const MCPClient: React.FC = () => {
       </div>
 
       <div>
-        <h2 className="text-xl font-semibold mb-2">结果</h2>
+        <h2 className="text-xl font-semibold mb-2">Result</h2>
         <pre className="bg-gray-100 p-4 rounded overflow-auto">
-          {loading ? '加载中...' : result || '点击工具查看结果'}
+          {loading ? 'Loading...' : result || 'Click tool to see result'}
         </pre>
       </div>
     </div>
@@ -855,38 +855,38 @@ export default MCPClient;`}
         <section className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg mt-8">
           <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white flex items-center">
             <FaBook className="w-6 h-6 mr-2 text-green-600" />
-            最佳实践和资源
+            Best Practices and Resources
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">开发最佳实践</h3>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Development Best Practices</h3>
               <ul className="space-y-2 text-gray-600 dark:text-gray-300">
                 <li className="flex items-start">
                   <span className="text-green-600 dark:text-green-400 mr-2">✓</span>
-                  使用类型注解和输入验证
+                  Use type annotations and input validation
                 </li>
                 <li className="flex items-start">
                   <span className="text-green-600 dark:text-green-400 mr-2">✓</span>
-                  实现适当的错误处理
+                  Implement proper error handling
                 </li>
                 <li className="flex items-start">
                   <span className="text-green-600 dark:text-green-400 mr-2">✓</span>
-                  添加详细的工具描述
+                  Add detailed tool descriptions
                 </li>
                 <li className="flex items-start">
                   <span className="text-green-600 dark:text-green-400 mr-2">✓</span>
-                  支持异步操作
+                  Support asynchronous operations
                 </li>
                 <li className="flex items-start">
                   <span className="text-green-600 dark:text-green-400 mr-2">✓</span>
-                  使用环境变量管理配置
+                  Use environment variables for configuration management
                 </li>
               </ul>
             </div>
             
             <div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">有用资源</h3>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Useful Resources</h3>
               <div className="space-y-2">
                 <a
                   href="https://github.com/modelcontextprotocol/python-sdk"
@@ -911,14 +911,14 @@ export default MCPClient;`}
                   className="flex items-center text-purple-600 dark:text-purple-400 hover:underline"
                 >
                   <FaBook className="w-4 h-4 mr-2" />
-                  核心概念
+                  Core Concepts
                 </a>
                 <a
                   href="/projects"
                   className="flex items-center text-purple-600 dark:text-purple-400 hover:underline"
                 >
                   <FaRocket className="w-4 h-4 mr-2" />
-                  项目示例
+                  Project Examples
                 </a>
               </div>
             </div>

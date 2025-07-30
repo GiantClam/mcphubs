@@ -19,33 +19,33 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MCPHubs - MCP是什麼？Model Context Protocol开发者资源中心",
-  description: "MCPHubs是专业的Model Context Protocol (MCP)开发者平台。了解MCP是什麼、awesome-mcp-servers项目集合、Claude MCP集成教程、MCP服务器开发指南。发现最佳MCP项目，学习AI应用开发的下一代协议。",
+  title: "MCPHubs - What is MCP? Model Context Protocol Developer Resource Center",
+  description: "MCPHubs is a professional Model Context Protocol (MCP) developer platform. Learn what MCP is, awesome-mcp-servers project collection, Claude MCP integration tutorials, MCP server development guides. Discover the best MCP projects and learn the next-generation protocol for AI application development.",
   keywords: [
-    // 高搜索量中文关键词
+    // High search volume Chinese keywords
     "mcp 是 什麼", "awesome-mcp-servers", "claude mcp", "mcp server教程", "mcp协议", "mcp客户端",
-    // 英文核心关键词  
+    // English core keywords
     "Model Context Protocol", "MCP", "Anthropic", "Claude", "AI", "LLM",
-    // 技术相关长尾词
+    // Technology-related long-tail keywords
     "playwright-mcp", "fastapi-mcp", "blender-mcp", "mcp-grafana", "browser-tools-mcp",
-    // 开发相关词
+    // Development-related keywords
     "mcp server", "awesome mcp", "mcp tutorial", "claude desktop mcp", "cursor mcp",
-    // 多语言技术词
+    // Multi-language technical keywords
     "MCP开发", "AI协议", "上下文协议", "模型协议", "Claude集成",
-    // 日语关键词
+    // Japanese keywords
     "MCPとは", "Model Context Protocol", "Claude MCP", "MCP サーバー",
-    // 韩语关键词
+    // Korean keywords
     "MCP란 무엇", "Model Context Protocol", "Claude MCP", "MCP 서버",
-    // 德语关键词
+    // German keywords
     "Was ist MCP", "Model Context Protocol", "Claude MCP", "MCP Server",
-    // 法语关键词
+    // French keywords
     "Qu'est-ce que MCP", "Model Context Protocol", "Claude MCP", "serveur MCP",
-    // 西班牙语关键词
+    // Spanish keywords
     "Qué es MCP", "Model Context Protocol", "Claude MCP", "servidor MCP"
   ],
   openGraph: {
-    title: "MCPHubs - MCP是什麼？Model Context Protocol资源中心",
-    description: "探索MCP协议，学习Claude MCP集成，发现awesome-mcp-servers项目。最全面的Model Context Protocol开发者资源平台。",
+    title: "MCPHubs - What is MCP? Model Context Protocol Resource Center",
+    description: "Explore MCP protocol, learn Claude MCP integration, discover awesome-mcp-servers projects. The most comprehensive Model Context Protocol developer resource platform.",
     url: "https://mcphubs.com",
     siteName: "MCPHubs",
     images: [
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
         url: "/images/og-mcphubs.jpg",
         width: 1200,
         height: 630,
-        alt: "MCPHubs - Model Context Protocol开发者中心"
+        alt: "MCPHubs - Model Context Protocol Developer Center"
       }
     ],
     locale: "zh_CN",
@@ -61,19 +61,19 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "MCPHubs - MCP协议开发者资源",
-    description: "了解MCP是什麼，学习Claude MCP集成，发现最佳MCP项目",
+    title: "MCPHubs - MCP Protocol Developer Resources",
+    description: "Learn what MCP is, learn Claude MCP integration, discover the best MCP projects",
     images: ["/images/og-mcphubs.jpg"]
   },
   other: {
     'google-adsense-account': 'ca-pub-7958390626430202',
     'google-site-verification': 'adsense-verification',
-    // 地理定位 - 针对高价值地区
+    // Geographic targeting - targeting high-value regions
     'geo.region': 'US-CA',
     'geo.placename': 'San Francisco',
     'geo.position': '37.7749;-122.4194',
     'ICBM': '37.7749, -122.4194',
-    // 高价值市场定位
+    // High-value market targeting
     'target-market': 'US,CA,AU,SE,JP,KR,DE,FR,ES',
     'audience': 'developers,ai-engineers,tech-professionals'
   },
@@ -115,15 +115,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // 在应用启动时触发同步任务（异步执行，不阻塞页面渲染）
+  // Trigger sync tasks on app startup (async execution, doesn't block page rendering)
   if (typeof window === 'undefined') {
-    // 仅在服务端执行一次
+          // Only execute once on server side
     triggerStartupSync({
-      forceSync: false, // 非强制模式，智能判断是否需要同步
-      skipTimeWindow: true, // 启动时跳过时间窗口限制
-      delay: 3000 // 延迟3秒，确保应用完全启动
-    }).catch(error => {
-      console.error('启动同步触发失败:', error);
+              forceSync: false, // Non-forced mode, intelligently determine if sync is needed
+              skipTimeWindow: true, // Skip time window limit on startup
+        delay: 3000 // Delay 3 seconds to ensure app is fully started
+          }).catch(error => {
+        console.error('Startup sync trigger failed:', error);
     });
   }
 

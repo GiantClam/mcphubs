@@ -14,16 +14,16 @@ export default function ProjectShowcase({ initialProjects = [], showAll = false 
   const [projects, setProjects] = useState<ProcessedRepo[]>(initialProjects);
   const [loading, setLoading] = useState(false);
 
-  // 如果没有初始项目数据，则从API获取
+  // If no initial project data, fetch from API
   useEffect(() => {
     if (initialProjects.length === 0) {
       setLoading(true);
       fetch('/api/projects')
         .then(response => response.json())
         .then(data => {
-          console.log('API response:', data); // 添加调试日志
+          console.log('API response:', data); // Add debug log
           if (data.success && data.data && Array.isArray(data.data)) {
-            console.log('Setting projects:', data.data.length); // 添加调试日志
+            console.log('Setting projects:', data.data.length); // Add debug log
             setProjects(data.data);
           } else {
             console.error('Invalid data format:', data);

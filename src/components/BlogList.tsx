@@ -17,40 +17,40 @@ interface BlogPost {
   category: string;
 }
 
-// 模拟博客文章数据（实际应用中应该从CMS或数据库获取）
+  // Mock blog post data (in real applications should be fetched from CMS or database)
 const blogPosts: BlogPost[] = [
   {
     id: '1',
-    title: 'Model Context Protocol深度解析：重新定义AI应用的上下文管理',
-    excerpt: '深入探讨MCP协议的核心原理、技术架构和实际应用场景。从协议设计理念到具体实现细节，全面解析这一革命性的AI上下文管理标准。',
+    title: 'Deep Dive into Model Context Protocol: Redefining Context Management for AI Applications',
+    excerpt: 'In-depth exploration of MCP protocol core principles, technical architecture, and practical application scenarios. From protocol design philosophy to specific implementation details, comprehensive analysis of this revolutionary AI context management standard.',
     contentKey: 'mcp_analysis',
-    author: 'MCPHubs团队',
+    author: 'MCPHubs Team',
     publishDate: new Date('2024-03-15'),
-    readTime: '8分钟阅读',
-    tags: ['MCP协议', '技术架构', 'AI应用'],
-    category: '技术深度'
+    readTime: '8 min read',
+    tags: ['MCP Protocol', 'Technical Architecture', 'AI Applications'],
+    category: 'Technical Deep Dive'
   },
   {
     id: '2',
-    title: 'MCPHubs生态系统分析：构建开放的AI协议社区',
-    excerpt: '全面分析MCPHubs平台的生态发展状况，探讨开发者社区的贡献模式，以及如何推动MCP协议的标准化进程。',
+    title: 'MCPHubs Ecosystem Analysis: Building an Open AI Protocol Community',
+    excerpt: 'Comprehensive analysis of MCPHubs platform ecosystem development, exploring developer community contribution patterns, and how to promote MCP protocol standardization process.',
     contentKey: 'mcphubs_ecosystem',
-    author: '社区管理员',
+    author: 'Community Manager',
     publishDate: new Date('2024-03-10'),
-    readTime: '6分钟阅读',
-    tags: ['社区生态', '开源协作', '标准化'],
-    category: '生态分析'
+    readTime: '6 min read',
+    tags: ['Community Ecosystem', 'Open Source Collaboration', 'Standardization'],
+    category: 'Ecosystem Analysis'
   },
   {
     id: '3',
-    title: 'MCP项目开发最佳实践：从架构设计到部署运维',
-    excerpt: '基于实际项目经验，总结MCP应用开发的最佳实践，包括架构设计、性能优化、安全考虑和运维部署等关键环节。',
+    title: 'MCP Project Development Best Practices: From Architecture Design to Deployment Operations',
+    excerpt: 'Based on actual project experience, summarize best practices for MCP application development, including architecture design, performance optimization, security considerations, and operational deployment key aspects.',
     contentKey: 'development_practices',
-    author: '技术团队',
+    author: 'Technical Team',
     publishDate: new Date('2024-03-05'),
-    readTime: '12分钟阅读',
-    tags: ['最佳实践', '架构设计', '性能优化', '安全'],
-    category: '开发指南'
+    readTime: '12 min read',
+    tags: ['Best Practices', 'Architecture Design', 'Performance Optimization', 'Security'],
+    category: 'Development Guide'
   }
 ];
 
@@ -58,7 +58,7 @@ const BlogList: React.FC = () => {
   const [selectedPost, setSelectedPost] = React.useState<BlogPost | null>(null);
 
   const formatDate = (date: Date) => {
-    return date.toLocaleDateString('zh-CN', {
+    return date.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
       day: 'numeric'
@@ -67,10 +67,10 @@ const BlogList: React.FC = () => {
 
   const getCategoryColor = (category: string) => {
     const colors: { [key: string]: string } = {
-      '技术深度': 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
-      '生态分析': 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
-      '开发指南': 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300',
-      '社区动态': 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300',
+      'Technical Deep Dive': 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
+      'Ecosystem Analysis': 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
+      'Development Guide': 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300',
+      'Community Updates': 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300',
     };
     return colors[category] || 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
   };
@@ -79,16 +79,16 @@ const BlogList: React.FC = () => {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="max-w-4xl mx-auto px-4 py-8">
-          {/* 返回按钮 */}
+          {/* Back button */}
           <button
             onClick={() => setSelectedPost(null)}
             className="mb-6 flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors"
           >
             <span className="mr-2">←</span>
-            返回文章列表
+            Back to Article List
           </button>
 
-          {/* 文章标题区域 */}
+          {/* Article title area */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-8 mb-8">
             <div className="mb-4">
               <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${getCategoryColor(selectedPost.category)}`}>

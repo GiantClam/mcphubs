@@ -29,32 +29,32 @@ const TroubleshootingPage = () => {
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
 
   const categories = [
-    { id: 'all', name: '全部', icon: '📋' },
-    { id: 'installation', name: '安装配置', icon: '⚙️' },
-    { id: 'development', name: '开发问题', icon: '💻' },
-    { id: 'deployment', name: '部署运行', icon: '🚀' },
-    { id: 'integration', name: '集成问题', icon: '🔗' },
-    { id: 'performance', name: '性能优化', icon: '⚡' },
-    { id: 'debugging', name: '调试技巧', icon: '🐛' }
+    { id: 'all', name: 'All', icon: '📋' },
+    { id: 'installation', name: 'Installation', icon: '⚙️' },
+    { id: 'development', name: 'Development', icon: '💻' },
+    { id: 'deployment', name: 'Deployment', icon: '🚀' },
+    { id: 'integration', name: 'Integration', icon: '🔗' },
+    { id: 'performance', name: 'Performance', icon: '⚡' },
+    { id: 'debugging', name: 'Debugging', icon: '🐛' }
   ];
 
   const sampleFAQs: FAQItem[] = [
     {
       id: 'faq1',
-      question: '如何解决"无法连接到MCP服务器"的错误？',
-      answer: `这个错误通常由以下原因引起：
+      question: 'How to resolve "Unable to connect to MCP server" error?',
+      answer: `This error is usually caused by the following reasons:
 
-**1. 检查服务器状态**
+**1. Check Server Status**
 \`\`\`bash
-# 检查服务器是否运行
+# Check if server is running
 ps aux | grep python | grep server.py
 
-# 检查端口是否被占用
+# Check if port is occupied
 lsof -i :8000
 \`\`\`
 
-**2. 验证配置文件**
-确保Claude Desktop的配置文件中服务器路径正确：
+**2. Verify Configuration File**
+Ensure the server path in Claude Desktop configuration file is correct:
 \`\`\`json
 {
   "mcpServers": {
@@ -66,85 +66,85 @@ lsof -i :8000
 }
 \`\`\`
 
-**3. 检查Python环境**
+**3. Check Python Environment**
 \`\`\`bash
-# 确保使用正确的Python版本
+# Ensure using correct Python version
 python --version
 pip list | grep mcp
 \`\`\`
 
-**4. 查看日志**
-检查Claude Desktop的日志文件：
+**4. View Logs**
+Check Claude Desktop log files:
 - macOS: ~/Library/Logs/Claude/
 - Windows: %APPDATA%/Claude/logs/`,
       category: 'installation',
-      tags: ['连接错误', '配置', '服务器'],
+      tags: ['Connection Error', 'Configuration', 'Server'],
       helpful: 45,
       views: 120
     },
     {
       id: 'faq2',
-      question: 'MCP服务器启动后立即崩溃怎么办？',
-      answer: `服务器崩溃通常是由以下问题引起：
+      question: 'What to do when MCP server crashes immediately after startup?',
+      answer: `Server crashes are usually caused by the following issues:
 
-**1. 检查错误日志**
+**1. Check Error Logs**
 \`\`\`bash
-# 在终端中直接运行服务器查看错误
+# Run server directly in terminal to see errors
 python server.py
 \`\`\`
 
-**2. 常见错误和解决方案**
+**2. Common Errors and Solutions**
 
-**依赖缺失：**
+**Missing Dependencies:**
 \`\`\`bash
 pip install mcp typing-extensions
 \`\`\`
 
-**端口冲突：**
+**Port Conflict:**
 \`\`\`python
-# 在server.py中修改端口
+# Modify port in server.py
 if __name__ == "__main__":
     import mcp.server.stdio
-    mcp.server.stdio.run_server(server, port=8001)  # 更改端口
+    mcp.server.stdio.run_server(server, port=8001)  # Change port
 \`\`\`
 
-**权限问题：**
+**Permission Issues:**
 \`\`\`bash
-# 确保脚本有执行权限
+# Ensure script has execution permission
 chmod +x server.py
 \`\`\`
 
-**3. 调试模式**
-启用详细日志记录：
+**3. Debug Mode**
+Enable detailed logging:
 \`\`\`python
 import logging
 logging.basicConfig(level=logging.DEBUG)
 \`\`\``,
       category: 'debugging',
-      tags: ['服务器崩溃', '启动错误', '调试'],
+      tags: ['Server Crash', 'Startup Error', 'Debugging'],
       helpful: 38,
       views: 95
     },
     {
       id: 'faq3',
-      question: '如何解决Claude Desktop无法识别MCP工具的问题？',
-      answer: `工具无法识别的常见原因和解决方案：
+      question: 'How to resolve Claude Desktop not recognizing MCP tools?',
+      answer: `Common reasons and solutions for tools not being recognized:
 
-**1. 检查工具定义**
-确保工具定义格式正确：
+**1. Check Tool Definition**
+Ensure tool definition format is correct:
 \`\`\`python
 @server.list_tools()
 async def handle_list_tools():
     return [
         {
             "name": "my_tool",
-            "description": "工具的详细描述",
+            "description": "Detailed description of the tool",
             "inputSchema": {
                 "type": "object",
                 "properties": {
                     "param1": {
                         "type": "string",
-                        "description": "参数描述"
+                        "description": "Parameter description"
                     }
                 },
                 "required": ["param1"]
@@ -153,7 +153,7 @@ async def handle_list_tools():
     ]
 \`\`\`
 
-**2. 验证工具响应**
+**2. Verify Tool Response**
 \`\`\`python
 @server.call_tool()
 async def handle_call_tool(name: str, arguments: dict):
@@ -162,29 +162,29 @@ async def handle_call_tool(name: str, arguments: dict):
             "content": [
                 {
                     "type": "text",
-                    "text": "工具执行结果"
+                    "text": "Tool execution result"
                 }
             ]
         }
     raise ValueError(f"Unknown tool: {name}")
 \`\`\`
 
-**3. 重启Claude Desktop**
-修改工具定义后，需要重启Claude Desktop才能生效。
+**3. Restart Claude Desktop**
+After modifying tool definitions, you need to restart Claude Desktop for changes to take effect.
 
-**4. 检查工具名称**
-确保工具名称中只包含字母、数字和下划线。`,
+**4. Check Tool Names**
+Ensure tool names only contain letters, numbers, and underscores.`,
       category: 'integration',
-      tags: ['工具识别', 'Claude Desktop', '集成'],
+      tags: ['Tool Recognition', 'Claude Desktop', 'Integration'],
       helpful: 52,
       views: 140
     },
     {
       id: 'faq4',
-      question: '如何优化MCP服务器的性能？',
-      answer: `性能优化的几个关键方面：
+      question: 'How to optimize MCP server performance?',
+      answer: `Key aspects of performance optimization:
 
-**1. 异步处理**
+**1. Asynchronous Processing**
 \`\`\`python
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
@@ -192,25 +192,25 @@ from concurrent.futures import ThreadPoolExecutor
 @server.call_tool()
 async def handle_call_tool(name: str, arguments: dict):
     if name == "heavy_task":
-        # 使用线程池处理CPU密集型任务
+        # Use thread pool for CPU-intensive tasks
         loop = asyncio.get_event_loop()
         with ThreadPoolExecutor() as executor:
             result = await loop.run_in_executor(executor, cpu_intensive_task, arguments)
         return {"content": [{"type": "text", "text": result}]}
 \`\`\`
 
-**2. 缓存机制**
+**2. Caching Mechanism**
 \`\`\`python
 from functools import lru_cache
 import time
 
 @lru_cache(maxsize=128)
 def expensive_computation(param):
-    # 缓存计算结果
+    # Cache computation results
     return compute_result(param)
 \`\`\`
 
-**3. 连接池**
+**3. Connection Pool**
 \`\`\`python
 import aiohttp
 import asyncio
@@ -226,28 +226,28 @@ class HTTPClient:
         return self.session
 \`\`\`
 
-**4. 内存管理**
-- 及时释放大对象
-- 使用生成器处理大量数据
-- 监控内存使用情况`,
+**4. Memory Management**
+- Release large objects promptly
+- Use generators for large data processing
+- Monitor memory usage`,
       category: 'performance',
-      tags: ['性能优化', '异步处理', '缓存'],
+      tags: ['Performance Optimization', 'Async Processing', 'Caching'],
       helpful: 29,
       views: 85
     },
     {
       id: 'faq5',
-      question: '如何在TypeScript中开发MCP服务器？',
-      answer: `TypeScript MCP服务器开发指南：
+      question: 'How to develop MCP server in TypeScript?',
+      answer: `TypeScript MCP Server Development Guide:
 
-**1. 项目初始化**
+**1. Project Initialization**
 \`\`\`bash
 npm init -y
 npm install @modelcontextprotocol/sdk
 npm install -D typescript @types/node ts-node
 \`\`\`
 
-**2. TypeScript配置**
+**2. TypeScript Configuration**
 \`\`\`json
 // tsconfig.json
 {
@@ -265,7 +265,7 @@ npm install -D typescript @types/node ts-node
 }
 \`\`\`
 
-**3. 服务器实现**
+**3. Server Implementation**
 \`\`\`typescript
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
@@ -285,13 +285,13 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
     tools: [
       {
         name: 'calculate',
-        description: '执行数学计算',
+        description: 'Perform mathematical calculations',
         inputSchema: {
           type: 'object',
           properties: {
             expression: {
               type: 'string',
-              description: '数学表达式'
+              description: 'Mathematical expression'
             }
           },
           required: ['expression']
@@ -311,7 +311,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         content: [
           {
             type: 'text',
-            text: \`计算结果: \${result}\`
+            text: \`Calculation result: \${result}\`
           }
         ]
       };
@@ -320,7 +320,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         content: [
           {
             type: 'text',
-            text: \`计算错误: \${error.message}\`
+            text: \`Calculation error: \${error.message}\`
           }
         ],
         isError: true
@@ -335,7 +335,7 @@ const transport = new StdioServerTransport();
 server.connect(transport);
 \`\`\`
 
-**4. 运行脚本**
+**4. Run Scripts**
 \`\`\`json
 // package.json
 {
@@ -347,7 +347,7 @@ server.connect(transport);
 }
 \`\`\``,
       category: 'development',
-      tags: ['TypeScript', '服务器开发', '配置'],
+      tags: ['TypeScript', 'Server Development', 'Configuration'],
       helpful: 34,
       views: 76
     }
@@ -356,8 +356,8 @@ server.connect(transport);
   const troubleshootingSteps: TroubleshootingStep[] = [
     {
       step: 1,
-      title: '检查环境配置',
-      description: '确保所有必要的依赖项都已正确安装',
+      title: 'Check Environment Configuration',
+      description: 'Ensure all necessary dependencies are properly installed',
       code: `# 检查Python版本
 python --version
 
@@ -367,33 +367,33 @@ pip show mcp
 # 验证Node.js版本（如果使用TypeScript）
 node --version
 npm --version`,
-      expected: 'Python 3.8+, MCP SDK已安装, Node.js 18+',
+      expected: 'Python 3.8+, MCP SDK installed, Node.js 18+',
       troubleshooting: [
-        '如果Python版本过低，请升级到3.8或更高版本',
-        '如果MCP SDK未安装：pip install mcp',
-        '确保使用正确的Python环境（虚拟环境）'
+        'If Python version is too low, upgrade to 3.8 or higher',
+        'If MCP SDK is not installed: pip install mcp',
+        'Ensure using correct Python environment (virtual environment)'
       ]
     },
     {
       step: 2,
-      title: '验证服务器启动',
-      description: '测试MCP服务器是否能正常启动',
+      title: 'Verify Server Startup',
+      description: 'Test if MCP server can start normally',
       code: `# 直接运行服务器
 python server.py
 
 # 或者使用调试模式
 PYTHONPATH=. python -m server`,
-      expected: '服务器启动成功，无错误消息',
+      expected: 'Server starts successfully, no error messages',
       troubleshooting: [
-        '检查import语句是否正确',
-        '确保所有依赖项都已安装',
-        '检查端口是否被占用'
+        'Check if import statements are correct',
+        'Ensure all dependencies are installed',
+        'Check if port is occupied'
       ]
     },
     {
       step: 3,
-      title: '配置Claude Desktop',
-      description: '确保Claude Desktop正确配置了MCP服务器',
+      title: 'Configure Claude Desktop',
+      description: 'Ensure Claude Desktop is properly configured with MCP server',
       code: `# Claude Desktop配置文件位置
 # macOS: ~/Library/Application Support/Claude/claude_desktop_config.json
 # Windows: %APPDATA%/Claude/claude_desktop_config.json
@@ -406,25 +406,25 @@ PYTHONPATH=. python -m server`,
     }
   }
 }`,
-      expected: '配置文件格式正确，路径有效',
+      expected: 'Configuration file format is correct, paths are valid',
       troubleshooting: [
-        '确保使用绝对路径',
-        '检查JSON格式是否正确',
-        '重启Claude Desktop应用程序'
+        'Ensure using absolute paths',
+        'Check if JSON format is correct',
+        'Restart Claude Desktop application'
       ]
     },
     {
       step: 4,
-      title: '测试工具功能',
-      description: '验证MCP工具是否正常工作',
+      title: 'Test Tool Functionality',
+      description: 'Verify MCP tools are working properly',
       code: `# 在Claude Desktop中测试
 # 询问: "你有什么工具可以使用？"
 # 或者: "帮我调用工具XYZ"`,
-      expected: 'Claude能识别并调用MCP工具',
+      expected: 'Claude can recognize and call MCP tools',
       troubleshooting: [
-        '检查工具定义格式是否正确',
-        '确保工具名称符合规范',
-        '查看Claude Desktop日志文件'
+        'Check if tool definition format is correct',
+        'Ensure tool names comply with specifications',
+        'View Claude Desktop log files'
       ]
     }
   ];
@@ -461,9 +461,9 @@ PYTHONPATH=. python -m server`,
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">故障排除 & FAQ</h1>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Troubleshooting & FAQ</h1>
           <p className="text-gray-600 dark:text-gray-300">
-            解决MCP开发过程中的常见问题，快速找到解决方案
+            Solve common problems in MCP development process, quickly find solutions
           </p>
         </div>
 
@@ -479,7 +479,7 @@ PYTHONPATH=. python -m server`,
                 </div>
                 <input
                   type="text"
-                  placeholder="搜索问题、解决方案或标签..."
+                  placeholder="Search problems, solutions or tags..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
@@ -506,9 +506,9 @@ PYTHONPATH=. python -m server`,
 
         {/* 系统故障排除步骤 */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">🔧 系统故障排除步骤</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">🔧 System Troubleshooting Steps</h2>
           <p className="text-gray-600 dark:text-gray-300 mb-6">
-            按照以下步骤系统性地排查和解决MCP相关问题
+            Follow these steps to systematically troubleshoot and resolve MCP-related issues
           </p>
           <div className="space-y-6">
             {troubleshootingSteps.map((step, index) => (
@@ -523,7 +523,7 @@ PYTHONPATH=. python -m server`,
                     
                     {step.code && (
                       <div className="mb-3">
-                        <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-2">执行命令：</h4>
+                        <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-2">Execute Commands:</h4>
                         <pre className="bg-gray-100 dark:bg-gray-900 p-3 rounded-md overflow-x-auto text-sm">
                           <code>{step.code}</code>
                         </pre>
@@ -532,14 +532,14 @@ PYTHONPATH=. python -m server`,
                     
                     {step.expected && (
                       <div className="mb-3">
-                        <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-2">期望结果：</h4>
+                        <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-2">Expected Results:</h4>
                         <p className="text-green-600 dark:text-green-400 text-sm">{step.expected}</p>
                       </div>
                     )}
                     
                     {step.troubleshooting && (
                       <div>
-                        <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-2">故障排除：</h4>
+                        <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-2">Troubleshooting:</h4>
                         <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
                           {step.troubleshooting.map((item, idx) => (
                             <li key={idx} className="flex items-start">
@@ -560,9 +560,9 @@ PYTHONPATH=. python -m server`,
         {/* FAQ列表 */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">❓ 常见问题解答</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">❓ Frequently Asked Questions</h2>
             <div className="text-sm text-gray-500 dark:text-gray-400">
-              显示 {filteredFAQs.length} 个问题
+              Showing {filteredFAQs.length} questions
             </div>
           </div>
           
@@ -624,7 +624,7 @@ PYTHONPATH=. python -m server`,
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
                         </svg>
-                        <span>有用</span>
+                        <span>Useful</span>
                       </button>
                     </div>
                   </div>
@@ -640,25 +640,25 @@ PYTHONPATH=. python -m server`,
             <svg className="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
             </svg>
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">没有找到相关问题</h3>
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No related questions found</h3>
             <p className="text-gray-500 dark:text-gray-400">
-              尝试调整搜索关键词或选择不同的分类
+              Try adjusting search keywords or selecting different categories
             </p>
           </div>
         )}
 
         {/* 联系支持 */}
         <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900 dark:to-purple-900 rounded-lg p-6 mt-8">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">📞 需要更多帮助？</h3>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">📞 Need more help?</h3>
           <p className="text-gray-600 dark:text-gray-300 mb-4">
-            如果以上解决方案无法解决您的问题，请通过以下方式联系我们：
+            If the above solutions cannot resolve your issue, please contact us through the following methods:
           </p>
           <div className="flex flex-wrap gap-4">
             <button className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
               </svg>
-              <span>社区论坛</span>
+              <span>Community Forum</span>
             </button>
             <button className="flex items-center space-x-2 px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors">
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">

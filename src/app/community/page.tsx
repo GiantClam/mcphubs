@@ -12,33 +12,33 @@ export default function CommunityPage() {
   const discussions = [
     {
       id: '1',
-      title: 'MCP 服务器开发最佳实践',
-      preview: '分享一些在开发 MCP 服务器过程中的经验和最佳实践...',
+      title: 'Best Practices for MCP Server Development',
+      preview: 'Sharing some experiences and best practices in developing MCP servers...',
       author: 'developer123',
       replies: 15,
       likes: 42,
-      time: '2小时前',
-      category: '技术讨论'
+      time: '2 hours ago',
+      category: 'Technical Discussion'
     },
     {
       id: '2',
-      title: 'Claude Desktop 集成问题解决',
-      preview: '遇到 Claude Desktop 集成问题？这里有一些常见解决方案...',
+      title: 'Claude Desktop Integration Solutions',
+      preview: 'Encountering Claude Desktop integration issues? Here are some common solutions...',
       author: 'mcphelper',
       replies: 8,
       likes: 23,
-      time: '4小时前',
-      category: '问题求助'
+      time: '4 hours ago',
+      category: 'Help Request'
     },
     {
       id: '3',
-      title: '新版本 MCP 协议更新解析',
-      preview: '详细解析最新版本的 MCP 协议变更和新特性...',
+      title: 'Analysis of New MCP Protocol Updates',
+      preview: 'Detailed analysis of the latest MCP protocol changes and new features...',
       author: 'protocol_expert',
       replies: 32,
       likes: 67,
-      time: '1天前',
-      category: '协议讨论'
+      time: '1 day ago',
+      category: 'Protocol Discussion'
     }
   ];
 
@@ -46,10 +46,10 @@ export default function CommunityPage() {
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-          MCP 社区论坛
+          MCP Community Forum
         </h1>
         <p className="text-lg text-gray-600 dark:text-gray-300 max-w-4xl">
-          与 Model Context Protocol 社区交流，分享经验，获取支持，共同推动 MCP 生态系统的发展。
+          Communicate with the Model Context Protocol community, share experiences, get support, and jointly promote the development of the MCP ecosystem.
         </p>
       </div>
 
@@ -65,7 +65,7 @@ export default function CommunityPage() {
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
               }`}
             >
-              💬 讨论区
+              💬 Discussions
             </button>
             <button
               onClick={() => setActiveTab('showcase')}
@@ -75,7 +75,7 @@ export default function CommunityPage() {
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
               }`}
             >
-              🚀 项目展示
+              🚀 Project Showcase
             </button>
             <button
               onClick={() => setActiveTab('help')}
@@ -85,7 +85,7 @@ export default function CommunityPage() {
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
               }`}
             >
-              🙋 求助专区
+              🙋 Help Center
             </button>
           </nav>
         </div>
@@ -111,11 +111,11 @@ export default function CommunityPage() {
                     </div>
                     <div className="flex items-center space-x-1">
                       <FaComments className="w-4 h-4" />
-                      <span>{discussion.replies} 回复</span>
+                      <span>{discussion.replies} replies</span>
                     </div>
                     <div className="flex items-center space-x-1">
                       <FaThumbsUp className="w-4 h-4" />
-                      <span>{discussion.likes} 点赞</span>
+                      <span>{discussion.likes} likes</span>
                     </div>
                     <div className="flex items-center space-x-1">
                       <FaClock className="w-4 h-4" />
@@ -124,8 +124,8 @@ export default function CommunityPage() {
                   </div>
                 </div>
                 <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                  discussion.category === '技术讨论' ? 'bg-blue-100 text-blue-800' :
-                  discussion.category === '项目分享' ? 'bg-green-100 text-green-800' :
+                  discussion.category === 'Technical Discussion' ? 'bg-blue-100 text-blue-800' :
+                  discussion.category === 'Project Sharing' ? 'bg-green-100 text-green-800' :
                   'bg-purple-100 text-purple-800'
                 }`}>
                   {discussion.category}
@@ -135,7 +135,7 @@ export default function CommunityPage() {
                 href={`/community/${discussion.id}`}
                 className="inline-flex items-center space-x-1 text-purple-600 dark:text-purple-400 hover:underline"
               >
-                <span>查看详情</span>
+                <span>View Details</span>
                 <FaArrowRight className="w-3 h-3" />
               </Link>
             </div>

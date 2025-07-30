@@ -84,7 +84,7 @@ function generateExpertInsights(project: ProcessedRepo): ExpertInsight[] {
   return insights;
 }
 
-// 基于项目特征生成实用建议
+// Generate practical advice based on project characteristics
 function generatePracticalAdvice(project: ProcessedRepo): string[] {
   const advice: string[] = [];
   

@@ -54,19 +54,19 @@ export default function ProjectCard({
     e.stopPropagation();
     
     if (!userLoggedIn) {
-      // 提示用户登录
+      // Prompt user to login
       return;
     }
 
     setIsLoading(true);
     try {
-      // 这里应该调用API来处理点赞
+      // Here should call API to handle like
       // const response = await fetch(`/api/projects/${id}/like`, {
       //   method: 'POST',
       //   headers: { 'Content-Type': 'application/json' },
       // });
       
-      // 模拟API调用
+      // Mock API call
       await new Promise(resolve => setTimeout(resolve, 300));
       
       setLiked(!liked);
@@ -94,7 +94,7 @@ export default function ProjectCard({
 
   const formatDate = (dateString: string) => {
     if (!dateString) return '';
-    return new Date(dateString).toLocaleDateString('zh-CN');
+    return new Date(dateString).toLocaleDateString('en-US');
   };
 
   return (
@@ -102,7 +102,7 @@ export default function ProjectCard({
       href={`/project/${generateProjectSlug(owner, name)}`}
       className="block border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 bg-white dark:bg-gray-800 h-full flex flex-col group"
     >
-      {/* 项目图片 */}
+              {/* Project image */}
       <div className="relative h-40 w-full">
         <Image 
           src={imageUrl || '/images/default-project.jpg'} 
@@ -110,7 +110,7 @@ export default function ProjectCard({
           fill
           className="object-cover group-hover:scale-105 transition-transform duration-200"
         />
-        {/* AI 评分徽章 */}
+        {/* AI score badge */}
         {aiScore > 0 && (
           <div className={`absolute top-2 left-2 ${getAIScoreBg(aiScore)} rounded-full px-2 py-1 flex items-center space-x-1`}>
             <FaRobot className={`w-3 h-3 ${getAIScoreColor(aiScore)}`} />
@@ -120,7 +120,7 @@ export default function ProjectCard({
           </div>
         )}
         
-        {/* 相关性标签 */}
+        {/* Relevance tag */}
         <div className="absolute top-2 right-2">
           <span className={`text-xs font-medium px-2 py-1 rounded-full ${
             relevance === 'High' 
@@ -134,7 +134,7 @@ export default function ProjectCard({
         </div>
       </div>
 
-      {/* 项目信息 */}
+      {/* Project information */}
       <div className="p-5 flex-grow">
         <div className="flex items-start justify-between mb-3">
           <div className="flex-grow">
@@ -144,15 +144,16 @@ export default function ProjectCard({
           </div>
           
           {githubUrl && (
-            <a 
-              href={githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                window.open(githubUrl, '_blank', 'noopener,noreferrer');
+              }}
               className="ml-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
-              onClick={(e) => e.stopPropagation()}
             >
               <FaExternalLinkAlt className="w-4 h-4" />
-            </a>
+            </button>
           )}
         </div>
 
@@ -160,7 +161,7 @@ export default function ProjectCard({
           {description}
         </p>
 
-        {/* 主题标签 */}
+        {/* Topic tags */}
         {topics && topics.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-4">
             <FaTags className="w-3 h-3 text-gray-400 mt-1" />
@@ -180,7 +181,7 @@ export default function ProjectCard({
           </div>
         )}
 
-        {/* 项目统计 */}
+        {/* Project statistics */}
         <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-3">
           <div className="flex items-center space-x-4">
             <span className="flex items-center">
@@ -201,16 +202,16 @@ export default function ProjectCard({
           </div>
         </div>
 
-        {/* 更新时间 */}
+        {/* Update time */}
         {updatedAt && (
           <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 mb-4">
             <FaCalendarAlt className="w-3 h-3 mr-1" />
-            最后更新: {formatDate(updatedAt)}
+            Last updated: {formatDate(updatedAt)}
           </div>
         )}
       </div>
 
-              {/* 底部操作区 */}
+              {/* Bottom action area */}
       <div className="px-5 py-3 bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-2">
@@ -220,7 +221,7 @@ export default function ProjectCard({
           </div>
           
           <div className="flex items-center space-x-4">
-            {/* 点赞按钮 */}
+            {/* Like button */}
             <button
               onClick={handleLike}
               disabled={isLoading}
@@ -234,15 +235,18 @@ export default function ProjectCard({
               <span>{likeCount}</span>
             </button>
 
-            {/* 评论按钮 */}
-            <Link 
-              href={`/project/${generateProjectSlug(owner, name)}#comments`}
+            {/* Comment button */}
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                window.location.href = `/project/${generateProjectSlug(owner, name)}#comments`;
+              }}
               className="flex items-center text-gray-500 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
-              onClick={(e) => e.stopPropagation()}
             >
               <FaComment className="w-4 h-4" />
               <span>{comments}</span>
-            </Link>
+            </button>
           </div>
         </div>
       </div>

@@ -2,180 +2,180 @@ import { FaCode, FaDatabase, FaCloud, FaRobot, FaGithub, FaDocker, FaSlack, FaDi
 import { SiJetbrains, SiNotion, SiObsidian, SiFilezilla, SiElasticsearch, SiGrafana } from 'react-icons/si';
 
 export const metadata = {
-  title: 'MCP集成案例 - MCPHubs',
-  description: '探索Model Context Protocol与各种工具和平台的集成示例，学习如何在不同环境中使用MCP'
+  title: 'MCP Integration Examples - MCPHubs',
+  description: 'Explore Model Context Protocol integration examples with various tools and platforms, learn how to use MCP in different environments'
 };
 
 export default function IntegrationsPage() {
   const integrations = [
     {
-      category: "AI 编程工具",
-      description: "与主流 AI 编程助手的集成",
+      category: "AI Programming Tools",
+      description: "Integration with mainstream AI programming assistants",
       items: [
         {
           name: "Claude Desktop",
           icon: <div className="w-12 h-12 bg-orange-600 rounded-full flex items-center justify-center text-white font-bold text-xl">C</div>,
-          description: "Anthropic 官方 AI 助手客户端，原生支持 MCP",
-          features: ["原生 MCP 支持", "工具调用", "资源访问", "提示管理"],
-          status: "官方支持",
+          description: "Anthropic's official AI assistant client with native MCP support",
+          features: ["Native MCP Support", "Tool Calling", "Resource Access", "Prompt Management"],
+          status: "Official Support",
           link: "https://claude.ai/desktop"
         },
         {
           name: "Cursor",
           icon: <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl">⚡</div>,
-          description: "AI 代码编辑器，通过 MCP 扩展功能",
-          features: ["代码生成", "项目理解", "文档生成", "代码重构"],
-          status: "社区支持",
+          description: "AI code editor with MCP extension capabilities",
+          features: ["Code Generation", "Project Understanding", "Documentation Generation", "Code Refactoring"],
+          status: "Community Support",
           link: "https://cursor.sh"
         },
         {
           name: "Windsurf",
           icon: <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center text-white font-bold text-xl">🏄</div>,
-          description: "AI 开发环境，集成 MCP 工具链",
-          features: ["全栈开发", "实时协作", "智能建议", "自动化测试"],
-          status: "社区支持",
+          description: "AI development environment with integrated MCP toolchain",
+          features: ["Full-stack Development", "Real-time Collaboration", "Smart Suggestions", "Automated Testing"],
+          status: "Community Support",
           link: "https://windsurf.dev"
         }
       ]
     },
     {
-      category: "IDE 集成",
-      description: "与集成开发环境的深度集成",
+      category: "IDE Integration",
+      description: "Deep integration with integrated development environments",
       items: [
         {
           name: "VS Code",
           icon: <FaCode className="w-12 h-12 text-blue-600" />,
-          description: "通过扩展支持 MCP 协议",
-          features: ["语法高亮", "代码补全", "调试支持", "插件生态"],
-          status: "扩展支持",
+          description: "MCP protocol support through extensions",
+          features: ["Syntax Highlighting", "Code Completion", "Debug Support", "Plugin Ecosystem"],
+          status: "Extension Support",
           link: "https://marketplace.visualstudio.com/vscode"
         },
         {
           name: "JetBrains IDEs",
           icon: <SiJetbrains className="w-12 h-12 text-black dark:text-white" />,
-          description: "IntelliJ、PyCharm、WebStorm 等的 MCP 集成",
-          features: ["智能代码分析", "重构工具", "版本控制", "团队协作"],
-          status: "官方插件",
+          description: "MCP integration for IntelliJ, PyCharm, WebStorm, etc.",
+          features: ["Smart Code Analysis", "Refactoring Tools", "Version Control", "Team Collaboration"],
+          status: "Official Plugin",
           link: "https://github.com/JetBrains/mcp-jetbrains"
         }
       ]
     },
     {
-      category: "数据库集成",
-      description: "与各种数据库系统的连接",
+      category: "Database Integration",
+      description: "Connection with various database systems",
       items: [
         {
           name: "MySQL",
           icon: <FaDatabase className="w-12 h-12 text-orange-600" />,
-          description: "MySQL 数据库的 MCP 服务器实现",
-          features: ["查询执行", "模式检查", "数据导出", "安全访问"],
-          status: "社区实现",
+          description: "MCP server implementation for MySQL database",
+          features: ["Query Execution", "Schema Inspection", "Data Export", "Secure Access"],
+          status: "Community Implementation",
           link: "https://github.com/designcomputer/mysql_mcp_server"
         },
         {
           name: "PostgreSQL",
           icon: <FaDatabase className="w-12 h-12 text-blue-600" />,
-          description: "PostgreSQL 的高级 MCP 集成",
-          features: ["复杂查询", "JSON 支持", "全文搜索", "性能分析"],
-          status: "社区实现",
+          description: "Advanced MCP integration for PostgreSQL",
+          features: ["Complex Queries", "JSON Support", "Full-text Search", "Performance Analysis"],
+          status: "Community Implementation",
           link: "#"
         },
         {
           name: "Qdrant",
           icon: <FaDatabase className="w-12 h-12 text-purple-600" />,
-          description: "向量数据库的 MCP 服务器",
-          features: ["向量搜索", "语义检索", "AI 嵌入", "相似度计算"],
-          status: "官方支持",
+          description: "MCP server for vector database",
+          features: ["Vector Search", "Semantic Retrieval", "AI Embeddings", "Similarity Calculation"],
+          status: "Official Support",
           link: "https://github.com/qdrant/mcp-server-qdrant"
         }
       ]
     },
     {
-      category: "云服务集成",
-      description: "与主流云平台和服务的集成",
+      category: "Cloud Services Integration",
+      description: "Integration with mainstream cloud platforms and services",
       items: [
         {
           name: "AWS",
           icon: <FaCloud className="w-12 h-12 text-orange-600" />,
-          description: "Amazon Web Services 的 MCP 连接器",
-          features: ["EC2 管理", "S3 存储", "Lambda 函数", "CloudWatch 监控"],
-          status: "社区实现",
+          description: "MCP connector for Amazon Web Services",
+          features: ["EC2 Management", "S3 Storage", "Lambda Functions", "CloudWatch Monitoring"],
+          status: "Community Implementation",
           link: "#"
         },
         {
           name: "Azure",
           icon: <FaCloud className="w-12 h-12 text-blue-600" />,
-          description: "Microsoft Azure 平台集成",
-          features: ["虚拟机", "存储服务", "AI 服务", "DevOps 工具"],
-          status: "开发中",
+          description: "Microsoft Azure platform integration",
+          features: ["Virtual Machines", "Storage Services", "AI Services", "DevOps Tools"],
+          status: "In Development",
           link: "#"
         },
         {
           name: "Google Cloud",
           icon: <FaCloud className="w-12 h-12 text-red-600" />,
-          description: "Google Cloud Platform 的 MCP 适配",
+          description: "MCP adaptation for Google Cloud Platform",
           features: ["Compute Engine", "BigQuery", "AI Platform", "Kubernetes"],
-          status: "计划中",
+          status: "Planned",
           link: "#"
         }
       ]
     },
     {
-      category: "协作工具",
-      description: "与团队协作平台的集成",
+      category: "Collaboration Tools",
+      description: "Integration with team collaboration platforms",
       items: [
         {
           name: "Slack",
           icon: <FaSlack className="w-12 h-12 text-purple-600" />,
-          description: "Slack 机器人的 MCP 集成",
-          features: ["消息处理", "文件共享", "工作流自动化", "通知管理"],
-          status: "社区实现",
+          description: "MCP integration for Slack bots",
+          features: ["Message Processing", "File Sharing", "Workflow Automation", "Notification Management"],
+          status: "Community Implementation",
           link: "#"
         },
         {
           name: "Discord",
           icon: <FaDiscord className="w-12 h-12 text-indigo-600" />,
-          description: "Discord 机器人支持 MCP 协议",
-          features: ["语音处理", "文本分析", "用户管理", "频道自动化"],
-          status: "社区实现",
+          description: "Discord bot with MCP protocol support",
+          features: ["Voice Processing", "Text Analysis", "User Management", "Channel Automation"],
+          status: "Community Implementation",
           link: "#"
         },
         {
           name: "Notion",
           icon: <SiNotion className="w-12 h-12 text-black dark:text-white" />,
-          description: "Notion 工作空间的 MCP 连接",
-          features: ["页面创建", "数据库操作", "内容生成", "知识管理"],
-          status: "开发中",
+          description: "MCP connection for Notion workspace",
+          features: ["Page Creation", "Database Operations", "Content Generation", "Knowledge Management"],
+          status: "In Development",
           link: "#"
         }
       ]
     },
     {
-      category: "开发工具",
-      description: "与开发工作流的集成",
+      category: "Development Tools",
+      description: "Integration with development workflows",
       items: [
         {
           name: "GitHub",
           icon: <FaGithub className="w-12 h-12 text-black dark:text-white" />,
-          description: "GitHub 仓库和 API 的 MCP 集成",
-          features: ["代码审查", "Issue 管理", "PR 自动化", "CI/CD 集成"],
-          status: "社区实现",
+          description: "MCP integration for GitHub repositories and API",
+          features: ["Code Review", "Issue Management", "PR Automation", "CI/CD Integration"],
+          status: "Community Implementation",
           link: "#"
         },
         {
           name: "Docker",
           icon: <FaDocker className="w-12 h-12 text-blue-600" />,
-          description: "容器化环境的 MCP 支持",
-          features: ["镜像管理", "容器操作", "网络配置", "存储管理"],
-          status: "社区实现",
+          description: "MCP support for containerized environments",
+          features: ["Image Management", "Container Operations", "Network Configuration", "Storage Management"],
+          status: "Community Implementation",
           link: "#"
         },
         {
           name: "Figma",
           icon: <div className="w-12 h-12 bg-purple-600 rounded flex items-center justify-center text-white font-bold">F</div>,
-          description: "设计工具的 MCP 集成",
-          features: ["设计读取", "组件生成", "原型分析", "自动化设计"],
-          status: "社区实现",
+          description: "MCP integration for design tools",
+          features: ["Design Reading", "Component Generation", "Prototype Analysis", "Automated Design"],
+          status: "Community Implementation",
           link: "https://github.com/sonnylazuardi/cursor-talk-to-figma-mcp"
         }
       ]
@@ -184,39 +184,39 @@ export default function IntegrationsPage() {
 
   const useCases = [
     {
-      title: "智能代码助手",
-      description: "结合多个 MCP 服务器，创建全能的编程助手",
+      title: "Intelligent Code Assistant",
+      description: "Combine multiple MCP servers to create a comprehensive programming assistant",
       technologies: ["Claude Desktop", "GitHub MCP", "Database MCP", "Documentation MCP"],
-      benefits: ["代码生成", "数据库查询", "文档生成", "项目理解"]
+      benefits: ["Code Generation", "Database Queries", "Documentation Generation", "Project Understanding"]
     },
     {
-      title: "自动化 DevOps",
-      description: "通过 MCP 协议自动化部署和监控流程",
+      title: "Automated DevOps",
+      description: "Automate deployment and monitoring processes through MCP protocol",
       technologies: ["AWS MCP", "Docker MCP", "Slack MCP", "Monitoring MCP"],
-      benefits: ["自动部署", "状态监控", "故障通知", "资源管理"]
+      benefits: ["Automated Deployment", "Status Monitoring", "Failure Notifications", "Resource Management"]
     },
     {
-      title: "智能客服系统",
-      description: "构建基于 MCP 的客户服务解决方案",
+      title: "Intelligent Customer Service",
+      description: "Build MCP-based customer service solutions",
       technologies: ["Discord MCP", "Database MCP", "Knowledge Base MCP", "Analytics MCP"],
-      benefits: ["自动回复", "知识检索", "问题分类", "服务分析"]
+      benefits: ["Auto Reply", "Knowledge Retrieval", "Issue Classification", "Service Analytics"]
     },
     {
-      title: "内容创作助手",
-      description: "利用 MCP 集成多种内容创作工具",
+      title: "Content Creation Assistant",
+      description: "Leverage MCP to integrate multiple content creation tools",
       technologies: ["Notion MCP", "Image Gen MCP", "Research MCP", "Social Media MCP"],
-      benefits: ["内容规划", "素材生成", "研究辅助", "发布自动化"]
+      benefits: ["Content Planning", "Asset Generation", "Research Assistance", "Publishing Automation"]
     }
   ];
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "官方支持": return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200";
-      case "官方插件": return "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200";
-      case "社区实现": return "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200";
-      case "扩展支持": return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200";
-      case "开发中": return "bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200";
-      case "计划中": return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200";
+      case "Official Support": return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200";
+      case "Official Plugin": return "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200";
+      case "Community Implementation": return "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200";
+      case "Extension Support": return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200";
+      case "In Development": return "bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200";
+      case "Planned": return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200";
       default: return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200";
     }
   };
@@ -227,10 +227,10 @@ export default function IntegrationsPage() {
         {/* 页面标题 */}
         <section className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white">
-            MCP 集成案例
+            MCP Integration Examples
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            探索 Model Context Protocol 与各种工具、平台和服务的集成示例，了解如何在不同环境中发挥 MCP 的强大能力
+            Explore Model Context Protocol integration examples with various tools, platforms, and services, understand how to leverage MCP's powerful capabilities in different environments
           </p>
         </section>
 
@@ -269,7 +269,7 @@ export default function IntegrationsPage() {
                     </p>
                     
                     <div className="mb-4">
-                      <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">主要功能：</h4>
+                      <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">Key Features:</h4>
                       <ul className="space-y-1">
                         {item.features.map((feature, featureIndex) => (
                           <li key={featureIndex} className="text-sm text-gray-600 dark:text-gray-300 flex items-center">
@@ -287,7 +287,7 @@ export default function IntegrationsPage() {
                         rel="noopener noreferrer"
                         className="inline-flex items-center text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300 font-medium"
                       >
-                        了解更多
+                        Learn More
                         <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                         </svg>
@@ -304,10 +304,10 @@ export default function IntegrationsPage() {
         <section className="mt-16 mb-12">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-              实际应用场景
+              Real-world Application Scenarios
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300">
-              看看 MCP 集成如何解决真实世界的问题
+              See how MCP integration solves real-world problems
             </p>
           </div>
           
@@ -322,7 +322,7 @@ export default function IntegrationsPage() {
                 </p>
                 
                 <div className="mb-4">
-                  <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">技术栈：</h4>
+                  <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">Tech Stack:</h4>
                   <div className="flex flex-wrap gap-2">
                     {useCase.technologies.map((tech, techIndex) => (
                       <span key={techIndex} className="px-2 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-xs rounded-full">
@@ -333,7 +333,7 @@ export default function IntegrationsPage() {
                 </div>
                 
                 <div>
-                  <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">核心优势：</h4>
+                  <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">Core Benefits:</h4>
                   <ul className="space-y-1">
                     {useCase.benefits.map((benefit, benefitIndex) => (
                       <li key={benefitIndex} className="text-sm text-gray-600 dark:text-gray-300 flex items-center">
@@ -351,23 +351,23 @@ export default function IntegrationsPage() {
         {/* 开始集成 */}
         <section className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg p-8 text-center text-white mt-12">
           <h2 className="text-3xl font-bold mb-4">
-            开始您的 MCP 集成之旅
+            Start Your MCP Integration Journey
           </h2>
           <p className="text-lg mb-6 max-w-2xl mx-auto">
-            选择适合您项目的集成方案，或者创建自己的 MCP 服务器来扩展现有工具的功能
+            Choose integration solutions suitable for your project, or create your own MCP server to extend existing tool capabilities
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="/development-guides"
               className="bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
             >
-              查看开发指南
+              View Development Guides
             </a>
             <a
               href="/projects"
               className="bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-purple-600 transition-colors"
             >
-              浏览项目示例
+              Browse Project Examples
             </a>
           </div>
         </section>

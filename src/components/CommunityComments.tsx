@@ -295,7 +295,7 @@ const CommunityComments: React.FC<CommunityCommentsProps> = ({ project }) => {
         ))}
       </div>
 
-      {/* 社区指南 */}
+              {/* Community Guidelines */}
       <div className="mt-8 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
         <h3 className="font-semibold text-blue-800 dark:text-blue-300 mb-2">
           Community Comment Guidelines

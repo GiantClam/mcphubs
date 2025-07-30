@@ -26,17 +26,17 @@ function SignInContent() {
       <div className="max-w-md w-full space-y-8">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
-            登录到 MCPHubs
+            Sign in to MCPHubs
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
-            使用您的 GitHub 账户登录
+            Sign in with your GitHub account
           </p>
         </div>
 
         {error && (
           <div className="bg-red-50 border border-red-200 rounded-md p-4">
             <div className="text-sm text-red-600">
-              登录失败，请重试
+              Sign in failed, please try again
             </div>
           </div>
         )}
@@ -54,7 +54,7 @@ function SignInContent() {
                   <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                     <FaGithub className="h-5 w-5" />
                   </span>
-                  使用 {provider.name} 登录
+                  Sign in with {provider.name}
                 </button>
               </div>
             ))}

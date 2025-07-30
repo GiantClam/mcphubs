@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { FaGithub, FaCode, FaUsers, FaLightbulb, FaRocket, FaBolt } from 'react-icons/fa';
 import ProjectShowcase from '@/components/ProjectShowcase';
 
-// 首页静态内容组件（服务端渲染）
+// Homepage static content component (server-side rendering)
 function HeroSection() {
   return (
     <section className="relative bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 text-white py-20">
@@ -18,7 +18,7 @@ function HeroSection() {
           Discover the latest MCP projects, tools and integration examples
         </p>
         
-        {/* 静态统计信息 - 立即显示 */}
+        {/* Static statistics - display immediately */}
         <div className="grid grid-cols-3 gap-8 mb-8 max-w-2xl mx-auto">
           <div className="text-center">
             <div className="text-3xl font-bold text-yellow-300">200+</div>
@@ -43,7 +43,7 @@ function HeroSection() {
           </div>
         </div>
 
-        {/* CTA按钮 */}
+        {/* CTA buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <Link
             href="/projects"
@@ -65,7 +65,7 @@ function HeroSection() {
   );
 }
 
-// 特性介绍部分（静态内容）
+// Features introduction section (static content)
 function FeaturesSection() {
   return (
     <section className="py-20 bg-gray-50 dark:bg-gray-900">
@@ -121,7 +121,7 @@ function FeaturesSection() {
   );
 }
 
-// 项目展示骨架屏
+// Project showcase skeleton screen
 function ProjectShowcaseSkeleton() {
   return (
     <section className="py-20 bg-white dark:bg-gray-800">
@@ -135,7 +135,7 @@ function ProjectShowcaseSkeleton() {
           </p>
         </div>
         
-        {/* 骨架屏 */}
+        {/* Skeleton screen */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[1, 2, 3, 4, 5, 6].map((i) => (
             <div key={i} className="bg-gray-100 dark:bg-gray-700 rounded-lg p-6 animate-pulse">
@@ -150,20 +150,20 @@ function ProjectShowcaseSkeleton() {
   );
 }
 
-// 主页组件（服务端渲染）
+// Homepage component (server-side rendering)
 export default function Homepage() {
   return (
     <>
-      {/* 立即显示的静态内容 */}
+      {/* Immediately display static content */}
       <HeroSection />
       <FeaturesSection />
       
-      {/* 异步加载的项目数据 */}
+      {/* Asynchronously load project data */}
       <Suspense fallback={<ProjectShowcaseSkeleton />}>
         <ProjectShowcase />
       </Suspense>
 
-      {/* 搜索关键词部分 */}
+      {/* Search keywords section */}
       <section className="py-16 bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="text-center">

@@ -6,7 +6,7 @@ export default function StructuredData() {
     "@type": "WebSite",
     "name": "MCPHubs",
     "url": "https://mcphubs.com",
-    "description": "MCPHubs是专业的Model Context Protocol (MCP)开发者平台。了解MCP是什麼、awesome-mcp-servers项目集合、Claude MCP集成教程。",
+    "description": "MCPHubs is a professional Model Context Protocol (MCP) developer platform. Learn what MCP is, awesome-mcp-servers project collection, Claude MCP integration tutorials.",
     "inLanguage": ["zh-CN", "en-US", "ja-JP", "ko-KR", "de-DE", "fr-FR", "es-ES", "sv-SE", "ar-SA"],
     "audience": {
       "@type": "Audience",
@@ -36,7 +36,7 @@ export default function StructuredData() {
     "name": "MCPHubs",
     "url": "https://mcphubs.com",
     "logo": "https://mcphubs.com/images/logo.png",
-    "description": "Model Context Protocol开发者资源中心",
+    "description": "Model Context Protocol Developer Resource Center",
     "sameAs": [
       "https://github.com/mcphubs"
     ]
@@ -49,13 +49,13 @@ export default function StructuredData() {
       {
         "@type": "ListItem",
         "position": 1,
-        "name": "首页",
+        "name": "Home",
         "item": "https://mcphubs.com"
       },
       {
         "@type": "ListItem",
         "position": 2,
-        "name": "MCP是什麼",
+        "name": "What is MCP",
         "item": "https://mcphubs.com/what-is-mcp"
       },
       {
@@ -67,7 +67,7 @@ export default function StructuredData() {
       {
         "@type": "ListItem",
         "position": 4,
-        "name": "项目展示",
+        "name": "Projects",
         "item": "https://mcphubs.com/projects"
       }
     ]
@@ -79,34 +79,34 @@ export default function StructuredData() {
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "MCP 是什麼？",
+        "name": "What is MCP?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "MCP（Model Context Protocol）是Anthropic开发的AI协议，用于连接Claude等AI模型与外部工具和数据源。它提供了标准化的通信方式，使AI助手能够安全地访问和使用各种外部资源。"
+          "text": "MCP (Model Context Protocol) is an AI protocol developed by Anthropic for connecting Claude and other AI models with external tools and data sources. It provides standardized communication methods, enabling AI assistants to securely access and use various external resources."
         }
       },
       {
         "@type": "Question", 
-        "name": "什么是awesome-mcp-servers？",
+        "name": "What is awesome-mcp-servers?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "awesome-mcp-servers是精选的MCP服务器项目合集，包括playwright-mcp、fastapi-mcp、claude-mcp等优秀项目。这些服务器为AI应用提供各种功能扩展，如浏览器自动化、API开发、数据处理等。"
+          "text": "awesome-mcp-servers is a curated collection of MCP server projects, including excellent projects like playwright-mcp, fastapi-mcp, claude-mcp, etc. These servers provide various functional extensions for AI applications, such as browser automation, API development, data processing, etc."
         }
       },
       {
         "@type": "Question",
-        "name": "如何学习Claude MCP集成？",
+        "name": "How to learn Claude MCP integration?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "您可以通过MCPHubs的开发指南学习Claude MCP集成。我们提供完整的MCP服务器教程，包括Python和TypeScript的实现示例，以及best mcp servers推荐。"
+          "text": "You can learn Claude MCP integration through MCPHubs' development guides. We provide complete MCP server tutorials, including Python and TypeScript implementation examples, as well as best mcp servers recommendations."
         }
       },
       {
         "@type": "Question",
-        "name": "MCP协议有哪些优势？",
+        "name": "What are the advantages of the MCP protocol?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "MCP协议具有四大核心优势：易于构建（简单的API设计）、可组合性（灵活的模块化）、安全隔离（内置安全保护）、能力协商（智能功能匹配）。这使得开发者能够快速构建功能强大且安全的AI应用。"
+          "text": "The MCP protocol has four core advantages: Easy to Build (simple API design), Composable (flexible modularity), Secure Isolation (built-in security protection), and Capability Negotiation (intelligent feature matching). This enables developers to quickly build powerful and secure AI applications."
         }
       }
     ]
@@ -115,8 +115,8 @@ export default function StructuredData() {
   const articleData = {
     "@context": "https://schema.org",
     "@type": "Article",
-    "headline": "MCP 是什麼？完整的Model Context Protocol指南",
-    "description": "深入了解MCP是什麼！Model Context Protocol (MCP)是Anthropic开发的AI协议，用于Claude等模型与外部工具的通信。学习MCP协议原理、应用场景和开发指南。",
+    "headline": "What is MCP? Complete Model Context Protocol Guide",
+    "description": "Deep dive into what MCP is! Model Context Protocol (MCP) is an AI protocol developed by Anthropic for communication between Claude and other models with external tools. Learn MCP protocol principles, application scenarios, and development guides.",
     "author": {
       "@type": "Organization",
       "name": "MCPHubs Team"
