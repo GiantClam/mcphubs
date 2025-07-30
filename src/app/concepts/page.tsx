@@ -166,7 +166,7 @@ export default function ConceptsPage() {
                           </div>
                           <div>
                             <h4 className="font-medium text-gray-900 dark:text-white mb-1">Understand Architecture</h4>
-                            <p className="text-gray-600 dark:text-gray-300 text-sm">Learn MCP's three-layer architecture design and core concepts</p>
+                            <p className="text-gray-600 dark:text-gray-300 text-sm">Learn MCP&apos;s three-layer architecture design and core concepts</p>
                           </div>
                         </div>
                         <div className="flex items-start space-x-4">

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { FaServer, FaDesktop, FaCode, FaRocket, FaBook, FaDownload, FaCopy, FaCheckCircle, FaGithub, FaNodeJs, FaPython, FaJs } from 'react-icons/fa';
+import { FaServer, FaDesktop, FaCode, FaRocket, FaBook, FaCopy, FaCheckCircle, FaGithub, FaNodeJs, FaPython, FaJs } from 'react-icons/fa';
 
 export default function DevelopmentGuidesPage() {
   const [activeTab, setActiveTab] = useState('server');
@@ -167,7 +167,7 @@ async def handle_read_resource(uri: str) -> str:
             "debug": True
         })
     else:
-        raise ValueError(f"Unknown resource: {uri}")
+        raise ValueError(f&quot;Unknown resource: {uri}&quot;)
 
 # Register tools
 @server.list_tools()
@@ -218,7 +218,7 @@ async def handle_call_tool(name: str, arguments: dict) -> list[TextContent]:
             text=f"Weather info - {location}: {weather_data['temperature']}, {weather_data['description']}"
         )]
     else:
-        raise ValueError(f"Unknown tool: {name}")
+        raise ValueError(f&quot;Unknown tool: {name}&quot;)
 
 # Run server
 async def main():

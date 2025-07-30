@@ -1,5 +1,5 @@
-import { FaCode, FaDatabase, FaCloud, FaRobot, FaGithub, FaDocker, FaSlack, FaDiscord, FaTelegram, FaLinkedin, FaTwitter } from 'react-icons/fa';
-import { SiJetbrains, SiNotion, SiObsidian, SiFilezilla, SiElasticsearch, SiGrafana } from 'react-icons/si';
+import { FaCode, FaDatabase, FaCloud, FaGithub, FaDocker, FaSlack, FaDiscord } from 'react-icons/fa';
+import { SiJetbrains, SiNotion } from 'react-icons/si';
 
 export const metadata = {
   title: 'MCP Integration Examples - MCPHubs',
@@ -230,7 +230,7 @@ export default function IntegrationsPage() {
             MCP Integration Examples
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            Explore Model Context Protocol integration examples with various tools, platforms, and services, understand how to leverage MCP's powerful capabilities in different environments
+            Explore Model Context Protocol integration examples with various tools, platforms, and services, understand how to leverage MCP&apos;s powerful capabilities in different environments
           </p>
         </section>
 
