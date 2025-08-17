@@ -4,12 +4,14 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { FaHome, FaQuestionCircle, FaUsers, FaChartLine, FaCode, FaToolbox, FaBars, FaTimes, FaStar, FaGithub, FaUser, FaSignOutAlt, FaChevronDown } from 'react-icons/fa';
+import SignInModal from './SignInModal';
 
 export default function Header() {
   const { data: session, status } = useSession();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isToolsMenuOpen, setIsToolsMenuOpen] = useState(false);
+  const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
 
   // Simplified translation function - using fixed English values
   const t = (key: string): string => {
@@ -57,6 +59,14 @@ export default function Header() {
 
   const toggleToolsMenu = () => {
     setIsToolsMenuOpen(!isToolsMenuOpen);
+  };
+
+  const openSignInModal = () => {
+    setIsSignInModalOpen(true);
+  };
+
+  const closeSignInModal = () => {
+    setIsSignInModalOpen(false);
   };
 
   // Main navigation items - displayed on desktop
@@ -243,7 +253,7 @@ export default function Header() {
                   </div>
                 ) : (
                   <button
-                    onClick={() => signIn()}
+                    onClick={openSignInModal}
                     className="bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded-md font-medium transition-colors text-sm"
                   >
                     {t('sign-in')}
@@ -351,7 +361,7 @@ export default function Header() {
                     ) : (
                       <button
                         onClick={() => {
-                          signIn();
+                          openSignInModal();
                           setIsMenuOpen(false);
                         }}
                         className="flex items-center space-x-3 px-3 py-3 rounded-md bg-purple-600 hover:bg-purple-700 transition-colors w-full text-left"
