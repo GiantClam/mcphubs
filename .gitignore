@@ -51,4 +51,5 @@ next-env.d.ts
 zippy-aurora-*.json
 
 # Scripts folder (contains maintenance and utility scripts)
-/scripts/
+# /scripts/
+# 允许提交有用的诊断和工具脚本
