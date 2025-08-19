@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
   experimental: {
     metadataBase: process.env.VERCEL_URL 
       ? `https://${process.env.VERCEL_URL}` 
-      : 'https://your-domain.com', // 替换为你的实际域名
+      : 'https://www.mcphubs.com', // 使用 www 子域名
   },
   images: {
     domains: ['avatars.githubusercontent.com', 'opengraph.githubassets.com'],
