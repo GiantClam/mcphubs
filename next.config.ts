@@ -3,11 +3,9 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   // 设置正确的 metadataBase
-  experimental: {
-    metadataBase: process.env.VERCEL_URL 
-      ? `https://${process.env.VERCEL_URL}` 
-      : 'https://www.mcphubs.com', // 使用 www 子域名
-  },
+  metadataBase: process.env.VERCEL_URL 
+    ? `https://${process.env.VERCEL_URL}` 
+    : 'https://www.mcphubs.com', // 使用 www 子域名
   images: {
     domains: ['avatars.githubusercontent.com', 'opengraph.githubassets.com'],
     remotePatterns: [
