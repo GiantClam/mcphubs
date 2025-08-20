@@ -73,8 +73,13 @@ class SyncManager {
       const currentPosition = syncPositionManager.getCurrentPosition();
       const startIndex = syncPositionManager.getNextStartPosition();
       
+      // 计算当前进度
+      const progress = currentPosition.totalProjects > 0 
+        ? Math.round(((currentPosition.lastProcessedIndex + 1) / currentPosition.totalProjects) * 100)
+        : 0;
+      
       console.log(`📍 当前同步位置: ${startIndex + 1}，批次大小: ${batchSize}`);
-      console.log(`📊 同步统计: 已完成 ${currentPosition.syncCount} 轮，进度: ${currentPosition.progress || 0}%`);
+      console.log(`📊 同步统计: 已完成 ${currentPosition.syncCount} 轮，进度: ${progress}%`);
 
       // 3. 从GitHub获取分页项目数据
       console.log('📡 从GitHub API获取分页项目数据...');
