@@ -99,10 +99,10 @@ export async function POST(request: NextRequest) {
     }
 
     // 执行同步
-    console.log(`🚀 开始执行同步任务...${fastMode ? ' (快速模式)' : ''}`);
+    console.log(`🚀 开始执行智能循环同步任务...${fastMode ? ' (快速模式)' : ''}`);
     
-    // 快速模式：减少项目数量和处理时间
-    const projectLimit = fastMode ? 20 : 50;
+    // 智能循环模式：每次处理 30 个项目，记住位置
+    const projectLimit = fastMode ? 20 : 30;
     const result: SyncResult = await syncGitHubProjects(projectLimit, force);
     
     // 格式化结果用于日志

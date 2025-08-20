@@ -1,6 +1,7 @@
-import { searchMCPProjects } from './github';
+import { searchMCPProjects, searchMCPProjectsPaginated } from './github';
 import { upsertProjects, getProjectStats, checkDatabaseConnection, supabase, type GitHubProject, isSupabaseConfigured } from './supabase';
 import { ProcessedRepo } from './github';
+import { syncPositionManager } from './sync-position-manager';
 
 // 同步结果类型
 export interface SyncResult {
@@ -38,7 +39,7 @@ class SyncManager {
     return SyncManager.instance;
   }
 
-  async performSync(force: boolean = false): Promise<SyncResult> {
+  async performSync(force: boolean = false, batchSize: number = 30): Promise<SyncResult> {
     const startTime = Date.now();
     const timestamp = new Date().toISOString();
     const errorDetails: string[] = [];
@@ -57,7 +58,7 @@ class SyncManager {
     }
 
     this.isRunning = true;
-    console.log(`🚀 开始GitHub项目同步任务 - ${timestamp}`);
+    console.log(`🚀 开始智能循环GitHub项目同步任务 - ${timestamp}`);
 
     try {
       // 1. 检查数据库连接
@@ -68,11 +69,18 @@ class SyncManager {
       }
       console.log('✅ 数据库连接正常');
 
-      // 2. 从GitHub获取项目数据
-      console.log('📡 从GitHub API获取项目数据...');
-      const projects: ProcessedRepo[] = await searchMCPProjects();
+      // 2. 获取当前同步位置
+      const currentPosition = syncPositionManager.getCurrentPosition();
+      const startIndex = syncPositionManager.getNextStartPosition();
       
-      if (projects.length === 0) {
+      console.log(`📍 当前同步位置: ${startIndex + 1}，批次大小: ${batchSize}`);
+      console.log(`📊 同步统计: 已完成 ${currentPosition.syncCount} 轮，进度: ${currentPosition.progress || 0}%`);
+
+      // 3. 从GitHub获取分页项目数据
+      console.log('📡 从GitHub API获取分页项目数据...');
+      const paginatedResult = await searchMCPProjectsPaginated(startIndex, batchSize);
+      
+      if (paginatedResult.projects.length === 0) {
         console.warn('⚠️ 未获取到任何项目数据');
         const result: SyncResult = {
           success: false,
@@ -86,22 +94,25 @@ class SyncManager {
         return result;
       }
 
-      console.log(`✅ 成功获取 ${projects.length} 个项目`);
+      console.log(`✅ 成功获取 ${paginatedResult.projects.length} 个项目 (${startIndex + 1}-${paginatedResult.endIndex}/${paginatedResult.totalCount})`);
 
-      // 3. 同步到数据库
+      // 4. 同步到数据库
       console.log('💾 开始同步数据到数据库...');
-      const syncStats = await upsertProjects(projects);
+      const syncStats = await upsertProjects(paginatedResult.projects);
 
-      // 4. 获取更新后的统计信息
+      // 5. 更新同步位置
+      syncPositionManager.updatePosition(paginatedResult.projects.length, paginatedResult.totalCount);
+      
+      // 6. 获取更新后的统计信息
       console.log('📊 获取数据库统计信息...');
       const dbStats = await getProjectStats();
 
       const duration = Date.now() - startTime;
       const result: SyncResult = {
         success: true,
-        message: `同步完成！获取 ${projects.length} 个项目，新增 ${syncStats.inserted} 个，更新 ${syncStats.updated} 个，跳过 ${syncStats.skipped} 个`,
+        message: `同步完成！获取 ${paginatedResult.projects.length} 个项目 (位置: ${startIndex + 1}-${paginatedResult.endIndex}/${paginatedResult.totalCount})，新增 ${syncStats.inserted} 个，更新 ${syncStats.updated} 个，跳过 ${syncStats.skipped} 个`,
         stats: {
-          totalFetched: projects.length,
+          totalFetched: paginatedResult.projects.length,
           inserted: syncStats.inserted,
           updated: syncStats.updated,
           skipped: syncStats.skipped,
@@ -173,7 +184,7 @@ export const syncManager = SyncManager.getInstance();
 
 // 主要同步函数
 export async function syncGitHubProjects(
-  batchSize: number = 50, 
+  batchSize: number = 30, 
   forceSync: boolean = false
 ): Promise<SyncResult> {
   // 检查Supabase是否已正确配置
@@ -189,7 +200,7 @@ export async function syncGitHubProjects(
     };
   }
 
-  return await syncManager.performSync(forceSync);
+  return await syncManager.performSync(forceSync, batchSize);
 }
 
 // 获取同步状态

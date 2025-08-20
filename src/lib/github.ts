@@ -164,7 +164,7 @@ async function executeSearchQuery(searchConfig: { query: string; description: st
   }
 }
 
-// 获取MCP相关的GitHub项目
+// 获取MCP相关的GitHub项目（完整列表）
 export async function searchMCPProjects(): Promise<ProcessedRepo[]> {
   try {
     console.log('正在从GitHub API获取MCP项目...');
@@ -518,4 +518,58 @@ function generateProjectImage(repo: GitHubRepo): string {
   // 使用GitHub的社交卡片图片或默认图片
   const socialCardUrl = `https://opengraph.githubassets.com/1/${repo.full_name}`;
   return socialCardUrl;
+}
+
+// 获取MCP相关的GitHub项目（分页处理）
+export async function searchMCPProjectsPaginated(
+  startIndex: number = 0, 
+  batchSize: number = 30
+): Promise<{
+  projects: ProcessedRepo[];
+  totalCount: number;
+  startIndex: number;
+  endIndex: number;
+  hasMore: boolean;
+}> {
+  try {
+    console.log(`🔄 分页获取GitHub项目: 起始位置 ${startIndex}, 批次大小 ${batchSize}`);
+    
+    // 获取完整项目列表
+    const allProjects = await searchMCPProjects();
+    
+    if (allProjects.length === 0) {
+      return {
+        projects: [],
+        totalCount: 0,
+        startIndex: 0,
+        endIndex: 0,
+        hasMore: false
+      };
+    }
+    
+    // 计算分页范围
+    const endIndex = Math.min(startIndex + batchSize, allProjects.length);
+    const projects = allProjects.slice(startIndex, endIndex);
+    const hasMore = endIndex < allProjects.length;
+    
+    console.log(`📊 分页结果: ${startIndex + 1}-${endIndex}/${allProjects.length}，还有更多: ${hasMore}`);
+    
+    return {
+      projects,
+      totalCount: allProjects.length,
+      startIndex,
+      endIndex,
+      hasMore
+    };
+    
+  } catch (error: any) {
+    console.error('分页获取GitHub项目时出错:', error);
+    return {
+      projects: [],
+      totalCount: 0,
+      startIndex: 0,
+      endIndex: 0,
+      hasMore: false
+    };
+  }
 } 
