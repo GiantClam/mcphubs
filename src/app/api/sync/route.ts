@@ -70,8 +70,9 @@ export async function POST(request: NextRequest) {
     const force = body.force === true;
     const skipTimeWindow = body.skipTimeWindow === true;
     const source = body.source || 'manual'; // manual, cron, auto
+    const fastMode = body.fastMode === true; // 快速同步模式
 
-    console.log(`🔄 收到同步请求 - 来源: ${source}, 强制: ${force}, 跳过时间窗口: ${skipTimeWindow}`);
+    console.log(`🔄 收到同步请求 - 来源: ${source}, 强制: ${force}, 跳过时间窗口: ${skipTimeWindow}, 快速模式: ${fastMode}`);
 
     // 检查时间窗口（除非是手动强制或明确跳过）
     if (!force && !skipTimeWindow && source === 'cron' && !isValidSyncWindow()) {
@@ -98,8 +99,11 @@ export async function POST(request: NextRequest) {
     }
 
     // 执行同步
-    console.log(`🚀 开始执行同步任务...`);
-    const result: SyncResult = await syncGitHubProjects(50, force);
+    console.log(`🚀 开始执行同步任务...${fastMode ? ' (快速模式)' : ''}`);
+    
+    // 快速模式：减少项目数量和处理时间
+    const projectLimit = fastMode ? 20 : 50;
+    const result: SyncResult = await syncGitHubProjects(projectLimit, force);
     
     // 格式化结果用于日志
     const logMessage = formatSyncResult(result);
@@ -115,7 +119,9 @@ export async function POST(request: NextRequest) {
       data: {
         result,
         report,
-        source
+        source,
+        fastMode,
+        projectLimit
       },
       timestamp: new Date().toISOString()
     }, { 
