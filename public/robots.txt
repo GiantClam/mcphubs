@@ -30,6 +30,12 @@ Disallow: /development
 Disallow: /math
 Disallow: /mcp
 
+# 禁止爬取特殊路径（这些是重定向页面）
+Disallow: /schema/
+Disallow: /examples/
+Disallow: /servers/
+Disallow: /$
+
 # 允许爬取主要页面
 Allow: /troubleshooting
 Allow: /projects

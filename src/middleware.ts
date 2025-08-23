@@ -39,6 +39,14 @@ const INVALID_PATH_REDIRECTS: Record<string, string> = {
   '/development': '/development-guides'
 };
 
+// 特殊路径重定向映射
+const SPECIAL_PATH_REDIRECTS: Record<string, string> = {
+  '/schema': '/',
+  '/examples': '/',
+  '/servers': '/',
+  '/$': '/'
+};
+
 export function middleware(request: NextRequest) {
   const { hostname, pathname } = request.nextUrl;
   
@@ -50,6 +58,16 @@ export function middleware(request: NextRequest) {
     url.protocol = 'https:';
     
     console.log(`🔄 域名重定向: ${hostname}${pathname} → www.mcphubs.com${pathname}`);
+    
+    return NextResponse.redirect(url, 301);
+  }
+  
+  // 处理特殊路径重定向
+  if (SPECIAL_PATH_REDIRECTS[pathname] || pathname.startsWith('/schema/') || pathname.startsWith('/examples/') || pathname.startsWith('/servers/')) {
+    const url = request.nextUrl.clone();
+    url.pathname = '/';
+    
+    console.log(`🔄 特殊路径重定向: ${pathname} → /`);
     
     return NextResponse.redirect(url, 301);
   }
