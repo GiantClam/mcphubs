@@ -138,6 +138,11 @@ declare -a test_paths=(
   "/servers/amap"
   "/servers/sibbl"
   "/servers/ethangillani"
+  "/servers/kukapay"
+  "/servers/baranwang"
+  "/servers/cuongtl1992"
+  "/servers/amitsh06"
+  "/servers/unravel-team"
   "/$"
   
   # 无效路径

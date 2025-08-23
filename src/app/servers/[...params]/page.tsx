@@ -7,6 +7,9 @@ interface ServersPageProps {
 }
 
 export default function ServersPage({ params }: ServersPageProps) {
+  // 记录访问的服务器路径
+  console.log(`🔄 服务器路径重定向: /servers/${params.params.join('/')} → /`);
+  
   // 所有 servers 路径都重定向到主页
   redirect('/');
 }
@@ -22,3 +25,17 @@ export const metadata = {
   description: 'Servers 页面已重定向到主页。',
   robots: 'noindex, nofollow' // 告诉搜索引擎不要索引这些重定向页面
 };
+
+// 生成静态元数据
+export async function generateMetadata({ params }: ServersPageProps) {
+  const serverPath = params.params.join('/');
+  
+  return {
+    title: `MCP Hubs - ${serverPath} 重定向`,
+    description: `服务器路径 /servers/${serverPath} 已重定向到主页。`,
+    robots: 'noindex, nofollow',
+    alternates: {
+      canonical: 'https://www.mcphubs.com/'
+    }
+  };
+}

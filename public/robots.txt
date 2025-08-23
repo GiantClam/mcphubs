@@ -34,6 +34,14 @@ Disallow: /mcp
 Disallow: /schema/
 Disallow: /examples/
 Disallow: /servers/
+Disallow: /servers/amap
+Disallow: /servers/sibbl
+Disallow: /servers/ethangillani
+Disallow: /servers/kukapay
+Disallow: /servers/baranwang
+Disallow: /servers/cuongtl1992
+Disallow: /servers/amitsh06
+Disallow: /servers/unravel-team
 Disallow: /$
 
 # 允许爬取主要页面

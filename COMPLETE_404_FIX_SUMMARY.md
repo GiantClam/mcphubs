@@ -6,6 +6,7 @@
 - **多语言路径** (如 `/es/troubleshooting`, `/ja/monitoring`)
 - **项目路径** (如 `/project/translations/tr/README.md`)
 - **特殊路径** (如 `/schema/*`, `/examples/*`, `/servers/*`)
+- **服务器路径** (如 `/servers/kukapay`, `/servers/baranwang`)
 - **无效路径** (如 `/math`, `/mcp`, `/development`)
 
 ## 🔧 **修复方案**
@@ -50,6 +51,11 @@ const SPECIAL_PATH_REDIRECTS: Record<string, string> = {
   '/schema': '/',
   '/examples': '/',
   '/servers': '/',
+  '/servers/kukapay': '/',
+  '/servers/baranwang': '/',
+  '/servers/cuongtl1992': '/',
+  '/servers/amitsh06': '/',
+  '/servers/unravel-team': '/',
   '/$': '/'
 };
 ```
@@ -117,6 +123,7 @@ Allow: /trends
 - ✅ **多语言路径**: 19 种语言 × 17 种页面 = 323 个路径
 - ✅ **项目路径**: 所有 `/project/*` 路径
 - ✅ **特殊路径**: `/schema/*`, `/examples/*`, `/servers/*`
+- ✅ **服务器路径**: 8+ 个具体服务器名称路径
 - ✅ **无效路径**: `/math`, `/mcp`, `/development`
 
 ## 🧪 **测试验证**
