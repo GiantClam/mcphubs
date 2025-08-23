@@ -6,6 +6,12 @@ const SUPPORTED_LOCALES = [
   'en', 'es', 'fr', 'de', 'ja', 'ko', 'sv', 'ar', 'zh', 'ru', 'pt', 'it', 'nl'
 ];
 
+// 扩展的语言变体
+const EXTENDED_LOCALES = [
+  ...SUPPORTED_LOCALES,
+  'en-ca', 'en-au', 'zh-tw', 'zh-cn'
+];
+
 // 页面路径映射
 const PAGE_MAPPINGS: Record<string, string> = {
   'troubleshooting': '/troubleshooting',
@@ -23,7 +29,8 @@ const PAGE_MAPPINGS: Record<string, string> = {
   'blog': '/blog',
   'awesome-mcp-servers': '/awesome-mcp-servers',
   'what-is-mcp': '/what-is-mcp',
-  'themes': '/themes'
+  'themes': '/themes',
+  'concepts': '/concepts'
 };
 
 interface LocalePageProps {
@@ -37,7 +44,7 @@ export default function LocalePage({ params }: LocalePageProps) {
   const { locale, params: pathParams } = params;
   
   // 检查是否是支持的语言
-  if (!SUPPORTED_LOCALES.includes(locale)) {
+  if (!EXTENDED_LOCALES.includes(locale)) {
     notFound();
   }
 
@@ -64,7 +71,7 @@ export async function generateStaticParams() {
   const params: Array<{ locale: string; params: string[] }> = [];
   
   // 为每个支持的语言和页面生成参数
-  SUPPORTED_LOCALES.forEach(locale => {
+  EXTENDED_LOCALES.forEach(locale => {
     Object.keys(PAGE_MAPPINGS).forEach(page => {
       params.push({
         locale,

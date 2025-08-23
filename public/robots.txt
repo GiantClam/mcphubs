@@ -15,6 +15,16 @@ Disallow: /ru/
 Disallow: /pt/
 Disallow: /it/
 Disallow: /nl/
+Disallow: /en-ca/
+Disallow: /en-au/
+Disallow: /zh-tw/
+Disallow: /zh-cn/
+
+# 禁止爬取项目路径（这些是重定向页面）
+Disallow: /project/
+
+# 禁止爬取无效路径
+Disallow: /development
 
 # 允许爬取主要页面
 Allow: /troubleshooting
@@ -33,6 +43,7 @@ Allow: /blog
 Allow: /awesome-mcp-servers
 Allow: /what-is-mcp
 Allow: /themes
+Allow: /concepts
 
 # 站点地图
 Sitemap: https://www.mcphubs.com/sitemap.xml
