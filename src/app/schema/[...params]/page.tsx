@@ -1,12 +1,14 @@
 import { redirect } from 'next/navigation';
 
 interface SchemaPageProps {
-  params: {
+  params: Promise<{
     params: string[];
-  };
+  }>;
 }
 
-export default function SchemaPage({ params }: SchemaPageProps) {
+export default async function SchemaPage({ params }: SchemaPageProps) {
+  const { params: pathParams } = await params;
+  
   // 所有 schema 路径都重定向到主页
   redirect('/');
 }
@@ -16,9 +18,17 @@ export async function generateStaticParams() {
   return [];
 }
 
-// 元数据
-export const metadata = {
-  title: 'MCP Hubs - Schema 重定向',
-  description: 'Schema 页面已重定向到主页。',
-  robots: 'noindex, nofollow' // 告诉搜索引擎不要索引这些重定向页面
-};
+// 生成静态元数据
+export async function generateMetadata({ params }: SchemaPageProps) {
+  const { params: pathParams } = await params;
+  const schemaPath = pathParams.join('/');
+  
+  return {
+    title: `MCP Hubs - ${schemaPath} 重定向`,
+    description: `Schema 路径 /schema/${schemaPath} 已重定向到主页。`,
+    robots: 'noindex, nofollow',
+    alternates: {
+      canonical: 'https://www.mcphubs.com/'
+    }
+  };
+}

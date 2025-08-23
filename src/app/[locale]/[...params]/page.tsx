@@ -34,14 +34,14 @@ const PAGE_MAPPINGS: Record<string, string> = {
 };
 
 interface LocalePageProps {
-  params: {
+  params: Promise<{
     locale: string;
     params: string[];
-  };
+  }>;
 }
 
-export default function LocalePage({ params }: LocalePageProps) {
-  const { locale, params: pathParams } = params;
+export default async function LocalePage({ params }: LocalePageProps) {
+  const { locale, params: pathParams } = await params;
   
   // 检查是否是支持的语言
   if (!EXTENDED_LOCALES.includes(locale)) {
@@ -66,32 +66,16 @@ export default function LocalePage({ params }: LocalePageProps) {
   redirect('/');
 }
 
-// 生成静态参数
-export async function generateStaticParams() {
-  const params: Array<{ locale: string; params: string[] }> = [];
+// 生成元数据
+export async function generateMetadata({ params }: LocalePageProps) {
+  const { locale, params: pathParams } = await params;
   
-  // 为每个支持的语言和页面生成参数
-  EXTENDED_LOCALES.forEach(locale => {
-    Object.keys(PAGE_MAPPINGS).forEach(page => {
-      params.push({
-        locale,
-        params: [page]
-      });
-    });
-    
-    // 添加根路径
-    params.push({
-      locale,
-      params: []
-    });
-  });
-  
-  return params;
+  return {
+    title: `MCP Hubs - ${locale} 多语言支持`,
+    description: `MCP Hubs 提供 ${locale} 语言支持，访问我们的网站获取更多信息。`,
+    robots: 'noindex, nofollow',
+    alternates: {
+      canonical: 'https://www.mcphubs.com/'
+    }
+  };
 }
-
-// 元数据
-export const metadata = {
-  title: 'MCP Hubs - 多语言支持',
-  description: 'MCP Hubs 提供多语言支持，访问我们的网站获取更多信息。',
-  robots: 'noindex, nofollow' // 告诉搜索引擎不要索引这些重定向页面
-};

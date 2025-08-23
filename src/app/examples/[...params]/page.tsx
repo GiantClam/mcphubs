@@ -1,12 +1,14 @@
 import { redirect } from 'next/navigation';
 
 interface ExamplesPageProps {
-  params: {
+  params: Promise<{
     params: string[];
-  };
+  }>;
 }
 
-export default function ExamplesPage({ params }: SchemaPageProps) {
+export default async function ExamplesPage({ params }: ExamplesPageProps) {
+  const { params: pathParams } = await params;
+  
   // 所有 examples 路径都重定向到主页
   redirect('/');
 }
@@ -16,9 +18,17 @@ export async function generateStaticParams() {
   return [];
 }
 
-// 元数据
-export const metadata = {
-  title: 'MCP Hubs - Examples 重定向',
-  description: 'Examples 页面已重定向到主页。',
-  robots: 'noindex, nofollow' // 告诉搜索引擎不要索引这些重定向页面
-};
+// 生成静态元数据
+export async function generateMetadata({ params }: ExamplesPageProps) {
+  const { params: pathParams } = await params;
+  const examplesPath = pathParams.join('/');
+  
+  return {
+    title: `MCP Hubs - ${examplesPath} 重定向`,
+    description: `Examples 路径 /examples/${examplesPath} 已重定向到主页。`,
+    robots: 'noindex, nofollow',
+    alternates: {
+      canonical: 'https://www.mcphubs.com/'
+    }
+  };
+}

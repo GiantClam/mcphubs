@@ -1,14 +1,15 @@
 import { redirect } from 'next/navigation';
 
 interface ProjectPageProps {
-  params: {
+  params: Promise<{
     params: string[];
-  };
+  }>;
 }
 
-export default function ProjectPage({ params }: ProjectPageProps) {
-  // 所有项目路径都重定向到主页
-  // 因为项目详情页面不存在，这些路径应该重定向到项目列表页面
+export default async function ProjectPage({ params }: ProjectPageProps) {
+  const { params: pathParams } = await params;
+  
+  // 所有项目路径都重定向到项目列表页面
   redirect('/projects');
 }
 
@@ -17,9 +18,17 @@ export async function generateStaticParams() {
   return [];
 }
 
-// 元数据
-export const metadata = {
-  title: 'MCP Hubs - 项目重定向',
-  description: '项目页面已重定向到项目列表。',
-  robots: 'noindex, nofollow' // 告诉搜索引擎不要索引这些重定向页面
-};
+// 生成静态元数据
+export async function generateMetadata({ params }: ProjectPageProps) {
+  const { params: pathParams } = await params;
+  const projectPath = pathParams.join('/');
+  
+  return {
+    title: `MCP Hubs - ${projectPath} 重定向`,
+    description: `项目路径 /project/${projectPath} 已重定向到项目列表。`,
+    robots: 'noindex, nofollow',
+    alternates: {
+      canonical: 'https://www.mcphubs.com/projects'
+    }
+  };
+}

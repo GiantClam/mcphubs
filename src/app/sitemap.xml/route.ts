@@ -1,7 +1,7 @@
-import { MetadataRoute } from 'next'
+import { NextResponse } from 'next/server';
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://www.mcphubs.com'
+export async function GET() {
+  const baseUrl = 'https://www.mcphubs.com';
   
   // 主要页面
   const mainPages = [
@@ -25,28 +25,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/concepts',
     '/auth/signin',
     '/profile',
-    '/settings',
-    '/awesome-mcp-servers',
-    '/integrations',
-    '/development-guides',
-    '/troubleshooting',
-    '/monitoring',
-    '/trends',
-    '/compare',
-    '/seo',
-    '/community',
-    '/blog',
-    '/themes',
-    '/concepts'
-  ]
+    '/settings'
+  ];
 
-  // 生成 sitemap 条目
-  const sitemapEntries: MetadataRoute.Sitemap = mainPages.map((page) => ({
-    url: `${baseUrl}${page}`,
-    lastModified: new Date(),
-    changeFrequency: page === '' ? 'daily' : 'weekly',
-    priority: page === '' ? 1 : 0.8,
-  }))
+  // 生成 XML 内容
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${mainPages.map(page => `  <url>
+    <loc>${baseUrl}${page}</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+    <changefreq>${page === '' ? 'daily' : 'weekly'}</changefreq>
+    <priority>${page === '' ? '1.0' : '0.8'}</priority>
+  </url>`).join('\n')}
+</urlset>`;
 
-  return sitemapEntries
+  return new NextResponse(sitemap, {
+    headers: {
+      'Content-Type': 'application/xml',
+      'Cache-Control': 'public, s-maxage=86400, stale-while-revalidate'
+    }
+  });
 } 

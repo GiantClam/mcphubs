@@ -116,8 +116,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   // Trigger sync tasks on app startup (async execution, doesn't block page rendering)
-  if (typeof window === 'undefined') {
-          // Only execute once on server side
+  // 只在生产环境运行时触发，避免构建时执行
+  if (typeof window === 'undefined' && process.env.NODE_ENV === 'production') {
+          // Only execute once on server side in production
     triggerStartupSync({
               forceSync: false, // Non-forced mode, intelligently determine if sync is needed
               skipTimeWindow: true, // Skip time window limit on startup

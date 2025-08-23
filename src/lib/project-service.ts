@@ -240,6 +240,22 @@ async function getDatabaseFirstProjects(config: ProjectServiceConfig, timestamp:
 // GitHub优先策略
 async function getGitHubFirstProjects(config: ProjectServiceConfig, timestamp: string): Promise<ProjectFetchResult> {
   try {
+    // 构建时跳过 GitHub API 调用，避免验证 URL
+    if (process.env.NODE_ENV === 'production' && process.env.VERCEL_ENV === undefined) {
+      console.log('🏗️ 构建时跳过GitHub API调用，返回空数据');
+      return {
+        projects: [],
+        source: 'github',
+        cached: false,
+        timestamp,
+        stats: {
+          total: 0,
+          fromDatabase: 0,
+          fromGitHub: 0
+        }
+      };
+    }
+    
     console.log('📡 优先从GitHub API获取项目...');
     const githubProjects = await searchMCPProjects();
     
