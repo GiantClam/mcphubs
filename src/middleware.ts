@@ -8,7 +8,7 @@ const SUPPORTED_LOCALES = [
 // 扩展的语言变体
 const EXTENDED_LOCALES = [
   ...SUPPORTED_LOCALES,
-  'en-ca', 'en-au', 'zh-tw', 'zh-cn'
+  'en-ca', 'en-au', 'en-gb', 'zh-tw', 'zh-cn', 'zh-hk'
 ];
 
 // 页面路径映射
@@ -32,6 +32,13 @@ const PAGE_MAPPINGS: Record<string, string> = {
   'concepts': '/concepts'
 };
 
+// 无效路径重定向映射
+const INVALID_PATH_REDIRECTS: Record<string, string> = {
+  '/math': '/',
+  '/mcp': '/what-is-mcp',
+  '/development': '/development-guides'
+};
+
 export function middleware(request: NextRequest) {
   const { hostname, pathname } = request.nextUrl;
   
@@ -47,13 +54,23 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(url, 301);
   }
   
+  // 处理无效路径重定向
+  if (INVALID_PATH_REDIRECTS[pathname]) {
+    const url = request.nextUrl.clone();
+    url.pathname = INVALID_PATH_REDIRECTS[pathname];
+    
+    console.log(`🔄 无效路径重定向: ${pathname} → ${INVALID_PATH_REDIRECTS[pathname]}`);
+    
+    return NextResponse.redirect(url, 301);
+  }
+  
   // 处理项目相关路径重定向
   if (pathname.startsWith('/project/')) {
-    // 重定向项目路径到主页，因为项目详情页面不存在
+    // 重定向项目路径到项目列表页面
     const url = request.nextUrl.clone();
-    url.pathname = '/';
+    url.pathname = '/projects';
     
-    console.log(`📁 项目路径重定向: ${pathname} → /`);
+    console.log(`📁 项目路径重定向: ${pathname} → /projects`);
     
     return NextResponse.redirect(url, 301);
   }
@@ -89,16 +106,6 @@ export function middleware(request: NextRequest) {
     url.pathname = '/';
     
     console.log(`🌐 多语言无效路径重定向: ${pathname} → /`);
-    
-    return NextResponse.redirect(url, 301);
-  }
-  
-  // 处理无效的根路径
-  if (pathname === '/development') {
-    const url = request.nextUrl.clone();
-    url.pathname = '/development-guides';
-    
-    console.log(`🔄 无效路径重定向: ${pathname} → /development-guides`);
     
     return NextResponse.redirect(url, 301);
   }

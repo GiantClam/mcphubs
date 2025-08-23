@@ -17,14 +17,18 @@ Disallow: /it/
 Disallow: /nl/
 Disallow: /en-ca/
 Disallow: /en-au/
+Disallow: /en-gb/
 Disallow: /zh-tw/
 Disallow: /zh-cn/
+Disallow: /zh-hk/
 
 # 禁止爬取项目路径（这些是重定向页面）
 Disallow: /project/
 
 # 禁止爬取无效路径
 Disallow: /development
+Disallow: /math
+Disallow: /mcp
 
 # 允许爬取主要页面
 Allow: /troubleshooting

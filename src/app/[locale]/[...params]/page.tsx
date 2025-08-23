@@ -9,7 +9,7 @@ const SUPPORTED_LOCALES = [
 // 扩展的语言变体
 const EXTENDED_LOCALES = [
   ...SUPPORTED_LOCALES,
-  'en-ca', 'en-au', 'zh-tw', 'zh-cn'
+  'en-ca', 'en-au', 'en-gb', 'zh-tw', 'zh-cn', 'zh-hk'
 ];
 
 // 页面路径映射
