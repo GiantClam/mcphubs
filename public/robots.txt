@@ -1,99 +1,12 @@
 User-agent: *
 Allow: /
 
-# 禁止爬取多语言路径（这些是重定向页面）
-Disallow: /es/
-Disallow: /en/
-Disallow: /fr/
-Disallow: /de/
-Disallow: /ja/
-Disallow: /ko/
-Disallow: /sv/
-Disallow: /ar/
-Disallow: /zh/
-Disallow: /ru/
-Disallow: /pt/
-Disallow: /it/
-Disallow: /nl/
-Disallow: /en-ca/
-Disallow: /en-au/
-Disallow: /en-gb/
-Disallow: /zh-tw/
-Disallow: /zh-cn/
-Disallow: /zh-hk/
-
-# 禁止爬取项目路径（这些是重定向页面）
+# 只禁止明显无效的路径，让 Google 能够正常索引
 Disallow: /project/
-
-# 禁止爬取无效路径
-Disallow: /development
-Disallow: /math
-Disallow: /mcp
-
-# 禁止爬取特殊路径（这些是重定向页面）
-Disallow: /schema/
-Disallow: /examples/
-Disallow: /servers/
-Disallow: /servers/amap
-Disallow: /servers/sibbl
-Disallow: /servers/ethangillani
-Disallow: /servers/kukapay
-Disallow: /servers/baranwang
-Disallow: /servers/cuongtl1992
-Disallow: /servers/amitsh06
-Disallow: /servers/unravel-team
 Disallow: /$
 
-# 允许爬取主要页面
-Allow: /troubleshooting
-Allow: /projects
-Allow: /trends
-Allow: /compare
-Allow: /privacy-policy
-Allow: /development-guides
-Allow: /terms-of-service
-Allow: /monitoring
-Allow: /search
-Allow: /integrations
-Allow: /seo
-Allow: /community
-Allow: /blog
-Allow: /awesome-mcp-servers
-Allow: /what-is-mcp
-Allow: /themes
-Allow: /concepts
+# 允许所有主要页面被爬取
+# 包括多语言路径，让 Google 能够理解网站结构
 
 # 站点地图
-Sitemap: https://www.mcphubs.com/sitemap.xml
-
-# 爬取延迟（毫秒）
-Crawl-delay: 1
-
-# 针对主要搜索引擎的特别指令
-User-agent: Googlebot
-Allow: /
-Crawl-delay: 0
-
-User-agent: Bingbot  
-Allow: /
-Crawl-delay: 1
-
-User-agent: Slurp
-Allow: /
-Crawl-delay: 1
-
-# 针对AI训练爬虫的指令
-User-agent: GPTBot
-Disallow: /
-
-User-agent: ChatGPT-User
-Disallow: /
-
-User-agent: CCBot
-Disallow: /
-
-User-agent: anthropic-ai
-Disallow: /
-
-User-agent: Claude-Web
-Disallow: / 
+Sitemap: https://www.mcphubs.com/sitemap.xml 
