@@ -1,41 +1,41 @@
 User-agent: *
 Allow: /
 
-# 高优先级页面 - 针对关键词优化
-Allow: /what-is-mcp
-Allow: /awesome-mcp-servers
+# 禁止爬取多语言路径（这些是重定向页面）
+Disallow: /es/
+Disallow: /en/
+Disallow: /fr/
+Disallow: /de/
+Disallow: /ja/
+Disallow: /ko/
+Disallow: /sv/
+Disallow: /ar/
+Disallow: /zh/
+Disallow: /ru/
+Disallow: /pt/
+Disallow: /it/
+Disallow: /nl/
+
+# 允许爬取主要页面
+Allow: /troubleshooting
 Allow: /projects
-Allow: /integrations
-Allow: /community
-Allow: /development
-
-# 高价值地区多语言版本
-Allow: /en/
-Allow: /en-ca/
-Allow: /en-au/
-Allow: /ja/
-Allow: /ko/
-Allow: /de/
-Allow: /fr/
-Allow: /es/
-Allow: /sv/
-
-# SEO优化页面
-Allow: /seo
+Allow: /trends
+Allow: /compare
+Allow: /privacy-policy
+Allow: /development-guides
+Allow: /terms-of-service
+Allow: /monitoring
 Allow: /search
+Allow: /integrations
+Allow: /seo
+Allow: /community
+Allow: /blog
+Allow: /awesome-mcp-servers
+Allow: /what-is-mcp
 Allow: /themes
 
-# 阻止访问的路径
-Disallow: /api/
-Disallow: /_next/
-Disallow: /admin/
-Disallow: /private/
-
-# 特别允许重要的API端点用于搜索引擎
-Allow: /api/placeholder/
-
 # 站点地图
-Sitemap: https://mcphubs.com/sitemap.xml
+Sitemap: https://www.mcphubs.com/sitemap.xml
 
 # 爬取延迟（毫秒）
 Crawl-delay: 1
