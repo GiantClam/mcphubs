@@ -1,5 +1,30 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+// 支持的语言列表
+const SUPPORTED_LOCALES = [
+  'en', 'es', 'fr', 'de', 'ja', 'ko', 'sv', 'ar', 'zh', 'ru', 'pt', 'it', 'nl'
+];
+
+// 页面路径映射
+const PAGE_MAPPINGS: Record<string, string> = {
+  'troubleshooting': '/troubleshooting',
+  'projects': '/projects',
+  'trends': '/trends',
+  'compare': '/compare',
+  'privacy-policy': '/privacy-policy',
+  'development': '/development-guides',
+  'terms-of-service': '/terms-of-service',
+  'monitoring': '/monitoring',
+  'search': '/search',
+  'integrations': '/integrations',
+  'seo': '/seo',
+  'community': '/community',
+  'blog': '/blog',
+  'awesome-mcp-servers': '/awesome-mcp-servers',
+  'what-is-mcp': '/what-is-mcp',
+  'themes': '/themes'
+};
+
 export function middleware(request: NextRequest) {
   const { hostname, pathname } = request.nextUrl;
   
@@ -11,6 +36,41 @@ export function middleware(request: NextRequest) {
     url.protocol = 'https:';
     
     console.log(`🔄 域名重定向: ${hostname}${pathname} → www.mcphubs.com${pathname}`);
+    
+    return NextResponse.redirect(url, 301);
+  }
+  
+  // 处理多语言路径重定向
+  const pathSegments = pathname.split('/').filter(Boolean);
+  if (pathSegments.length > 0 && SUPPORTED_LOCALES.includes(pathSegments[0])) {
+    const locale = pathSegments[0];
+    const pagePath = pathSegments[1];
+    
+    // 如果没有子路径，重定向到主页
+    if (!pagePath) {
+      const url = request.nextUrl.clone();
+      url.pathname = '/';
+      
+      console.log(`🌐 多语言根路径重定向: ${pathname} → /`);
+      
+      return NextResponse.redirect(url, 301);
+    }
+    
+    // 检查是否有对应的页面映射
+    if (PAGE_MAPPINGS[pagePath]) {
+      const url = request.nextUrl.clone();
+      url.pathname = PAGE_MAPPINGS[pagePath];
+      
+      console.log(`🌐 多语言路径重定向: ${pathname} → ${PAGE_MAPPINGS[pagePath]}`);
+      
+      return NextResponse.redirect(url, 301);
+    }
+    
+    // 如果没有映射，重定向到主页
+    const url = request.nextUrl.clone();
+    url.pathname = '/';
+    
+    console.log(`🌐 多语言无效路径重定向: ${pathname} → /`);
     
     return NextResponse.redirect(url, 301);
   }
