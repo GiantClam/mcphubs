@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 export async function GET() {
-  const baseUrl = 'https://www.mcphubs.com';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.mcphubs.com';
   
   // 主要页面
   const mainPages = [

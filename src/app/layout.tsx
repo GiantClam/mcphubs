@@ -18,6 +18,9 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+// 获取站点 URL，优先使用环境变量，否则使用默认值
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.mcphubs.com';
+
 export const metadata: Metadata = {
   title: "MCPHubs - What is MCP? Model Context Protocol Developer Resource Center",
   description: "MCPHubs is a professional Model Context Protocol (MCP) developer platform. Learn what MCP is, awesome-mcp-servers project collection, Claude MCP integration tutorials, MCP server development guides. Discover the best MCP projects and learn the next-generation protocol for AI application development.",
@@ -46,11 +49,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: "MCPHubs - What is MCP? Model Context Protocol Resource Center",
     description: "Explore MCP protocol, learn Claude MCP integration, discover awesome-mcp-servers projects. The most comprehensive Model Context Protocol developer resource platform.",
-    url: "https://mcphubs.com",
+    url: siteUrl,
     siteName: "MCPHubs",
     images: [
       {
-        url: "/images/og-mcphubs.jpg",
+        url: `${siteUrl}/images/og-mcphubs.jpg`,
         width: 1200,
         height: 630,
         alt: "MCPHubs - Model Context Protocol Developer Center"
@@ -63,7 +66,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "MCPHubs - MCP Protocol Developer Resources",
     description: "Learn what MCP is, learn Claude MCP integration, discover the best MCP projects",
-    images: ["/images/og-mcphubs.jpg"]
+    images: [`${siteUrl}/images/og-mcphubs.jpg`]
   },
   other: {
     'google-adsense-account': 'ca-pub-7958390626430202',
@@ -91,21 +94,21 @@ export const metadata: Metadata = {
   authors: [{ name: 'MCPHubs Team' }],
   category: 'Technology',
   alternates: {
-    canonical: "https://mcphubs.com",
+    canonical: siteUrl,
     languages: {
-      'zh-CN': 'https://mcphubs.com',
-      'zh-TW': 'https://mcphubs.com/zh-tw',
-      'en-US': 'https://mcphubs.com/en',
-      'en-CA': 'https://mcphubs.com/en-ca',
-      'en-AU': 'https://mcphubs.com/en-au',
-      'en-GB': 'https://mcphubs.com/en-gb',
-      'ja-JP': 'https://mcphubs.com/ja',
-      'ko-KR': 'https://mcphubs.com/ko',
-      'de-DE': 'https://mcphubs.com/de',
-      'fr-FR': 'https://mcphubs.com/fr',
-      'es-ES': 'https://mcphubs.com/es',
-      'ar-SA': 'https://mcphubs.com/ar',
-      'sv-SE': 'https://mcphubs.com/sv'
+      'zh-CN': siteUrl,
+      'zh-TW': `${siteUrl}/zh-tw`,
+      'en-US': `${siteUrl}/en`,
+      'en-CA': `${siteUrl}/en-ca`,
+      'en-AU': `${siteUrl}/en-au`,
+      'en-GB': `${siteUrl}/en-gb`,
+      'ja-JP': `${siteUrl}/ja`,
+      'ko-KR': `${siteUrl}/ko`,
+      'de-DE': `${siteUrl}/de`,
+      'fr-FR': `${siteUrl}/fr`,
+      'es-ES': `${siteUrl}/es`,
+      'ar-SA': `${siteUrl}/ar`,
+      'sv-SE': `${siteUrl}/sv`
     }
   }
 };
