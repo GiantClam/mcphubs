@@ -3,10 +3,19 @@ Allow: /
 
 # 只禁止明显无效的路径，让 Google 能够正常索引
 Disallow: /project/
-Disallow: /$
 
 # 允许所有主要页面被爬取
 # 包括多语言路径，让 Google 能够理解网站结构
 
 # 站点地图
-Sitemap: https://www.mcphubs.com/sitemap.xml 
+Sitemap: https://www.mcphubs.com/sitemap.xml
+
+# 确保 Google 爬虫可以访问所有页面
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Googlebot-Mobile
+Allow: / 

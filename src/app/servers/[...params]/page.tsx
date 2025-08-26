@@ -29,7 +29,10 @@ export async function generateMetadata({ params }: ServersPageProps) {
   return {
     title: `MCP Hubs - ${serverPath} 重定向`,
     description: `服务器路径 /servers/${serverPath} 已重定向到主页。`,
-    robots: 'noindex, nofollow',
+    robots: {
+      index: true,
+      follow: true,
+    },
     alternates: {
       canonical: 'https://www.mcphubs.com/'
     }

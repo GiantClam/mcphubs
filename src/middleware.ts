@@ -36,15 +36,17 @@ const PAGE_MAPPINGS: Record<string, string> = {
 const INVALID_PATH_REDIRECTS: Record<string, string> = {
   '/math': '/',
   '/mcp': '/what-is-mcp',
-  '/development': '/development-guides'
+  '/development': '/development-guides',
+  '/auth': '/auth/signin',
+  '/profile': '/profile',
+  '/settings': '/settings'
 };
 
 // 特殊路径重定向映射
 const SPECIAL_PATH_REDIRECTS: Record<string, string> = {
   '/schema': '/',
   '/examples': '/',
-  '/servers': '/',
-  '/$': '/'
+  '/servers': '/'
 };
 
 export function middleware(request: NextRequest) {

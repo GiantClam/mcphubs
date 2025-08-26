@@ -26,7 +26,10 @@ export async function generateMetadata({ params }: ProjectPageProps) {
   return {
     title: `MCP Hubs - ${projectPath} 重定向`,
     description: `项目路径 /project/${projectPath} 已重定向到项目列表。`,
-    robots: 'noindex, nofollow',
+    robots: {
+      index: true,
+      follow: true,
+    },
     alternates: {
       canonical: 'https://www.mcphubs.com/projects'
     }

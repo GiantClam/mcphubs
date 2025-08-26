@@ -30,7 +30,10 @@ const PAGE_MAPPINGS: Record<string, string> = {
   'awesome-mcp-servers': '/awesome-mcp-servers',
   'what-is-mcp': '/what-is-mcp',
   'themes': '/themes',
-  'concepts': '/concepts'
+  'concepts': '/concepts',
+  'auth': '/auth/signin',
+  'profile': '/profile',
+  'settings': '/settings'
 };
 
 interface LocalePageProps {
@@ -73,7 +76,10 @@ export async function generateMetadata({ params }: LocalePageProps) {
   return {
     title: `MCP Hubs - ${locale} 多语言支持`,
     description: `MCP Hubs 提供 ${locale} 语言支持，访问我们的网站获取更多信息。`,
-    robots: 'noindex, nofollow',
+    robots: {
+      index: true,
+      follow: true,
+    },
     alternates: {
       canonical: 'https://www.mcphubs.com/'
     }

@@ -26,7 +26,10 @@ export async function generateMetadata({ params }: SchemaPageProps) {
   return {
     title: `MCP Hubs - ${schemaPath} 重定向`,
     description: `Schema 路径 /schema/${schemaPath} 已重定向到主页。`,
-    robots: 'noindex, nofollow',
+    robots: {
+      index: true,
+      follow: true,
+    },
     alternates: {
       canonical: 'https://www.mcphubs.com/'
     }
