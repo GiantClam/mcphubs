@@ -34,8 +34,8 @@ export async function GET() {
 ${mainPages.map(page => `  <url>
     <loc>${baseUrl}${page}</loc>
     <lastmod>${new Date().toISOString()}</lastmod>
-    <changefreq>${page === '' ? 'daily' : 'weekly'}</changefreq>
-    <priority>${page === '' ? '1.0' : '0.8'}</priority>
+    <changefreq>${page === '' ? 'daily' : page === '/projects' ? 'daily' : 'weekly'}</changefreq>
+    <priority>${page === '' ? '1.0' : page === '/projects' ? '0.9' : '0.8'}</priority>
   </url>`).join('\n')}
 </urlset>`;
 

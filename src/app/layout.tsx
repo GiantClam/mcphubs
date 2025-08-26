@@ -167,7 +167,8 @@ export default function RootLayout({
         </SessionWrapper>
         
         {/* Google Analytics - 重点追踪高价值地区 */}
-        <Script
+        {/* TODO: Replace with actual Google Analytics ID */}
+        {/* <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"
           strategy="afterInteractive"
         />
@@ -183,7 +184,7 @@ export default function RootLayout({
               }
             });
           `}
-        </Script>
+        </Script> */}
         
         <Script
           async
