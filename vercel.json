@@ -2,8 +2,7 @@
   "crons": [
     {
       "path": "/api/sync",
-      "schedule": "0 * * * *",
-      "description": "每小时执行一次智能循环同步，每次处理 30 个项目"
+      "schedule": "0 * * * *"
     }
   ],
   "functions": {
