@@ -1,8 +1,4 @@
 User-agent: *
 Allow: /
 
-User-Agent: Googlebot-News
-Allow: /
-
-Host: https://mcphubs.com
-Sitemap: https://mcphubs.com/sitemap.xml 
+Sitemap: https://www.mcphubs.com/sitemap.xml 
