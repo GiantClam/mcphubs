@@ -1,0 +1,44 @@
+{
+  "crons": [
+    {
+      "path": "/api/sync",
+      "schedule": "0 * * * *",
+      "description": "每小时执行一次智能循环同步，每次处理 30 个项目"
+    }
+  ],
+  "functions": {
+    "src/app/api/sync/route.ts": {
+      "maxDuration": 600
+    },
+    "src/app/api/sync-simple/route.ts": {
+      "maxDuration": 60
+    },
+    "src/app/api/cron-test/route.ts": {
+      "maxDuration": 60
+    }
+  },
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "regions": ["hkg1"],
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "https://www.mcphubs.com",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    }
+  ]
+} 
