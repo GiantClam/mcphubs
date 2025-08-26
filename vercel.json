@@ -8,13 +8,13 @@
   ],
   "functions": {
     "src/app/api/sync/route.ts": {
-      "maxDuration": 600
+      "maxDuration": 10
     },
     "src/app/api/sync-simple/route.ts": {
-      "maxDuration": 60
+      "maxDuration": 10
     },
     "src/app/api/cron-test/route.ts": {
-      "maxDuration": 60
+      "maxDuration": 10
     }
   },
   "env": {
@@ -23,13 +23,6 @@
   "regions": ["hkg1"],
   "buildCommand": "npm run build",
   "installCommand": "npm install",
-  "redirects": [
-    {
-      "source": "/",
-      "destination": "https://www.mcphubs.com",
-      "permanent": true
-    }
-  ],
   "headers": [
     {
       "source": "/api/(.*)",
