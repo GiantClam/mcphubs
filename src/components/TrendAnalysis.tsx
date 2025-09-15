@@ -1,9 +1,12 @@
-import React from 'react';
+'use client';
+
+import React, { useState, useEffect } from 'react';
 import { FaChartLine, FaRocket, FaGithub, FaCode, FaUsers, FaTrophy, FaLightbulb, FaCalendarAlt } from 'react-icons/fa';
 import { ProcessedRepo } from '@/lib/github';
+import { searchMCPProjects } from '@/lib/github';
 
 interface TrendAnalysisProps {
-  projects: ProcessedRepo[];
+  projects?: ProcessedRepo[];
 }
 
 interface TrendInsight {
@@ -184,10 +187,40 @@ function generateProfessionalPredictions(): Array<{
   ];
 }
 
-const TrendAnalysis: React.FC<TrendAnalysisProps> = ({ projects }) => {
+const TrendAnalysis: React.FC<TrendAnalysisProps> = ({ projects: initialProjects }) => {
+  const [projects, setProjects] = useState<ProcessedRepo[]>(initialProjects || []);
+  const [loading, setLoading] = useState(!initialProjects);
+
+  // Load projects if not provided
+  useEffect(() => {
+    if (!initialProjects) {
+      const loadProjects = async () => {
+        try {
+          setLoading(true);
+          const fetchedProjects = await searchMCPProjects();
+          setProjects(fetchedProjects);
+        } catch (error) {
+          console.error('Failed to load projects:', error);
+          setProjects([]);
+        } finally {
+          setLoading(false);
+        }
+      };
+      loadProjects();
+    }
+  }, [initialProjects]);
+
   const trendInsights = generateTrendInsights(projects);
   const marketSegments = analyzeMarketSegments(projects);
   const predictions = generateProfessionalPredictions();
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center py-12">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">

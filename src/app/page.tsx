@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import Link from 'next/link';
 import { FaGithub, FaCode, FaUsers, FaLightbulb, FaRocket, FaBolt } from 'react-icons/fa';
 import ProjectShowcase from '@/components/ProjectShowcase';
+import FeaturedProjects from '@/components/FeaturedProjects';
 
 // Homepage static content component (server-side rendering)
 function HeroSection() {
@@ -158,6 +159,20 @@ export default function Homepage() {
       <HeroSection />
       <FeaturesSection />
       
+      {/* 推荐项目 */}
+      <section className="py-20 bg-white dark:bg-gray-800">
+        <div className="container mx-auto px-4">
+          <Suspense fallback={
+            <div className="flex items-center justify-center py-12">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+              <span className="ml-2 text-gray-600 dark:text-gray-400">加载推荐项目...</span>
+            </div>
+          }>
+            <FeaturedProjects />
+          </Suspense>
+        </div>
+      </section>
+
       {/* Asynchronously load project data */}
       <Suspense fallback={<ProjectShowcaseSkeleton />}>
         <ProjectShowcase />

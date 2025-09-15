@@ -1,5 +1,15 @@
 import axios, { AxiosInstance } from 'axios';
-import { HttpsProxyAgent } from 'https-proxy-agent';
+
+// 只在服务器端导入Node.js模块
+let HttpsProxyAgent: any = null;
+if (typeof window === 'undefined') {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    HttpsProxyAgent = require('https-proxy-agent').HttpsProxyAgent;
+  } catch {
+    // 忽略错误，在客户端环境中不使用代理
+  }
+}
 
 // GitHub API 类型
 export interface GitHubRepo {
@@ -43,6 +53,16 @@ export interface ProcessedRepo {
   geminiKeyFeatures?: string[];
   geminiUseCases?: string[];
   geminiAnalysisVersion?: number;
+  // 新增结构化字段
+  projectType?: string; // Server, Client, Library, Tool, Example, Unknown
+  coreFeatures?: string[]; // 核心特性
+  techStack?: string[]; // 技术栈
+  compatibility?: string[]; // 兼容的LLM模型
+  installCommand?: string; // 安装命令
+  quickStartCode?: string; // 快速开始代码
+  documentationUrl?: string; // 文档链接
+  serverEndpoint?: string; // 服务器端点
+  clientCapabilities?: string[]; // 客户端能力
 }
 
 // 从环境变量获取配置
@@ -66,8 +86,8 @@ function createGitHubClient(): AxiosInstance {
     }
   };
 
-  // 开发环境使用代理
-  if (process.env.NODE_ENV === 'development') {
+  // 只在服务器端使用代理
+  if (typeof window === 'undefined' && process.env.NODE_ENV === 'development' && HttpsProxyAgent) {
     console.log(`使用代理: ${PROXY_HOST}:${PROXY_PORT}`);
     const proxyAgent = new HttpsProxyAgent(`http://${PROXY_HOST}:${PROXY_PORT}`);
     return axios.create({
@@ -76,7 +96,7 @@ function createGitHubClient(): AxiosInstance {
     });
   }
 
-  // 生产环境直接连接
+  // 生产环境或客户端环境直接连接
   return axios.create(baseConfig);
 }
 

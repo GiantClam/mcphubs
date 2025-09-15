@@ -42,18 +42,17 @@ const INVALID_PATH_REDIRECTS: Record<string, string> = {
   '/settings': '/settings'
 };
 
-// 特殊路径重定向映射
+// 特殊路径重定向映射（允许 /servers 作为正式页面，不再重定向）
 const SPECIAL_PATH_REDIRECTS: Record<string, string> = {
   '/schema': '/',
   '/examples': '/',
-  '/servers': '/'
 };
 
 export function middleware(request: NextRequest) {
   const { hostname, pathname } = request.nextUrl;
   
-  // 检查是否是非 www 域名
-  if (hostname === 'mcphubs.com') {
+  // 检查是否是非 www 域名 (仅生产环境)
+  if (process.env.NODE_ENV === 'production' && hostname === 'mcphubs.com') {
     // 重定向到 www 子域名
     const url = request.nextUrl.clone();
     url.hostname = 'www.mcphubs.com';
@@ -65,7 +64,7 @@ export function middleware(request: NextRequest) {
   }
   
   // 处理特殊路径重定向
-  if (SPECIAL_PATH_REDIRECTS[pathname] || pathname.startsWith('/schema/') || pathname.startsWith('/examples/') || pathname.startsWith('/servers/')) {
+  if (SPECIAL_PATH_REDIRECTS[pathname] || pathname.startsWith('/schema/') || pathname.startsWith('/examples/')) {
     const url = request.nextUrl.clone();
     url.pathname = '/';
     
@@ -130,8 +129,8 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(url, 301);
   }
   
-  // 确保使用 HTTPS
-  if (request.headers.get('x-forwarded-proto') !== 'https') {
+  // 确保使用 HTTPS (仅在生产环境中)
+  if (process.env.NODE_ENV === 'production' && request.headers.get('x-forwarded-proto') !== 'https') {
     const url = request.nextUrl.clone();
     url.protocol = 'https:';
     

@@ -1,5 +1,4 @@
 import { Suspense } from 'react';
-import { searchMCPProjects } from '@/lib/github';
 import ComparisonTool from '@/components/ComparisonTool';
 
 export const metadata = {
@@ -7,9 +6,7 @@ export const metadata = {
   description: 'Compare different MCP projects to find the best solution for your needs',
 };
 
-export default async function ComparePage() {
-  const projects = await searchMCPProjects();
-  
+export default function ComparePage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-6xl mx-auto">
@@ -27,7 +24,7 @@ export default async function ComparePage() {
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
           </div>
         }>
-          <ComparisonTool projects={projects} />
+          <ComparisonTool />
         </Suspense>
       </div>
     </div>

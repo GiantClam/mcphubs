@@ -7,6 +7,16 @@ interface AnalysisResult {
   summary: string;
   keyFeatures: string[];
   useCases: string[];
+  // 新增结构化字段
+  projectType: 'Server' | 'Client' | 'Library' | 'Tool' | 'Example' | 'Unknown';
+  coreFeatures: string[]; // 核心特性：工具发现、流式输出、函数调用等
+  techStack: string[]; // 技术栈：Python, TypeScript, Go等
+  compatibility: string[]; // 兼容的LLM模型：GPT-4, Claude 3等
+  installCommand?: string; // 安装命令
+  quickStartCode?: string; // 最小化代码示例
+  documentationUrl?: string; // 文档链接
+  serverEndpoint?: string; // 如果是服务器，提供端点
+  clientCapabilities?: string[]; // 客户端能力
 }
 
 // Get Google credentials from environment variables or file
@@ -101,7 +111,16 @@ export async function analyzeProjectRelevance(
       relevanceCategory: repo.relevance as 'High' | 'Medium' | 'Related',
       summary: summary,
       keyFeatures: keyFeatures,
-      useCases: useCases
+      useCases: useCases,
+      projectType: (repo.projectType as 'Server' | 'Client' | 'Library' | 'Tool' | 'Example' | 'Unknown') || 'Unknown',
+      coreFeatures: repo.coreFeatures || [],
+      techStack: repo.techStack || [repo.language || 'Unknown'],
+      compatibility: repo.compatibility || [],
+      installCommand: repo.installCommand,
+      quickStartCode: repo.quickStartCode,
+      documentationUrl: repo.documentationUrl,
+      serverEndpoint: repo.serverEndpoint,
+      clientCapabilities: repo.clientCapabilities || []
     };
   }
 
@@ -121,12 +140,12 @@ export async function analyzeProjectRelevance(
     README Content: ${repo.readmeContent || "Not available"}
     `;
 
-    // 构建提示
+    // 构建增强的提示
     const prompt = `
     You are an expert in AI and language model technologies, specifically the Model Context Protocol (MCP) 
     developed by Anthropic. The MCP is a protocol for structuring the context given to LLMs to improve their comprehension and responses.
     
-    Please analyze the following GitHub repository information and determine how relevant it is to the Model Context Protocol:
+    Please analyze the following GitHub repository information and extract detailed structured data:
     
     ${content}
     
@@ -136,6 +155,17 @@ export async function analyzeProjectRelevance(
     3. summary: A brief summary of the project and its relation to MCP (100 words max)
     4. keyFeatures: List of key features of this project related to MCP (up to 5 points)
     5. useCases: List of potential use cases for this project (up to 3 points)
+    6. projectType: One of ["Server", "Client", "Library", "Tool", "Example", "Unknown"] - determine if this is an MCP server, client, library, tool, example, or unknown
+    7. coreFeatures: List of core MCP features this project supports (e.g., "Tool Discovery", "Streaming Output", "Function Calling", "Resource Management", "Prompt Templates")
+    8. techStack: List of programming languages and frameworks used (e.g., ["Python", "TypeScript", "Go", "Node.js"])
+    9. compatibility: List of compatible LLM models (e.g., ["GPT-4", "Claude 3", "Gemini", "OpenAI"])
+    10. installCommand: Installation command if found (e.g., "pip install mcp-server", "npm install @anthropic/mcp")
+    11. quickStartCode: Minimal code example for quick start (max 200 characters)
+    12. documentationUrl: Link to documentation if found
+    13. serverEndpoint: If this is a server, provide the endpoint URL or connection string
+    14. clientCapabilities: If this is a client, list its capabilities (e.g., ["VS Code Integration", "Command Line Interface", "Web Interface"])
+    
+    Focus on extracting practical, actionable information that developers can use immediately.
     `;
 
     // 调用 Gemini 进行分析
@@ -154,6 +184,15 @@ export async function analyzeProjectRelevance(
         summary: result.summary || `Analysis of ${repo.name}`,
         keyFeatures: result.keyFeatures || ["Feature analysis not available"],
         useCases: result.useCases || ["Use case analysis not available"],
+        projectType: result.projectType || 'Unknown',
+        coreFeatures: result.coreFeatures || [],
+        techStack: result.techStack || [repo.language || 'Unknown'],
+        compatibility: result.compatibility || [],
+        installCommand: result.installCommand,
+        quickStartCode: result.quickStartCode,
+        documentationUrl: result.documentationUrl,
+        serverEndpoint: result.serverEndpoint,
+        clientCapabilities: result.clientCapabilities || []
       };
     } catch (parseError) {
       console.error("Failed to parse AI response:", parseError);
@@ -242,6 +281,12 @@ function getDefaultAnalysis(repo: ProcessedRepo): AnalysisResult {
     category = 'Related';
   }
 
+  // 智能推断项目类型
+  const projectType = inferProjectType(repo);
+  const coreFeatures = inferCoreFeatures(repo);
+  const techStack = [repo.language || 'Unknown'];
+  const compatibility = inferCompatibility(repo);
+
   return {
     relevanceScore,
     relevanceCategory: category,
@@ -256,6 +301,156 @@ function getDefaultAnalysis(repo: ProcessedRepo): AnalysisResult {
       "Enhancing LLM context handling",
       "Improving model response quality",
       "Building more effective AI applications"
-    ]
+    ],
+    projectType,
+    coreFeatures,
+    techStack,
+    compatibility,
+    installCommand: inferInstallCommand(repo),
+    quickStartCode: inferQuickStartCode(repo),
+    documentationUrl: inferDocumentationUrl(repo),
+    serverEndpoint: projectType === 'Server' ? inferServerEndpoint(repo) : undefined,
+    clientCapabilities: projectType === 'Client' ? inferClientCapabilities(repo) : []
   };
+}
+
+// 智能推断项目类型
+function inferProjectType(repo: ProcessedRepo): 'Server' | 'Client' | 'Library' | 'Tool' | 'Example' | 'Unknown' {
+  const name = repo.name.toLowerCase();
+  const description = (repo.description || '').toLowerCase();
+  const topics = repo.topics.map(t => t.toLowerCase());
+  
+  if (name.includes('server') || description.includes('server') || topics.includes('server')) {
+    return 'Server';
+  }
+  if (name.includes('client') || description.includes('client') || topics.includes('client')) {
+    return 'Client';
+  }
+  if (name.includes('lib') || name.includes('sdk') || description.includes('library')) {
+    return 'Library';
+  }
+  if (name.includes('tool') || name.includes('cli') || description.includes('tool')) {
+    return 'Tool';
+  }
+  if (name.includes('example') || name.includes('demo') || description.includes('example')) {
+    return 'Example';
+  }
+  
+  return 'Unknown';
+}
+
+// 推断核心特性
+function inferCoreFeatures(repo: ProcessedRepo): string[] {
+  const features = [];
+  const text = `${repo.name} ${repo.description} ${repo.topics.join(' ')}`.toLowerCase();
+  
+  if (text.includes('tool') || text.includes('function')) {
+    features.push('Tool Discovery');
+  }
+  if (text.includes('stream') || text.includes('real-time')) {
+    features.push('Streaming Output');
+  }
+  if (text.includes('function') || text.includes('call')) {
+    features.push('Function Calling');
+  }
+  if (text.includes('resource') || text.includes('file')) {
+    features.push('Resource Management');
+  }
+  if (text.includes('prompt') || text.includes('template')) {
+    features.push('Prompt Templates');
+  }
+  
+  return features.length > 0 ? features : ['MCP Integration'];
+}
+
+// 推断兼容性
+function inferCompatibility(repo: ProcessedRepo): string[] {
+  const compatibility = [];
+  const text = `${repo.name} ${repo.description} ${repo.topics.join(' ')}`.toLowerCase();
+  
+  if (text.includes('claude') || text.includes('anthropic')) {
+    compatibility.push('Claude 3');
+  }
+  if (text.includes('gpt') || text.includes('openai')) {
+    compatibility.push('GPT-4');
+  }
+  if (text.includes('gemini') || text.includes('google')) {
+    compatibility.push('Gemini');
+  }
+  
+  return compatibility.length > 0 ? compatibility : ['Universal'];
+}
+
+// 推断安装命令
+function inferInstallCommand(repo: ProcessedRepo): string | undefined {
+  const readme = repo.readmeContent || '';
+  
+  // 查找常见的安装命令模式
+  const pipMatch = readme.match(/pip install[^\n]+/i);
+  if (pipMatch) return pipMatch[0].trim();
+  
+  const npmMatch = readme.match(/npm install[^\n]+/i);
+  if (npmMatch) return npmMatch[0].trim();
+  
+  const yarnMatch = readme.match(/yarn add[^\n]+/i);
+  if (yarnMatch) return yarnMatch[0].trim();
+  
+  return undefined;
+}
+
+// 推断快速开始代码
+function inferQuickStartCode(repo: ProcessedRepo): string | undefined {
+  const readme = repo.readmeContent || '';
+  
+  // 查找代码块
+  const codeMatch = readme.match(/```[\s\S]*?```/);
+  if (codeMatch) {
+    const code = codeMatch[0].replace(/```\w*\n?/, '').replace(/\n?```$/, '').trim();
+    return code.length > 200 ? code.substring(0, 200) + '...' : code;
+  }
+  
+  return undefined;
+}
+
+// 推断文档链接
+function inferDocumentationUrl(repo: ProcessedRepo): string | undefined {
+  const readme = repo.readmeContent || '';
+  
+  // 查找文档链接
+  const docMatch = readme.match(/\[.*?\]\((https?:\/\/[^)]+)\)/);
+  if (docMatch) return docMatch[1];
+  
+  return undefined;
+}
+
+// 推断服务器端点
+function inferServerEndpoint(repo: ProcessedRepo): string | undefined {
+  const readme = repo.readmeContent || '';
+  
+  // 查找端点URL
+  const endpointMatch = readme.match(/(https?:\/\/[^\s]+)/);
+  if (endpointMatch) return endpointMatch[1];
+  
+  return undefined;
+}
+
+// 推断客户端能力
+function inferClientCapabilities(repo: ProcessedRepo): string[] {
+  const capabilities = [];
+  const text = `${repo.name} ${repo.description} ${repo.topics.join(' ')}`.toLowerCase();
+  
+  if (text.includes('vscode') || text.includes('vs code')) {
+    capabilities.push('VS Code Integration');
+  }
+  if (text.includes('cli') || text.includes('command line')) {
+    capabilities.push('Command Line Interface');
+  }
+  if (text.includes('web') || text.includes('browser')) {
+    capabilities.push('Web Interface');
+  }
+  if (text.includes('api') || text.includes('rest')) {
+    capabilities.push('API Integration');
+  }
+  
+  return capabilities.length > 0 ? capabilities : ['MCP Client'];
 } 

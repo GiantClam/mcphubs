@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
-import { FaCheck, FaTimes, FaPlus, FaGithub, FaStar, FaCodeBranch, FaCode, FaUsers, FaChartBar } from 'react-icons/fa';
+import React, { useState, useMemo, useEffect } from 'react';
+import { FaCheck, FaTimes, FaPlus, FaGithub, FaStar, FaCodeBranch, FaCode, FaChartBar } from 'react-icons/fa';
 import { ProcessedRepo } from '@/lib/github';
+import { searchMCPProjects } from '@/lib/github';
 import Image from 'next/image';
 
 interface ComparisonToolProps {
-  projects: ProcessedRepo[];
+  projects?: ProcessedRepo[];
 }
 
 interface ComparisonMetric {
@@ -16,9 +17,29 @@ interface ComparisonMetric {
   getValue: (project: ProcessedRepo) => any;
 }
 
-const ComparisonTool: React.FC<ComparisonToolProps> = ({ projects }) => {
+const ComparisonTool: React.FC<ComparisonToolProps> = ({ projects: initialProjects }) => {
+  const [projects, setProjects] = useState<ProcessedRepo[]>(initialProjects || []);
   const [selectedProjects, setSelectedProjects] = useState<ProcessedRepo[]>([]);
   const [showProjectSelector, setShowProjectSelector] = useState(false);
+  const [loading, setLoading] = useState(!initialProjects);
+
+  // Load projects if not provided
+  useEffect(() => {
+    if (!initialProjects) {
+      const loadProjects = async () => {
+        try {
+          setLoading(true);
+          const fetchedProjects = await searchMCPProjects();
+          setProjects(fetchedProjects);
+        } catch (error) {
+          console.error('Failed to load projects:', error);
+        } finally {
+          setLoading(false);
+        }
+      };
+      loadProjects();
+    }
+  }, [initialProjects]);
 
   // Define comparison metrics
   const comparisonMetrics: ComparisonMetric[] = [
@@ -199,6 +220,14 @@ const ComparisonTool: React.FC<ComparisonToolProps> = ({ projects }) => {
       </div>
     );
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center py-12">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

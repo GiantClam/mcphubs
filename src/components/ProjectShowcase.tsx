@@ -8,9 +8,10 @@ import Link from 'next/link';
 interface ProjectShowcaseProps {
   initialProjects?: ProcessedRepo[]; // 改为可选参数
   showAll?: boolean; // 新增：是否显示全部项目
+  showFilters?: boolean; // 新增：是否显示筛选器
 }
 
-export default function ProjectShowcase({ initialProjects = [], showAll = false }: ProjectShowcaseProps) {
+export default function ProjectShowcase({ initialProjects = [], showAll = false, showFilters = true }: ProjectShowcaseProps) {
   const [projects, setProjects] = useState<ProcessedRepo[]>(initialProjects);
   const [loading, setLoading] = useState(false);
 

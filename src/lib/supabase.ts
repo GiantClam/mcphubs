@@ -38,7 +38,17 @@ function getSimpleAnalysis(project: ProcessedRepo) {
     relevanceCategory: score >= 70 ? 'High' : score >= 40 ? 'Medium' : 'Related',
     summary: `基于关键字分析的相关性评估 (匹配关键字: ${matchedKeywords.join(', ')})`,
     keyFeatures: matchedKeywords.slice(0, 3),
-    useCases: ['MCP相关项目']
+    useCases: ['MCP相关项目'],
+    // 新增结构化字段
+    projectType: 'Unknown' as const,
+    coreFeatures: [],
+    techStack: [project.language || 'Unknown'],
+    compatibility: [],
+    installCommand: undefined,
+    quickStartCode: undefined,
+    documentationUrl: undefined,
+    serverEndpoint: undefined,
+    clientCapabilities: []
   };
 }
 
@@ -72,6 +82,69 @@ export const isSupabaseConfigured = (): boolean => {
            !supabaseServiceKey.includes('placeholder'));
 };
 
+// ===== 新增：Remote MCP Servers 与 MCP Clients 类型与查询 =====
+export interface RemoteMcpServer {
+  id: string;
+  name: string;
+  description?: string;
+  logo_url?: string;
+  homepage?: string;
+  connect_url?: string;
+  auth_type?: 'oauth' | 'open' | 'api_key' | 'other';
+  category?: string;
+  tags?: string[];
+  status?: 'active' | 'beta' | 'deprecated';
+  updated_at?: string;
+}
+
+export interface McpClient {
+  id: string;
+  name: string;
+  description?: string;
+  logo_url?: string;
+  homepage?: string;
+  support_level?: 'full' | 'partial' | 'experimental';
+  platforms?: string[]; // e.g. ['macOS','Windows','Linux','Web']
+  features?: string[]; // e.g. ['resources','tools','prompts']
+  updated_at?: string;
+}
+
+export async function getRemoteMcpServers(): Promise<RemoteMcpServer[]> {
+  try {
+    if (!isSupabaseConfigured()) return [];
+    const { data, error } = await supabase
+      .from('remote_mcp_servers')
+      .select('*')
+      .order('name', { ascending: true });
+    if (error) {
+      console.error('获取 remote_mcp_servers 失败:', error);
+      return [];
+    }
+    return (data as RemoteMcpServer[]) || [];
+  } catch (e) {
+    console.error('获取 remote_mcp_servers 出错:', e);
+    return [];
+  }
+}
+
+export async function getMcpClients(): Promise<McpClient[]> {
+  try {
+    if (!isSupabaseConfigured()) return [];
+    const { data, error } = await supabase
+      .from('mcp_clients')
+      .select('*')
+      .order('name', { ascending: true });
+    if (error) {
+      console.error('获取 mcp_clients 失败:', error);
+      return [];
+    }
+    return (data as McpClient[]) || [];
+  } catch (e) {
+    console.error('获取 mcp_clients 出错:', e);
+    return [];
+  }
+}
+
 // 数据库表结构类型
 export interface GitHubProject {
   id: string;
@@ -98,6 +171,16 @@ export interface GitHubProject {
   gemini_key_features?: string[]; // Gemini分析的关键特性
   gemini_use_cases?: string[]; // Gemini分析的使用案例
   gemini_analysis_version?: number; // 分析版本号
+  // 新增结构化字段
+  project_type?: string; // Server, Client, Library, Tool, Example, Unknown
+  core_features?: string[]; // 核心特性
+  tech_stack?: string[]; // 技术栈
+  compatibility?: string[]; // 兼容的LLM模型
+  install_command?: string; // 安装命令
+  quick_start_code?: string; // 快速开始代码
+  documentation_url?: string; // 文档链接
+  server_endpoint?: string; // 服务器端点
+  client_capabilities?: string[]; // 客户端能力
 }
 
 // 获取所有项目（用于展示）
@@ -141,7 +224,17 @@ export async function getAllProjects(): Promise<ProcessedRepo[]> {
       geminiSummary: project.gemini_summary,
       geminiKeyFeatures: project.gemini_key_features || [],
       geminiUseCases: project.gemini_use_cases || [],
-      geminiAnalysisVersion: project.gemini_analysis_version
+      geminiAnalysisVersion: project.gemini_analysis_version,
+      // 添加新的结构化字段
+      projectType: project.project_type,
+      coreFeatures: project.core_features || [],
+      techStack: project.tech_stack || [],
+      compatibility: project.compatibility || [],
+      installCommand: project.install_command,
+      quickStartCode: project.quick_start_code,
+      documentationUrl: project.documentation_url,
+      serverEndpoint: project.server_endpoint,
+      clientCapabilities: project.client_capabilities || []
     }));
 
     return processedRepos;
@@ -274,7 +367,17 @@ export async function upsertProjects(projects: ProcessedRepo[]): Promise<{ inser
             gemini_summary: geminiAnalysis.summary,
             gemini_key_features: geminiAnalysis.keyFeatures,
             gemini_use_cases: geminiAnalysis.useCases,
-            gemini_analysis_version: 1
+            gemini_analysis_version: 1,
+            // 添加新的结构化字段
+            project_type: geminiAnalysis.projectType,
+            core_features: geminiAnalysis.coreFeatures,
+            tech_stack: geminiAnalysis.techStack,
+            compatibility: geminiAnalysis.compatibility,
+            install_command: geminiAnalysis.installCommand,
+            quick_start_code: geminiAnalysis.quickStartCode,
+            documentation_url: geminiAnalysis.documentationUrl,
+            server_endpoint: geminiAnalysis.serverEndpoint,
+            client_capabilities: geminiAnalysis.clientCapabilities
           })
         };
 

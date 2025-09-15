@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { signIn, signOut, useSession } from 'next-auth/react';
-import { FaHome, FaQuestionCircle, FaUsers, FaChartLine, FaCode, FaToolbox, FaBars, FaTimes, FaStar, FaGithub, FaUser, FaSignOutAlt, FaChevronDown } from 'react-icons/fa';
+import { FaHome, FaQuestionCircle, FaUsers, FaChartLine, FaCode, FaToolbox, FaBars, FaTimes, FaStar, FaGithub, FaUser, FaSignOutAlt, FaChevronDown, FaPlusCircle } from 'react-icons/fa';
 import SignInModal from './SignInModal';
 
 export default function Header() {
@@ -19,6 +19,8 @@ export default function Header() {
       'home': 'Home',
       'what-is-mcp': 'What is MCP?',
       'projects': 'Projects',
+      'clients': 'Clients',
+      'remote-servers': 'Remote Servers',
       'awesome-mcp': 'Awesome MCP',
       'community': 'Community',
       'tools-services': 'Tools & Services',
@@ -73,9 +75,8 @@ export default function Header() {
   const mainNavigationItems = [
     { href: '/', label: t('home'), icon: FaHome },
     { href: '/what-is-mcp', label: t('what-is-mcp'), icon: FaQuestionCircle },
-    { href: '/projects', label: t('projects'), icon: FaToolbox },
-    { href: '/awesome-mcp-servers', label: t('awesome-mcp'), icon: FaStar },
-    { href: '/community', label: t('community'), icon: FaUsers },
+    { href: '/clients', label: t('clients'), icon: FaCode },
+    { href: '/servers', label: t('remote-servers'), icon: FaToolbox },
   ];
 
   // Admin navigation items
@@ -86,9 +87,11 @@ export default function Header() {
   // Tools and services - in dropdown menu
   const toolsNavigationItems = [
     { href: '/concepts', label: t('concepts'), icon: FaCode },
-    { href: '/integrations', label: t('integrations'), icon: FaChartLine },
+    // removed /integrations per product decision
     { href: '/troubleshooting', label: t('troubleshooting'), icon: FaQuestionCircle },
     { href: '/monitoring', label: t('monitoring'), icon: FaChartLine },
+    { href: '/servers/tools', label: 'Quick Connect', icon: FaToolbox },
+    { href: '/community', label: t('community'), icon: FaUsers },
   ];
 
   // Close mobile menu when clicking outside
@@ -135,16 +138,24 @@ export default function Header() {
               );
             })}
 
-            {/* Tools & Services Dropdown */}
-            <div className="relative">
-              <button
-                onClick={toggleToolsMenu}
-                className="flex items-center space-x-1 px-2 py-2 rounded-md hover:bg-gray-800 hover:text-purple-300 transition-colors text-sm whitespace-nowrap"
-              >
-                <FaToolbox className="w-3 h-3" />
-                <span>{t('tools-services')}</span>
-                <FaChevronDown className={`w-3 h-3 transition-transform ${isToolsMenuOpen ? 'rotate-180' : ''}`} />
-              </button>
+            {/* Tools & Services Dropdown with link */}
+            <div className="relative tools-menu">
+              <div className="flex items-center">
+                <Link
+                  href="/integrations"
+                  className="flex items-center space-x-1 px-2 py-2 rounded-md hover:bg-gray-800 hover:text-purple-300 transition-colors text-sm whitespace-nowrap"
+                >
+                  <FaToolbox className="w-3 h-3" />
+                  <span>{t('tools-services')}</span>
+                </Link>
+                <button
+                  onClick={toggleToolsMenu}
+                  aria-label="Toggle tools menu"
+                  className="px-1 py-2 rounded-md hover:bg-gray-800 hover:text-purple-300 transition-colors text-sm"
+                >
+                  <FaChevronDown className={`w-3 h-3 transition-transform ${isToolsMenuOpen ? 'rotate-180' : ''}`} />
+                </button>
+              </div>
 
               {isToolsMenuOpen && (
                 <div className="absolute top-full left-0 mt-1 w-48 bg-gray-800 rounded-md shadow-lg border border-gray-700 z-50">
@@ -201,6 +212,14 @@ export default function Header() {
 
           {/* Right side controls */}
           <div className="hidden lg:flex items-center space-x-2 flex-shrink-0">
+            {/* Submit MCP Server - always visible; submit page enforces login and restores drafts */}
+            <Link
+              href="/servers/submit"
+              className="flex items-center space-x-1 px-3 py-2 rounded-md bg-purple-600 hover:bg-purple-700 text-white transition-colors text-sm whitespace-nowrap"
+            >
+              <FaPlusCircle className="w-3 h-3" />
+              <span>Submit Server</span>
+            </Link>
             {/* GitHub Link */}
             <Link
               href="https://github.com/search?q=model+context+protocol"
@@ -323,6 +342,14 @@ export default function Header() {
               })}
 
               <div className="border-t border-gray-700 pt-3">
+                <Link
+                  href="/servers/submit"
+                  className="flex items-center space-x-3 px-3 py-3 rounded-md bg-purple-600 hover:bg-purple-700 transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <FaPlusCircle className="w-5 h-5" />
+                  <span>Submit Server</span>
+                </Link>
                 <Link
                   href="https://github.com/search?q=model+context+protocol"
                   target="_blank"

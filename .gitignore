@@ -50,6 +50,11 @@ next-env.d.ts
 *credentials*.json
 zippy-aurora-*.json
 
-# Scripts folder (contains maintenance and utility scripts)
-# /scripts/
-# 允许提交有用的诊断和工具脚本
+# Scripts folder (do not commit)
+/scripts/
+
+# Local dev artifacts
+dev.log
+dev.sh
+start-dev.sh
+supabase/migrations/20241220_add_structured_fields.sql
