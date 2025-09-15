@@ -2,6 +2,7 @@ import { getProjects } from '@/lib/project-service';
 import { ProcessedRepo } from '@/lib/github';
 import MCPConnector from '@/components/MCPConnector';
 import RemoteServersDirectory from '@/components/RemoteServersDirectory';
+import { getRemoteMcpServers, type RemoteMcpServer } from '@/lib/supabase';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -41,7 +42,8 @@ export default async function ServersPage() {
       {/* 远程服务器目录（来自 Supabase，经由 API 获取） */}
       <div className="mb-12">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Remote MCP Servers</h2>
-        <RemoteServersDirectory />
+        {/* 服务端预取，首屏直出 */}
+        <RemoteServersDirectory initialItems={await getRemoteMcpServers() as unknown as RemoteMcpServer[]} />
       </div>
 
       {/* 社区发现区块已移除 */}

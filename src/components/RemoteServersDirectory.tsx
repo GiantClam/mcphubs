@@ -13,9 +13,9 @@ type RemoteServer = {
   tags?: string[];
 };
 
-export default function RemoteServersDirectory() {
-  const [items, setItems] = useState<RemoteServer[]>([]);
-  const [loading, setLoading] = useState(true);
+export default function RemoteServersDirectory({ initialItems }: { initialItems?: RemoteServer[] }) {
+  const [items, setItems] = useState<RemoteServer[]>(initialItems || []);
+  const [loading, setLoading] = useState(!initialItems);
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
 
   const encodeBase64Utf8 = (str: string) => {
@@ -51,6 +51,7 @@ export default function RemoteServersDirectory() {
   };
 
   useEffect(() => {
+    if (initialItems && initialItems.length > 0) return; // already have SSR data
     async function fetchData() {
       try {
         const res = await fetch('/api/remote-servers');
