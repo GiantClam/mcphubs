@@ -73,10 +73,10 @@ export default function Header() {
 
   // Main navigation items - displayed on desktop
   const mainNavigationItems = [
-    { href: '/', label: t('home'), icon: FaHome },
     { href: '/what-is-mcp', label: t('what-is-mcp'), icon: FaQuestionCircle },
     { href: '/clients', label: t('clients'), icon: FaCode },
     { href: '/servers', label: t('remote-servers'), icon: FaToolbox },
+    { href: '/servers/tools', label: 'Quick Connect', icon: FaToolbox },
   ];
 
   // Admin navigation items
@@ -90,7 +90,6 @@ export default function Header() {
     // removed /integrations per product decision
     { href: '/troubleshooting', label: t('troubleshooting'), icon: FaQuestionCircle },
     { href: '/monitoring', label: t('monitoring'), icon: FaChartLine },
-    { href: '/servers/tools', label: 'Quick Connect', icon: FaToolbox },
     { href: '/community', label: t('community'), icon: FaUsers },
   ];
 

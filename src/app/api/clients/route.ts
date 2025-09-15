@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getMcpClients } from '@/lib/supabase';
 
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 export const preferredRegion = 'auto';
 
 export async function GET() {
