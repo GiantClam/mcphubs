@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactElement } from 'react';
 import { FaApple, FaWindows, FaLinux, FaGlobe } from 'react-icons/fa';
 
 type Client = {
@@ -34,7 +34,7 @@ export default function ClientsPage() {
   const renderPlatforms = (platforms?: string[]) => {
     if (!platforms || platforms.length === 0) return null;
     const normalized = platforms.map(p => p.toLowerCase());
-    const icons: JSX.Element[] = [];
+    const icons: ReactElement[] = [];
     if (normalized.some(p => p.includes('mac'))) icons.push(<FaApple key="mac" className="w-4 h-4" title="macOS" />);
     if (normalized.some(p => p.includes('win'))) icons.push(<FaWindows key="win" className="w-4 h-4" title="Windows" />);
     if (normalized.some(p => p.includes('linux'))) icons.push(<FaLinux key="linux" className="w-4 h-4" title="Linux" />);

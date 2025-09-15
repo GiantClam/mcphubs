@@ -220,7 +220,7 @@ export default function MCPConnector({ defaultEndpoint = '' }: MCPConnectorProps
         </h4>
         <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
           <li>• After copying, paste the config into your client settings.</li>
-          <li>• VS Code: Settings → search "mcp" → edit settings.json</li>
+          <li>• VS Code: Settings → search <code>mcp</code> → edit settings.json</li>
           <li>• Cursor: Settings → MCP → Add server</li>
           <li>• Claude Desktop: config file → mcpServers</li>
         </ul>
