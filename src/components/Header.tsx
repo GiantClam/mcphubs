@@ -234,7 +234,16 @@ export default function Header() {
             {showAuthFeatures && (
               <>
                 {session ? (
-                  <div className="relative">
+                  <div className="relative user-menu">
+                    {/* Quick Logout button (desktop) */}
+                    <button
+                      onClick={() => signOut()}
+                      className="hidden md:inline-flex items-center space-x-1 px-3 py-2 rounded-md hover:bg-gray-800 hover:text-purple-300 transition-colors text-sm"
+                      title="Logout"
+                    >
+                      <FaSignOutAlt className="w-3 h-3" />
+                      <span className="hidden xl:block">{t('logout')}</span>
+                    </button>
                     <button
                       onClick={toggleUserMenu}
                       className="flex items-center space-x-2 px-3 py-2 rounded-md hover:bg-gray-800 hover:text-purple-300 transition-colors"
