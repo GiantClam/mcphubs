@@ -1,5 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+/**
+ * SEO优化说明：
+ * 
+ * Google Search Console 提示"网页会自动重定向"的主要原因：
+ * 1. 域名重定向：mcphubs.com → www.mcphubs.com
+ * 2. 多语言路径重定向：/en/page → /page
+ * 3. HTTPS强制重定向
+ * 
+ * 解决方案：
+ * - 在Google Search Console中同时验证两个域名（带www和不带www）
+ * - 使用canonical标签指定首选域名
+ * - 减少不必要的重定向链
+ */
+
 // 支持的语言列表
 const SUPPORTED_LOCALES = [
   'en', 'es', 'fr', 'de', 'ja', 'ko', 'sv', 'ar', 'zh', 'ru', 'pt', 'it', 'nl'
@@ -41,8 +55,9 @@ const INVALID_PATH_REDIRECTS: Record<string, string> = {
   '/settings': '/settings'
 };
 
-// 特殊路径重定向映射（允许 /servers 作为正式页面，不再重定向）
+// 特殊路径重定向映射（减少重定向，提高SEO友好性）
 const SPECIAL_PATH_REDIRECTS: Record<string, string> = {
+  // 只重定向明确无效的路径
   '/schema': '/',
   '/examples': '/',
 };
@@ -51,6 +66,7 @@ export function middleware(request: NextRequest) {
   const { hostname, pathname } = request.nextUrl;
   
   // 检查是否是非 www 域名 (仅生产环境)
+  // 注意：这个重定向可能会被Google Search Console标记为自动重定向
   if (process.env.NODE_ENV === 'production' && hostname === 'mcphubs.com') {
     // 重定向到 www 子域名
     const url = request.nextUrl.clone();
@@ -93,7 +109,7 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(url, 301);
   }
   
-  // 处理多语言路径重定向
+  // 处理多语言路径重定向 - 只重定向无效的多语言路径
   const pathSegments = pathname.split('/').filter(Boolean);
   if (pathSegments.length > 0 && EXTENDED_LOCALES.includes(pathSegments[0])) {
     const locale = pathSegments[0];
@@ -109,7 +125,7 @@ export function middleware(request: NextRequest) {
       return NextResponse.redirect(url, 301);
     }
     
-    // 检查是否有对应的页面映射
+    // 只重定向明确映射的页面，避免过度重定向
     if (PAGE_MAPPINGS[pagePath]) {
       const url = request.nextUrl.clone();
       url.pathname = PAGE_MAPPINGS[pagePath];
@@ -119,13 +135,8 @@ export function middleware(request: NextRequest) {
       return NextResponse.redirect(url, 301);
     }
     
-    // 如果没有映射，重定向到主页
-    const url = request.nextUrl.clone();
-    url.pathname = '/';
-    
-    console.log(`🌐 多语言无效路径重定向: ${pathname} → /`);
-    
-    return NextResponse.redirect(url, 301);
+    // 对于没有映射的多语言路径，不重定向，让Next.js处理
+    // 这样可以避免过度重定向，让Google Search Console更满意
   }
   
   // 确保使用 HTTPS (仅在生产环境中)
