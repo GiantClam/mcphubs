@@ -38,7 +38,6 @@ const INVALID_PATH_REDIRECTS: Record<string, string> = {
   '/mcp': '/what-is-mcp',
   '/development': '/development-guides',
   '/auth': '/auth/signin',
-  '/profile': '/profile',
   '/settings': '/settings'
 };
 
