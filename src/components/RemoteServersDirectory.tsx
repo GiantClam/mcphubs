@@ -91,10 +91,9 @@ export default function RemoteServersDirectory({ initialItems }: { initialItems?
           </div>
 
           <div className="mb-4">
-            <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">服务器端点</label>
             <div className="flex items-center space-x-2">
               <code className="flex-1 px-2 py-1 bg-gray-100 dark:bg-gray-700 text-sm rounded font-mono">{s.connect_url || s.homepage}</code>
-              <button className="p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors" title="复制端点" onClick={() => navigator.clipboard.writeText(s.connect_url || s.homepage || '')}>
+              <button className="p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors" title="Copy endpoint" onClick={() => navigator.clipboard.writeText(s.connect_url || s.homepage || '')}>
                 <svg viewBox="0 0 448 512" className="w-4 h-4 text-gray-500" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M320 448v40c0 13.255-10.745 24-24 24H24c-13.255 0-24-10.745-24-24V120c0-13.255 10.745-24 24-24h72v296c0 30.879 25.121 56 56 56h168zm0-344V0H152c-13.255 0-24 10.745-24 24v368c0 13.255 10.745 24 24 24h272c13.255 0 24-10.745 24-24V128H344c-13.2 0-24-10.8-24-24zm120.971-31.029L375.029 7.029A24 24 0 0 0 358.059 0H352v96h96v-6.059a24 24 0 0 0-7.029-16.97z"/></svg>
               </button>
             </div>

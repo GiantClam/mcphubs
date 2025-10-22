@@ -19,6 +19,26 @@ export const metadata: Metadata = {
   }
 };
 
+// 获取已审核通过的社区服务器
+async function getApprovedCommunityServers(): Promise<RemoteMcpServer[]> {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/api/community/approved-servers`, {
+      cache: 'no-store' // 确保获取最新数据
+    });
+    
+    if (!response.ok) {
+      console.warn('获取社区服务器失败:', response.status);
+      return [];
+    }
+    
+    const result = await response.json();
+    return result.data || [];
+  } catch (error) {
+    console.error('获取社区服务器时出错:', error);
+    return [];
+  }
+}
+
 export default async function ServersPage() {
   // 获取所有项目，筛选出服务器类型
   let allProjects: ProcessedRepo[] = [];
@@ -29,7 +49,14 @@ export default async function ServersPage() {
     console.error('Failed to fetch projects:', error);
   }
 
-  // 本页不再展示“社区发现的服务器项目”与“提交表单”和“快速连接工具”（已拆分独立页面）
+  // 获取远程服务器和社区服务器
+  const [remoteServers, communityServers] = await Promise.all([
+    getRemoteMcpServers(),
+    getApprovedCommunityServers()
+  ]);
+
+  // 合并服务器列表，社区服务器优先显示
+  const allServers = [...communityServers, ...remoteServers];
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -39,14 +66,35 @@ export default async function ServersPage() {
         <p className="text-lg text-gray-600 dark:text-gray-300">Discover and connect to public MCP server endpoints.</p>
       </div>
 
+      {/* 社区服务器 */}
+      {communityServers.length > 0 && (
+        <div className="mb-12">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+            Community MCP Servers
+            <span className="ml-2 text-sm font-normal text-gray-500 dark:text-gray-400">
+              ({communityServers.length} servers)
+            </span>
+          </h2>
+          <p className="text-gray-600 dark:text-gray-300 mb-6">
+            Community-submitted MCP servers that have been reviewed and approved.
+          </p>
+          <RemoteServersDirectory initialItems={communityServers} />
+        </div>
+      )}
+
       {/* 远程服务器目录（来自 Supabase，经由 API 获取） */}
       <div className="mb-12">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Remote MCP Servers</h2>
-        {/* 服务端预取，首屏直出 */}
-        <RemoteServersDirectory initialItems={await getRemoteMcpServers() as unknown as RemoteMcpServer[]} />
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+          Remote MCP Servers
+          <span className="ml-2 text-sm font-normal text-gray-500 dark:text-gray-400">
+            ({remoteServers.length} servers)
+          </span>
+        </h2>
+        <p className="text-gray-600 dark:text-gray-300 mb-6">
+          Publicly available MCP servers from the community.
+        </p>
+        <RemoteServersDirectory initialItems={remoteServers} />
       </div>
-
-      {/* 社区发现区块已移除 */}
 
     </div>
   );
