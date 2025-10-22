@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { signIn, signOut, useSession } from 'next-auth/react';
-import { FaHome, FaQuestionCircle, FaUsers, FaChartLine, FaCode, FaToolbox, FaBars, FaTimes, FaStar, FaGithub, FaUser, FaSignOutAlt, FaChevronDown, FaPlusCircle } from 'react-icons/fa';
+import { FaHome, FaQuestionCircle, FaUsers, FaChartLine, FaCode, FaToolbox, FaBars, FaTimes, FaStar, FaGithub, FaUser, FaSignOutAlt, FaChevronDown, FaPlusCircle, FaShieldAlt } from 'react-icons/fa';
 import SignInModal from './SignInModal';
 
 export default function Header() {
@@ -36,7 +36,7 @@ export default function Header() {
   const showAuthFeatures = hasAuthConfig;
 
   // Check if user is admin
-  const isAdmin = session?.user?.email?.includes('admin') || session?.user?.email?.includes('owner');
+  const isAdmin = session?.user?.email === 'liulanggoukk@gmail.com';
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -82,6 +82,7 @@ export default function Header() {
   // Admin navigation items
   const adminNavigationItems = [
     { href: '/admin/sync', label: 'Sync Management', icon: FaChartLine },
+    { href: '/admin/community-servers', label: 'Review Servers', icon: FaShieldAlt },
   ];
 
   // Tools and services - in dropdown menu
@@ -259,18 +260,31 @@ export default function Header() {
                       <div className="absolute top-full right-0 mt-1 w-48 bg-gray-800 rounded-md shadow-lg border border-gray-700 z-50">
                         <Link
                           href="/profile"
-                          className="flex items-center space-x-3 px-4 py-3 rounded-md hover:bg-gray-800 transition-colors"
+                          className="flex items-center space-x-3 px-4 py-3 rounded-md hover:bg-gray-700 transition-colors"
                           onClick={() => setIsUserMenuOpen(false)}
                         >
                           <FaUser className="w-5 h-5" />
                           <span>{t('profile')}</span>
                         </Link>
+                        
+                        {/* 管理员审核入口 */}
+                        {isAdmin && (
+                          <Link
+                            href="/admin/community-servers"
+                            className="flex items-center space-x-3 px-4 py-3 rounded-md hover:bg-gray-700 transition-colors border-t border-gray-700"
+                            onClick={() => setIsUserMenuOpen(false)}
+                          >
+                            <FaShieldAlt className="w-5 h-5 text-yellow-400" />
+                            <span className="text-yellow-400">Review Servers</span>
+                          </Link>
+                        )}
+                        
                         <button
                           onClick={() => {
                             signOut();
                             setIsUserMenuOpen(false);
                           }}
-                          className="flex items-center space-x-3 px-4 py-3 rounded-md hover:bg-gray-800 transition-colors w-full text-left"
+                          className="flex items-center space-x-3 px-4 py-3 rounded-md hover:bg-gray-700 transition-colors w-full text-left border-t border-gray-700"
                         >
                           <FaSignOutAlt className="w-5 h-5" />
                           <span>{t('logout')}</span>
