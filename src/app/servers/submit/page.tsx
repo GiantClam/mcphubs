@@ -52,7 +52,10 @@ export default function SubmitServerPage() {
         body: JSON.stringify({ name, endpoint, description: desc, installCommand: install, documentationUrl: docs }),
       });
       const json = await res.json();
-      if (!res.ok) throw new Error(json?.error || '提交失败');
+      if (!res.ok) {
+        const errorMsg = json?.message || json?.error || json?.details || '提交失败';
+        throw new Error(errorMsg);
+      }
       setMsg('Submitted successfully. Thank you!');
       setName(''); setEndpoint(''); setDesc(''); setInstall(''); setDocs('');
       try { localStorage.removeItem('submit_mcp_server_draft'); } catch {}

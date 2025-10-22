@@ -5,9 +5,9 @@ interface ServerSubmission {
   name: string;
   description: string;
   endpoint: string;
-  category: string;
-  features: string[];
-  compatibility: string[];
+  category?: string;
+  features?: string[];
+  compatibility?: string[];
   installCommand?: string;
   documentationUrl?: string;
   submitterEmail?: string;
@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
         name: submission.name,
         description: submission.description,
         endpoint: submission.endpoint,
-        category: submission.category,
+        category: submission.category || 'general',
         features: submission.features || [],
         compatibility: submission.compatibility || [],
         install_command: submission.installCommand,
@@ -57,7 +57,12 @@ export async function POST(request: NextRequest) {
     if (error) {
       console.error('保存服务器提交失败:', error);
       return NextResponse.json(
-        { success: false, message: '保存失败' },
+        { 
+          success: false, 
+          message: '保存失败', 
+          error: error.message,
+          details: error.details || error.hint || '数据库操作失败'
+        },
         { status: 500 }
       );
     }
