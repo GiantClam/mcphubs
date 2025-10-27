@@ -5,11 +5,13 @@ import SessionWrapper from "@/components/SessionWrapper";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MobileBottomNav from "@/components/MobileBottomNav";
+import SkipNavigation from "@/components/SkipNavigation";
 import StructuredData from "./structured-data";
 import { triggerStartupSync } from "@/lib/startup-sync";
 import "./globals.css";
 import "../styles/mobile.css";
 import "../styles/skeleton.css";
+import "../styles/accessibility.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -161,11 +163,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased h-full`}
       >
+        <SkipNavigation />
         <StructuredData />
         <SessionWrapper>
           <div className="flex flex-col min-h-screen">
             <Header />
-            <main className="flex-grow pb-16 md:pb-0">
+            <main id="main-content" className="flex-grow pb-16 md:pb-0">
               {children}
             </main>
             <Footer />

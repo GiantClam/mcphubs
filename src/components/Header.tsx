@@ -94,7 +94,7 @@ export default function Header() {
   ];
 
   return (
-    <header className="bg-gray-900 text-white sticky top-0 z-50 shadow-lg">
+    <header id="navigation" className="bg-gray-900 text-white sticky top-0 z-50 shadow-lg" role="banner">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center py-3">
           {/* Logo */}
