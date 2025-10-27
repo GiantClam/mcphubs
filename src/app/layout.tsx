@@ -9,6 +9,7 @@ import StructuredData from "./structured-data";
 import { triggerStartupSync } from "@/lib/startup-sync";
 import "./globals.css";
 import "../styles/mobile.css";
+import "../styles/skeleton.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

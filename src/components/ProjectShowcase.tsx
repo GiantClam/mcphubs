@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import ProjectCardWrapper from './ProjectCardWrapper';
+import ProjectCardSkeleton from './ProjectCardSkeleton';
 import { ProcessedRepo } from '@/lib/github';
 import Link from 'next/link';
 
@@ -60,12 +61,7 @@ export default function ProjectShowcase({ initialProjects = [], showAll = false,
         </div>
         
         {loading ? (
-          <div className="text-center py-12">
-            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
-            <p className="text-gray-500 dark:text-gray-400 mt-4">
-              Loading project data...
-            </p>
-          </div>
+          <ProjectCardSkeleton count={showAll ? 12 : 6} />
         ) : projects.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-gray-500 dark:text-gray-400">

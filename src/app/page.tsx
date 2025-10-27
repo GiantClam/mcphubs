@@ -4,6 +4,7 @@ import ProjectShowcase from '@/components/ProjectShowcase';
 import Hero from '@/components/Hero';
 import EnhancedFeaturedProjects from '@/components/EnhancedFeaturedProjects';
 import QuickNavigation from '@/components/QuickNavigation';
+import ProjectCardSkeleton from '@/components/ProjectCardSkeleton';
 
 // Features introduction section (static content)
 function FeaturesSection() {
@@ -68,23 +69,14 @@ function ProjectShowcaseSkeleton() {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            Featured Projects
+            Popular MCP Projects
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-300">
             Exploring the latest Model Context Protocol implementations
           </p>
         </div>
         
-        {/* Skeleton screen */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[1, 2, 3, 4, 5, 6].map((i) => (
-            <div key={i} className="bg-gray-100 dark:bg-gray-700 rounded-lg p-6 animate-pulse">
-              <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded mb-3"></div>
-              <div className="h-3 bg-gray-300 dark:bg-gray-600 rounded mb-2"></div>
-              <div className="h-3 bg-gray-300 dark:bg-gray-600 rounded w-3/4"></div>
-            </div>
-          ))}
-        </div>
+        <ProjectCardSkeleton count={6} />
       </div>
     </section>
   );
@@ -103,19 +95,24 @@ export default function Homepage() {
       {/* 特色功能介绍 */}
       <FeaturesSection />
       
-      {/* 增强的推荐项目展示 */}
-      <Suspense fallback={
-        <div className="py-20 bg-white dark:bg-gray-800">
-          <div className="container mx-auto px-4">
-            <div className="flex items-center justify-center py-12">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-              <span className="ml-2 text-gray-600 dark:text-gray-400">Loading featured projects...</span>
-            </div>
-          </div>
-        </div>
-      }>
-        <EnhancedFeaturedProjects />
-      </Suspense>
+            {/* 增强的推荐项目展示 */}
+            <Suspense fallback={
+              <section className="py-20 bg-white dark:bg-gray-800">
+                <div className="container mx-auto px-4">
+                  <div className="text-center mb-12">
+                    <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                      Featured MCP Projects
+                    </h2>
+                    <p className="text-xl text-gray-600 dark:text-gray-300">
+                      Hand-picked projects updated daily from GitHub
+                    </p>
+                  </div>
+                  <ProjectCardSkeleton count={6} />
+                </div>
+              </section>
+            }>
+              <EnhancedFeaturedProjects />
+            </Suspense>
 
       {/* 异步加载项目数据 */}
       <Suspense fallback={<ProjectShowcaseSkeleton />}>
