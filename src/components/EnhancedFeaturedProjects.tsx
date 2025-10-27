@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { FaStar, FaExternalLinkAlt, FaCalendarAlt, FaUser, FaCode, FaArrowRight, FaEye } from 'react-icons/fa';
 import { ProcessedRepo } from '@/lib/github';
+import ProjectCarousel from './ProjectCarousel';
 
 interface FeaturedProject {
   id: string;
@@ -312,6 +313,16 @@ export default function EnhancedFeaturedProjects() {
               />
             );
           })}
+        </div>
+
+        {/* 移动端项目轮播 */}
+        <div className="md:hidden mb-8">
+          <ProjectCarousel 
+            projects={featuredProjects.map(f => f.github_projects).filter(Boolean) as ProcessedRepo[]}
+            title="Featured Projects"
+            autoPlay={true}
+            autoPlayInterval={4000}
+          />
         </div>
 
         <div className="text-center">

@@ -4,9 +4,11 @@ import Script from "next/script";
 import SessionWrapper from "@/components/SessionWrapper";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import MobileBottomNav from "@/components/MobileBottomNav";
 import StructuredData from "./structured-data";
 import { triggerStartupSync } from "@/lib/startup-sync";
 import "./globals.css";
+import "../styles/mobile.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -162,10 +164,11 @@ export default function RootLayout({
         <SessionWrapper>
           <div className="flex flex-col min-h-screen">
             <Header />
-            <main className="flex-grow">
+            <main className="flex-grow pb-16 md:pb-0">
               {children}
             </main>
             <Footer />
+            <MobileBottomNav />
           </div>
         </SessionWrapper>
         

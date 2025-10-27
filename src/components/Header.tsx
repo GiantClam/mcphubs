@@ -3,12 +3,12 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { signIn, signOut, useSession } from 'next-auth/react';
-import { FaHome, FaQuestionCircle, FaUsers, FaChartLine, FaCode, FaToolbox, FaBars, FaTimes, FaStar, FaGithub, FaUser, FaSignOutAlt, FaChevronDown, FaPlusCircle, FaShieldAlt } from 'react-icons/fa';
+import { FaQuestionCircle, FaUsers, FaChartLine, FaCode, FaToolbox, FaTimes, FaStar, FaGithub, FaUser, FaSignOutAlt, FaChevronDown, FaPlusCircle, FaShieldAlt } from 'react-icons/fa';
 import SignInModal from './SignInModal';
+import ResponsiveNavigation from './ResponsiveNavigation';
 
 export default function Header() {
   const { data: session, status } = useSession();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isToolsMenuOpen, setIsToolsMenuOpen] = useState(false);
   const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
@@ -26,7 +26,10 @@ export default function Header() {
       'tools-services': 'Tools & Services',
       'profile': 'Profile',
       'logout': 'Logout',
-      'sign-in': 'Sign In'
+      'sign-in': 'Sign In',
+      'concepts': 'Concepts',
+      'troubleshooting': 'Troubleshooting',
+      'monitoring': 'Monitoring'
     };
     return translations[key] || key;
   };
@@ -50,10 +53,6 @@ export default function Header() {
     document.addEventListener('click', handleClickOutside);
     return () => document.removeEventListener('click', handleClickOutside);
   }, []);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
 
   const toggleUserMenu = () => {
     setIsUserMenuOpen(!isUserMenuOpen);
@@ -94,20 +93,6 @@ export default function Header() {
     { href: '/community', label: t('community'), icon: FaUsers },
   ];
 
-  // Close mobile menu when clicking outside
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (isMenuOpen && !(event.target as Element).closest('.mobile-menu')) {
-        setIsMenuOpen(false);
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isMenuOpen]);
-
   return (
     <header className="bg-gray-900 text-white sticky top-0 z-50 shadow-lg">
       <div className="container mx-auto px-4">
@@ -123,75 +108,7 @@ export default function Header() {
           </Link>
 
           {/* Desktop Navigation - Extra Large screens */}
-          <nav className="hidden xl:flex items-center space-x-1">
-            {mainNavigationItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="flex items-center space-x-1 px-2 py-2 rounded-md hover:bg-gray-800 hover:text-purple-300 transition-colors text-sm whitespace-nowrap"
-                >
-                  <Icon className="w-3 h-3" />
-                  <span>{item.label}</span>
-                </Link>
-              );
-            })}
-
-            {/* Tools & Services Dropdown with link */}
-            <div className="relative tools-menu">
-              <div className="flex items-center">
-                <Link
-                  href="/integrations"
-                  className="flex items-center space-x-1 px-2 py-2 rounded-md hover:bg-gray-800 hover:text-purple-300 transition-colors text-sm whitespace-nowrap"
-                >
-                  <FaToolbox className="w-3 h-3" />
-                  <span>{t('tools-services')}</span>
-                </Link>
-                <button
-                  onClick={toggleToolsMenu}
-                  aria-label="Toggle tools menu"
-                  className="px-1 py-2 rounded-md hover:bg-gray-800 hover:text-purple-300 transition-colors text-sm"
-                >
-                  <FaChevronDown className={`w-3 h-3 transition-transform ${isToolsMenuOpen ? 'rotate-180' : ''}`} />
-                </button>
-              </div>
-
-              {isToolsMenuOpen && (
-                <div className="absolute top-full left-0 mt-1 w-48 bg-gray-800 rounded-md shadow-lg border border-gray-700 z-50">
-                  {toolsNavigationItems.map((item) => {
-                    const Icon = item.icon;
-                    return (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        className="flex items-center space-x-2 px-3 py-2 hover:bg-gray-700 transition-colors text-sm first:rounded-t-md last:rounded-b-md"
-                        onClick={() => setIsToolsMenuOpen(false)}
-                      >
-                        <Icon className="w-4 h-4" />
-                        <span>{item.label}</span>
-                      </Link>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-
-            {/* Admin links */}
-            {isAdmin && adminNavigationItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="flex items-center space-x-1 px-2 py-2 rounded-md hover:bg-gray-800 hover:text-purple-300 transition-colors text-sm whitespace-nowrap"
-                >
-                  <Icon className="w-3 h-3" />
-                  <span>{item.label}</span>
-                </Link>
-              );
-            })}
-          </nav>
+          <ResponsiveNavigation />
 
           {/* Desktop Navigation - Large screens (simplified) */}
           <nav className="hidden lg:flex xl:hidden items-center space-x-1">
@@ -304,127 +221,10 @@ export default function Header() {
             )}
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={toggleMenu}
-            className="lg:hidden text-xl hover:text-purple-300 transition-colors"
-          >
-            {isMenuOpen ? <FaTimes /> : <FaBars />}
-          </button>
+          {/* Mobile Menu Button - handled by ResponsiveNavigation */}
         </div>
 
-        {/* Mobile Menu */}
-        {isMenuOpen && (
-          <div className="lg:hidden mobile-menu bg-gray-800 rounded-md mt-2 mb-4 shadow-lg">
-            <div className="px-4 py-3 space-y-2">
-              {mainNavigationItems.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="flex items-center space-x-3 px-3 py-3 rounded-md hover:bg-gray-700 transition-colors"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    <Icon className="w-5 h-5" />
-                    <span>{item.label}</span>
-                  </Link>
-                );
-              })}
-
-              {toolsNavigationItems.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="flex items-center space-x-3 px-3 py-3 rounded-md hover:bg-gray-700 transition-colors"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    <Icon className="w-5 h-5" />
-                    <span>{item.label}</span>
-                  </Link>
-                );
-              })}
-
-              {/* Admin links in mobile */}
-              {isAdmin && adminNavigationItems.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="flex items-center space-x-3 px-3 py-3 rounded-md hover:bg-gray-700 transition-colors"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    <Icon className="w-5 h-5" />
-                    <span>{item.label}</span>
-                  </Link>
-                );
-              })}
-
-              <div className="border-t border-gray-700 pt-3">
-                <Link
-                  href="/servers/submit"
-                  className="flex items-center space-x-3 px-3 py-3 rounded-md bg-purple-600 hover:bg-purple-700 transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <FaPlusCircle className="w-5 h-5" />
-                  <span>Submit Server</span>
-                </Link>
-                <Link
-                  href="https://github.com/search?q=model+context+protocol"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center space-x-3 px-3 py-3 rounded-md hover:bg-gray-700 transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <FaGithub className="w-5 h-5" />
-                  <span>GitHub</span>
-                </Link>
-
-                {/* Mobile authentication section - only show when configured */}
-                {showAuthFeatures && (
-                  <>
-                    {session ? (
-                      <>
-                        <Link
-                          href="/profile"
-                          className="flex items-center space-x-3 px-3 py-3 rounded-md hover:bg-gray-700 transition-colors"
-                          onClick={() => setIsMenuOpen(false)}
-                        >
-                          <FaUser className="w-5 h-5" />
-                          <span>{t('profile')}</span>
-                        </Link>
-                        <button
-                          onClick={() => {
-                            signOut();
-                            setIsMenuOpen(false);
-                          }}
-                          className="flex items-center space-x-3 px-3 py-3 rounded-md hover:bg-gray-700 transition-colors w-full text-left"
-                        >
-                          <FaSignOutAlt className="w-5 h-5" />
-                          <span>{t('logout')}</span>
-                        </button>
-                      </>
-                    ) : (
-                      <button
-                        onClick={() => {
-                          openSignInModal();
-                          setIsMenuOpen(false);
-                        }}
-                        className="flex items-center space-x-3 px-3 py-3 rounded-md bg-purple-600 hover:bg-purple-700 transition-colors w-full text-left"
-                      >
-                        <FaUser className="w-5 h-5" />
-                        <span>{t('sign-in')}</span>
-                      </button>
-                    )}
-                  </>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
+        {/* Mobile Menu - handled by ResponsiveNavigation */}
       </div>
     </header>
   );

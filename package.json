@@ -15,6 +15,7 @@
     "@langchain/openai": "^0.4.4",
     "@supabase/supabase-js": "^2.51.0",
     "axios": "^1.8.3",
+    "framer-motion": "^12.23.24",
     "https-proxy-agent": "^7.0.6",
     "langchain": "^0.3.19",
     "next": "15.2.2",
