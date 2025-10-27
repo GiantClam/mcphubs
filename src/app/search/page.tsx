@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import SmartSearch from '@/components/SmartSearch';
 import AdvancedFilters from '@/components/AdvancedFilters';
 import SearchResults from '@/components/SearchResults';
 import { SearchFilters, searchProjects, SearchResult } from '@/lib/search';
 
-export default function EnhancedSearchPage() {
+function SearchPageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   
@@ -30,8 +30,9 @@ export default function EnhancedSearchPage() {
     sortBy: 'relevance'
   });
 
-  // 从 URL 参数初始化过滤器
+  // 从 URL 参数初始化过滤器和查询
   useEffect(() => {
+    const urlQuery = searchParams.get('q') || '';
     const urlFilters: Partial<SearchFilters> = {};
     
     if (searchParams.get('languages')) {
@@ -62,7 +63,48 @@ export default function EnhancedSearchPage() {
       urlFilters.sortBy = searchParams.get('sortBy') as any;
     }
 
-    setFilters(prev => ({ ...prev, ...urlFilters }));
+    // 使用默认过滤器合并URL过滤器
+    const defaultFilters: SearchFilters = {
+      languages: [],
+      minStars: 0,
+      maxStars: null,
+      categories: [],
+      tags: [],
+      updatedWithin: null,
+      hasDocumentation: null,
+      licenseType: [],
+      sortBy: 'relevance'
+    };
+    const mergedFilters = { ...defaultFilters, ...urlFilters };
+    
+    setQuery(urlQuery);
+    setFilters(mergedFilters);
+    
+    // 如果有查询参数，执行搜索
+    if (urlQuery.trim()) {
+      // 直接调用搜索 API，不调用 updateURL 避免循环
+      setLoading(true);
+      searchProjects(urlQuery, mergedFilters, 1, 20)
+        .then(response => {
+          setResults(response.results);
+          setTotalResults(response.total);
+          setHasMore(response.hasMore);
+          setCurrentPage(1);
+        })
+        .catch(error => {
+          console.error('Initial search error:', error);
+          setResults([]);
+          setTotalResults(0);
+          setHasMore(false);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } else {
+      setResults([]);
+      setTotalResults(0);
+      setHasMore(false);
+    }
   }, [searchParams]);
 
   // 执行搜索
@@ -77,7 +119,10 @@ export default function EnhancedSearchPage() {
     setLoading(true);
     
     try {
+      console.log('Performing search with query:', searchQuery, 'filters:', searchFilters);
       const response = await searchProjects(searchQuery, searchFilters, page, 20);
+      console.log('Search response:', response);
+      console.log('Results length:', response.results.length);
       
       if (reset) {
         setResults(response.results);
@@ -189,12 +234,6 @@ export default function EnhancedSearchPage() {
     handleResetFilters();
   };
 
-  // 初始搜索
-  useEffect(() => {
-    if (query.trim()) {
-      performSearch(query, filters, 1, true);
-    }
-  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -216,6 +255,7 @@ export default function EnhancedSearchPage() {
             autoFocus={true}
             onSearch={handleSearch}
             className="max-w-2xl mx-auto"
+            initialQuery={query}
           />
         </div>
 
@@ -256,5 +296,20 @@ export default function EnhancedSearchPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function EnhancedSearchPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-300">Loading search...</p>
+        </div>
+      </div>
+    }>
+      <SearchPageContent />
+    </Suspense>
   );
 }

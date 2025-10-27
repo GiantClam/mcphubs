@@ -12,15 +12,17 @@ interface SmartSearchProps {
   autoFocus?: boolean;
   className?: string;
   onSearch?: (query: string) => void;
+  initialQuery?: string;
 }
 
 export default function SmartSearch({
   placeholder = "Search by name, description, tag, or language...",
   autoFocus = false,
   className = "",
-  onSearch
+  onSearch,
+  initialQuery = ''
 }: SmartSearchProps) {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState(initialQuery);
   const [suggestions, setSuggestions] = useState<SearchSuggestion>({
     projects: [],
     tags: [],
@@ -33,6 +35,13 @@ export default function SmartSearch({
   const debouncedQuery = useDebounce(query, 300);
   const inputRef = useRef<HTMLInputElement>(null);
   const suggestionsRef = useRef<HTMLDivElement>(null);
+
+  // 监听初始查询值的变化
+  useEffect(() => {
+    if (initialQuery !== query) {
+      setQuery(initialQuery);
+    }
+  }, [initialQuery]);
 
   useEffect(() => {
     if (debouncedQuery.length >= 2) {

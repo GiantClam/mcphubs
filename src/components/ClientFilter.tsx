@@ -31,7 +31,7 @@ export default function ClientFaFilter({ projects }: ClientFaFilterProps) {
 
   const [showFaFilters, setShowFaFilters] = useState(false);
 
-  // 提取所有可用的筛选选项
+  // Extract all available filter options
   const availableOptions = useMemo(() => {
     const languages = new Set<string>();
     const features = new Set<string>();
@@ -39,23 +39,23 @@ export default function ClientFaFilter({ projects }: ClientFaFilterProps) {
     const projectTypes = new Set<string>();
 
     projects.forEach(project => {
-      // 语言
+      // Language
       if (project.language) languages.add(project.language);
       if (project.techStack) {
         project.techStack.forEach(tech => languages.add(tech));
       }
 
-      // 特性
+      // Features
       if (project.coreFeatures) {
         project.coreFeatures.forEach(feature => features.add(feature));
       }
 
-      // 兼容性
+      // Compatibility
       if (project.compatibility) {
         project.compatibility.forEach(comp => compatibility.add(comp));
       }
 
-      // 项目类型
+      // Project types
       if (project.projectType) {
         projectTypes.add(project.projectType);
       }
@@ -69,10 +69,10 @@ export default function ClientFaFilter({ projects }: ClientFaFilterProps) {
     };
   }, [projects]);
 
-  // 筛选和排序项目
+  // Filter and sort projects
   const filteredProjects = useMemo(() => {
     const filtered = projects.filter(project => {
-      // 搜索查询
+      // Search query
       if (filters.searchQuery) {
         const query = filters.searchQuery.toLowerCase();
         const matchesSearch = 
@@ -83,7 +83,7 @@ export default function ClientFaFilter({ projects }: ClientFaFilterProps) {
         if (!matchesSearch) return false;
       }
 
-      // 语言筛选
+      // Language filter
       if (filters.languages.length > 0) {
         const projectLanguages = [
           project.language,
@@ -99,7 +99,7 @@ export default function ClientFaFilter({ projects }: ClientFaFilterProps) {
         if (!hasMatchingLanguage) return false;
       }
 
-      // 特性筛选
+      // Features filter
       if (filters.features.length > 0) {
         const hasMatchingFeature = filters.features.some(feature =>
           project.coreFeatures?.some(projectFeature =>
@@ -110,7 +110,7 @@ export default function ClientFaFilter({ projects }: ClientFaFilterProps) {
         if (!hasMatchingFeature) return false;
       }
 
-      // 兼容性筛选
+      // Compatibility filter
       if (filters.compatibility.length > 0) {
         const hasMatchingCompatibility = filters.compatibility.some(comp =>
           project.compatibility?.some(projectComp =>
@@ -121,14 +121,14 @@ export default function ClientFaFilter({ projects }: ClientFaFilterProps) {
         if (!hasMatchingCompatibility) return false;
       }
 
-      // 项目类型筛选
+      // Project type filter
       if (filters.projectTypes.length > 0) {
         if (!project.projectType || !filters.projectTypes.includes(project.projectType)) {
           return false;
         }
       }
 
-      // 最小星数筛选
+      // Minimum stars filter
       if (project.stars < filters.minStars) {
         return false;
       }
@@ -136,7 +136,7 @@ export default function ClientFaFilter({ projects }: ClientFaFilterProps) {
       return true;
     });
 
-    // 排序
+    // Sorting
     filtered.sort((a, b) => {
       switch (filters.sortBy) {
         case 'stars':
@@ -190,16 +190,16 @@ export default function ClientFaFilter({ projects }: ClientFaFilterProps) {
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
-      {/* 筛选器头部 */}
+      {/* Filter header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-2">
           <FaFilter className="w-5 h-5 text-gray-500" />
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-            高级筛选器
+            Advanced Filters
           </h2>
           {activeFaFiltersCount > 0 && (
             <span className="bg-blue-100 dark:bg-blue-900/20 text-blue-800 dark:text-blue-400 text-xs px-2 py-1 rounded-full">
-              {activeFaFiltersCount} 个筛选条件
+              {activeFaFiltersCount} filters active
             </span>
           )}
         </div>
@@ -210,50 +210,50 @@ export default function ClientFaFilter({ projects }: ClientFaFilterProps) {
               className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 flex items-center space-x-1"
             >
               <FaTimes className="w-4 h-4" />
-              <span>清除筛选</span>
+              <span>Clear filters</span>
             </button>
           )}
           <button
             onClick={() => setShowFaFilters(!showFaFilters)}
             className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
           >
-            {showFaFilters ? '隐藏筛选器' : '显示筛选器'}
+            {showFaFilters ? 'Hide filters' : 'Show filters'}
           </button>
         </div>
       </div>
 
-      {/* 搜索和排序 */}
+      {/* Search and sorting */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            搜索项目
+            Search projects
           </label>
           <input
             type="text"
             value={filters.searchQuery}
             onChange={(e) => updateFaFilter('searchQuery', e.target.value)}
-            placeholder="搜索项目名称、描述或标签..."
+            placeholder="Search by project name, description, or tags..."
             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
           />
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            排序方式
+            Sort by
           </label>
           <select
             value={filters.sortBy}
             onChange={(e) => updateFaFilter('sortBy', e.target.value as any)}
             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
           >
-            <option value="relevance">相关性</option>
-            <option value="stars">星标数</option>
-            <option value="updated">最近更新</option>
-            <option value="name">项目名称</option>
+            <option value="relevance">Relevance</option>
+            <option value="stars">Stars</option>
+            <option value="updated">Recently updated</option>
+            <option value="name">Project name</option>
           </select>
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            最小星标数
+            Minimum stars
           </label>
           <input
             type="number"
@@ -265,13 +265,13 @@ export default function ClientFaFilter({ projects }: ClientFaFilterProps) {
         </div>
       </div>
 
-      {/* 详细筛选器 */}
+      {/* Detailed filters */}
       {showFaFilters && (
         <div className="space-y-6">
-          {/* 编程语言 */}
+          {/* Programming languages */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              编程语言
+              Programming languages
             </label>
             <div className="flex flex-wrap gap-2">
               {availableOptions.languages.map(language => (
@@ -290,10 +290,10 @@ export default function ClientFaFilter({ projects }: ClientFaFilterProps) {
             </div>
           </div>
 
-          {/* 核心特性 */}
+          {/* Core features */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              核心特性
+              Core features
             </label>
             <div className="flex flex-wrap gap-2">
               {availableOptions.features.map(feature => (
@@ -312,10 +312,10 @@ export default function ClientFaFilter({ projects }: ClientFaFilterProps) {
             </div>
           </div>
 
-          {/* 兼容性 */}
+          {/* Compatibility */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              兼容的LLM模型
+              Compatible LLM models
             </label>
             <div className="flex flex-wrap gap-2">
               {availableOptions.compatibility.map(comp => (
@@ -334,10 +334,10 @@ export default function ClientFaFilter({ projects }: ClientFaFilterProps) {
             </div>
           </div>
 
-          {/* 项目类型 */}
+          {/* Project types */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              项目类型
+              Project types
             </label>
             <div className="flex flex-wrap gap-2">
               {availableOptions.projectTypes.map(type => (
@@ -358,20 +358,20 @@ export default function ClientFaFilter({ projects }: ClientFaFilterProps) {
         </div>
       )}
 
-      {/* 结果统计 */}
+      {/* Results statistics */}
       <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
         <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400">
           <span>
-            显示 {filteredProjects.length} 个项目（共 {projects.length} 个）
+            Showing {filteredProjects.length} projects (of {projects.length} total)
           </span>
           <div className="flex items-center space-x-4">
             <span className="flex items-center space-x-1">
               <FaStar className="w-4 h-4" />
-              <span>按星标排序</span>
+              <span>Sorted by stars</span>
             </span>
             <span className="flex items-center space-x-1">
               <FaBolt className="w-4 h-4" />
-              <span>AI分析增强</span>
+              <span>AI-enhanced analysis</span>
             </span>
           </div>
         </div>

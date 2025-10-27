@@ -64,7 +64,7 @@ export const metadata: Metadata = {
         alt: "MCPHubs - Model Context Protocol Developer Center"
       }
     ],
-    locale: "zh_CN",
+    locale: "en_US",
     type: "website"
   },
   twitter: {
@@ -101,9 +101,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: siteUrl,
     languages: {
-      'zh-CN': siteUrl,
+      'en-US': siteUrl,
+      'zh-CN': `${siteUrl}/zh-cn`,
       'zh-TW': `${siteUrl}/zh-tw`,
-      'en-US': `${siteUrl}/en`,
       'en-CA': `${siteUrl}/en-ca`,
       'en-AU': `${siteUrl}/en-au`,
       'en-GB': `${siteUrl}/en-gb`,
@@ -124,7 +124,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   // Trigger sync tasks on app startup (async execution, doesn't block page rendering)
-  // 只在生产环境运行时触发，避免构建时执行
+  // Only trigger in production environment to avoid execution during build
   if (typeof window === 'undefined' && process.env.NODE_ENV === 'production') {
           // Only execute once on server side in production
     triggerStartupSync({
@@ -137,11 +137,11 @@ export default function RootLayout({
   }
 
   return (
-    <html lang="zh-CN" className="h-full">
+    <html lang="en-US" className="h-full">
       <head>
-        {/* 高价值地区Hreflang标签 */}
-        <link rel="alternate" hrefLang="zh-CN" href="https://mcphubs.com" />
-        <link rel="alternate" hrefLang="en-US" href="https://mcphubs.com/en" />
+        {/* High-value region Hreflang tags */}
+        <link rel="alternate" hrefLang="en-US" href="https://mcphubs.com" />
+        <link rel="alternate" hrefLang="zh-CN" href="https://mcphubs.com/zh-cn" />
         <link rel="alternate" hrefLang="en-CA" href="https://mcphubs.com/en-ca" />
         <link rel="alternate" hrefLang="en-AU" href="https://mcphubs.com/en-au" />
         <link rel="alternate" hrefLang="en-GB" href="https://mcphubs.com/en-gb" />
@@ -151,13 +151,13 @@ export default function RootLayout({
         <link rel="alternate" hrefLang="fr-FR" href="https://mcphubs.com/fr" />
         <link rel="alternate" hrefLang="es-ES" href="https://mcphubs.com/es" />
         <link rel="alternate" hrefLang="sv-SE" href="https://mcphubs.com/sv" />
-        <link rel="alternate" hrefLang="x-default" href="https://mcphubs.com/en" />
+        <link rel="alternate" hrefLang="x-default" href="https://mcphubs.com" />
         
-        {/* DNS预连接高价值地区CDN */}
+        {/* DNS prefetch for high-value region CDN */}
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//cdnjs.cloudflare.com" />
         
-        {/* 针对高价值地区的性能优化 */}
+        {/* Performance optimization for high-value regions */}
         <link rel="preconnect" href="https://api.github.com" crossOrigin="anonymous" />
       </head>
       <body
@@ -176,7 +176,7 @@ export default function RootLayout({
           </div>
         </SessionWrapper>
         
-        {/* Google Analytics - 重点追踪高价值地区 */}
+        {/* Google Analytics - Focus on tracking high-value regions */}
         {/* TODO: Replace with actual Google Analytics ID */}
         {/* <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"
@@ -188,7 +188,7 @@ export default function RootLayout({
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', 'G-XXXXXXXXXX', {
-              // 重点追踪高价值地区
+              // Focus on tracking high-value regions
               custom_map: {
                 'target_regions': 'US,CA,AU,SE,JP,KR,DE,FR,ES'
               }

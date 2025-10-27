@@ -94,7 +94,7 @@ export default function Header() {
   ];
 
   return (
-    <header id="navigation" className="bg-gray-900 text-white sticky top-0 z-50 shadow-lg" role="banner">
+    <header id="navigation" className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white sticky top-0 z-50 shadow-lg border-b border-gray-200 dark:border-gray-700" role="banner">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center py-3">
           {/* Logo */}
@@ -118,7 +118,7 @@ export default function Header() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="flex items-center space-x-1 px-2 py-2 rounded-md hover:bg-gray-800 hover:text-purple-300 transition-colors text-sm"
+                  className="flex items-center space-x-1 px-2 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-purple-600 dark:hover:text-purple-300 transition-colors text-sm"
                 >
                   <Icon className="w-3 h-3" />
                   <span>{item.label}</span>

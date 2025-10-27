@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
     if (query.trim()) {
       const searchTerm = `%${query.toLowerCase()}%`;
       supabaseQuery = supabaseQuery.or(
-        `name.ilike.${searchTerm},description.ilike.${searchTerm},language.ilike.${searchTerm}`
+        `name.ilike.${searchTerm},description.ilike.${searchTerm},language.ilike.${searchTerm},full_name.ilike.${searchTerm}`
       );
     }
 
@@ -43,8 +43,7 @@ export async function GET(request: NextRequest) {
 
     // 标签过滤
     if (tags.length > 0) {
-      // 这里需要更复杂的查询来匹配数组中的标签
-      // 暂时使用简单的包含查询
+      // 使用数组包含查询来匹配标签
       tags.forEach(tag => {
         supabaseQuery = supabaseQuery.contains('topics', [tag]);
       });
@@ -124,7 +123,7 @@ export async function GET(request: NextRequest) {
     if (query.trim()) {
       const searchTerm = `%${query.toLowerCase()}%`;
       countQuery = countQuery.or(
-        `name.ilike.${searchTerm},description.ilike.${searchTerm},language.ilike.${searchTerm}`
+        `name.ilike.${searchTerm},description.ilike.${searchTerm},language.ilike.${searchTerm},full_name.ilike.${searchTerm}`
       );
     }
     if (languages.length > 0) {
@@ -135,6 +134,43 @@ export async function GET(request: NextRequest) {
     }
     if (maxStars) {
       countQuery = countQuery.lte('stars', maxStars);
+    }
+    
+    // 标签过滤
+    if (tags.length > 0) {
+      tags.forEach(tag => {
+        countQuery = countQuery.contains('topics', [tag]);
+      });
+    }
+    
+    // 更新时间过滤
+    if (updatedWithin) {
+      const now = new Date();
+      let cutoffDate: Date;
+      
+      switch (updatedWithin) {
+        case 'week':
+          cutoffDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+          break;
+        case 'month':
+          cutoffDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+          break;
+        case '3months':
+          cutoffDate = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
+          break;
+        case 'year':
+          cutoffDate = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000);
+          break;
+        default:
+          cutoffDate = new Date(0);
+      }
+      
+      countQuery = countQuery.gte('updated_at', cutoffDate.toISOString());
+    }
+    
+    // 文档过滤
+    if (hasDocumentation === 'true') {
+      countQuery = countQuery.not('readme_content', 'is', null);
     }
 
     const { count } = await countQuery;
@@ -166,11 +202,17 @@ export async function GET(request: NextRequest) {
         }
 
         // 标签匹配
-        if (searchTerms.some(term => 
-          project.topics?.some((topic: string) => topic.toLowerCase().includes(term))
+        if (project.topics && searchTerms.some(term => 
+          project.topics.some((topic: string) => topic.toLowerCase().includes(term))
         )) {
           matchedFields.push('topics');
           relevanceScore += 6;
+        }
+
+        // 完整名称匹配
+        if (searchTerms.some(term => project.full_name?.toLowerCase().includes(term))) {
+          matchedFields.push('full_name');
+          relevanceScore += 12;
         }
       }
 

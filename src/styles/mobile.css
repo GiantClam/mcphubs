@@ -46,6 +46,13 @@
   -webkit-backdrop-filter: blur(10px);
 }
 
+/* 在桌面端隐藏移动端底部导航 */
+@media (min-width: 768px) {
+  .mobile-bottom-nav {
+    display: none !important;
+  }
+}
+
 .dark .mobile-bottom-nav {
   background: var(--background, #111827);
   border-top-color: var(--border, #374151);

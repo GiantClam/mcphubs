@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ProjectsPage() {
-  // 在服务端直接获取项目数据
+  // Fetch project data directly on server side
   let projects: ProcessedRepo[] = [];
   try {
     const result = await getProjects();
@@ -28,7 +28,7 @@ export default async function ProjectsPage() {
     console.error('Failed to fetch projects on server:', error);
   }
 
-  // 筛选出客户端类型的项目
+  // Filter out client-type projects
   const clientProjects = projects.filter(project => 
     project.projectType === 'Client' || 
     project.projectType === 'Library' ||
@@ -46,20 +46,20 @@ export default async function ProjectsPage() {
           MCP Clients & Libraries
         </h1>
         <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
-          发现和筛选MCP客户端工具、库和开发资源。按编程语言、特性和兼容性筛选。
+          Discover and filter MCP client tools, libraries, and development resources. Filter by programming language, features, and compatibility.
         </p>
       </div>
 
-      {/* 高级筛选器 */}
+      {/* Advanced Filter */}
       <div className="mb-8">
         <ClientFilter projects={clientProjects} />
       </div>
 
-      {/* 项目展示 */}
+      {/* Project Showcase */}
       <ProjectShowcase 
         initialProjects={clientProjects} 
         showAll={true}
-        showFilters={false} // 使用我们的自定义筛选器
+        showFilters={false} // Use our custom filter
       />
     </div>
   );

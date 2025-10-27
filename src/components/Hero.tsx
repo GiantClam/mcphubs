@@ -47,14 +47,6 @@ export default function Hero() {
     }
   };
 
-  const scrollToProjects = () => {
-    const element = document.getElementById('projects');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-
   return (
     <section className="relative bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 text-white py-20 overflow-hidden">
       {/* 动画背景 */}
@@ -81,23 +73,23 @@ export default function Hero() {
 
         {/* 快速行动按钮 */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-          <button 
-            onClick={scrollToProjects}
-            className="group px-8 py-4 bg-white text-purple-600 rounded-lg font-semibold hover:bg-purple-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+          <Link
+            href="/projects"
+            className="group px-8 py-4 border-2 border-white text-white rounded-lg font-semibold hover:bg-white hover:text-gray-900 transition-all duration-300"
           >
             <FaRocket className="inline mr-2 group-hover:animate-bounce" />
             Browse Projects
-          </button>
+          </Link>
           <Link
             href="/what-is-mcp"
-            className="group px-8 py-4 border-2 border-white text-white rounded-lg font-semibold hover:bg-white hover:text-purple-600 transition-all duration-300"
+            className="group px-8 py-4 border-2 border-white text-white rounded-lg font-semibold hover:bg-white hover:text-gray-900 transition-all duration-300"
           >
             <FaBook className="inline mr-2 group-hover:animate-pulse" />
             Learn MCP Basics
           </Link>
           <Link
             href="/servers/tools"
-            className="group px-8 py-4 border-2 border-purple-300 text-purple-100 rounded-lg font-semibold hover:bg-purple-300 hover:text-purple-600 transition-all duration-300"
+            className="group px-8 py-4 border-2 border-white/80 text-white rounded-lg font-semibold hover:bg-white/10 hover:border-white transition-all duration-300"
           >
             <FaBolt className="inline mr-2 group-hover:animate-pulse" />
             Quick Setup Tool

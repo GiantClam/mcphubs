@@ -1,14 +1,19 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { FaGithub, FaStar, FaCodeBranch, FaList } from 'react-icons/fa';
+import { FaList } from 'react-icons/fa';
 import { getProjectDetails } from '@/lib/project-service';
 import { analyzeProjectRelevance } from '@/lib/analysis';
-import { parseProjectSlug, isValidProjectSlug } from '@/lib/utils';
+import { isValidProjectSlug } from '@/lib/utils';
 import ExpertAnalysis from '@/components/ExpertAnalysis';
 import TutorialGuide from '@/components/TutorialGuide';
 import CommunityComments from '@/components/CommunityComments';
+import ProjectHeader from '@/components/ProjectHeader';
+import ProjectOverview from '@/components/ProjectOverview';
+import ProjectFeatures from '@/components/ProjectFeatures';
+import ProjectInstallation from '@/components/ProjectInstallation';
+import ProjectUsageExamples from '@/components/ProjectUsageExamples';
+import ProjectSidebar from '@/components/ProjectSidebar';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import rehypeSanitize from 'rehype-sanitize';
@@ -32,6 +37,7 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
   if (!isValidProjectSlug(slug)) {
     return {
       title: 'Invalid Project URL - MCPHubs',
+      description: 'The requested project URL is invalid. Please check the URL and try again.',
     };
   }
   
@@ -40,22 +46,81 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
   if (!project) {
     return {
       title: 'Project Not Found - MCPHubs',
+      description: 'The requested project could not be found. It may have been removed or the URL may be incorrect.',
     };
   }
   
+  const title = `${project.name} - MCP Server by ${project.owner}`;
+  const description = `${project.description} Install and configure this MCP server for enhanced AI capabilities. ${project.stars} stars, ${project.language} language.`;
+  const keywords = [
+    'MCP',
+    'Model Context Protocol',
+    project.name,
+    project.owner,
+    project.language,
+    'AI',
+    'Claude',
+    'Anthropic',
+    'server',
+    'integration',
+    ...(project.topics || [])
+  ].join(', ');
+  
   return {
-    title: `${project.name} by ${project.owner} - MCPHubs`,
-    description: project.description,
+    title,
+    description,
+    keywords,
+    authors: [{ name: project.owner }],
+    creator: project.owner,
+    publisher: 'MCPHubs',
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
     openGraph: {
-      title: `${project.name} - MCP项目`,
-      description: project.description,
-      images: [project.imageUrl],
+      type: 'article',
+      title,
+      description,
+      url: `https://mcphubs.com/project/${slug}`,
+      siteName: 'MCPHubs',
+      images: [
+        {
+          url: project.imageUrl || '/images/default-project.jpg',
+          width: 1200,
+          height: 630,
+          alt: `${project.name} - MCP Server`,
+        },
+      ],
+      locale: 'en_US',
+      authors: [project.owner],
+      publishedTime: project.createdAt,
+      modifiedTime: project.updatedAt,
+      section: 'MCP Servers',
+      tags: project.topics || [],
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${project.name} - MCP项目`,
-      description: project.description,
-      images: [project.imageUrl],
+      title,
+      description,
+      images: [project.imageUrl || '/images/default-project.jpg'],
+      creator: `@${project.owner}`,
+      site: '@MCPHubs',
+    },
+    alternates: {
+      canonical: `https://mcphubs.com/project/${slug}`,
+    },
+    other: {
+      'article:author': project.owner,
+      'article:section': 'MCP Servers',
+      'article:tag': (project.topics || []).join(','),
+      'og:updated_time': project.updatedAt,
     },
   };
 }
@@ -99,142 +164,155 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   const headings = project.readmeContent ? extractHeadings(project.readmeContent) : [];
   const hasTableOfContents = headings.length > 3; // Only show TOC when there are enough headings
   
+  // Generate structured data for SEO
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": project.name,
+    "description": project.description,
+    "url": `https://mcphubs.com/project/${slug}`,
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "programmingLanguage": project.language,
+    "author": {
+      "@type": "Person",
+      "name": project.owner,
+      "url": `https://github.com/${project.owner}`
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "MCPHubs",
+      "url": "https://mcphubs.com"
+    },
+    "dateCreated": project.createdAt,
+    "dateModified": project.updatedAt,
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": Math.min(5, Math.max(1, (project.stars || 0) / 1000)),
+      "ratingCount": project.stars || 0,
+      "bestRating": 5,
+      "worstRating": 1
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock"
+    },
+    "keywords": (project.topics || []).join(', '),
+    "codeRepository": project.url,
+    "downloadUrl": project.url,
+    "screenshot": project.imageUrl,
+    "softwareVersion": "1.0.0",
+    "license": "MIT",
+    "isAccessibleForFree": true,
+    "featureList": [
+      "MCP Server Integration",
+      "AI Assistant Compatibility",
+      "Easy Installation",
+      "Comprehensive Documentation"
+    ]
+  };
+  
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-6">
-        <Link href="/projects" className="text-purple-600 hover:text-purple-800 flex items-center">
-          ← Back to projects
-        </Link>
-      </div>
+    <>
+      {/* Structured Data for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData),
+        }}
+      />
       
-      {/* Expert Deep Analysis */}
-      <ExpertAnalysis project={project} />
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        {/* Project Header */}
+        <ProjectHeader project={project} />
       
-      {/* Practical Tutorial Guide */}
-      <TutorialGuide project={project} />
-      
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
-        {/* Project header information */}
-        <div className="relative h-64 w-full">
-          <Image 
-            src={project.imageUrl || '/images/default-project.jpg'} 
-            alt={project.name}
-            fill
-            className="object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
-            <div className="p-6 text-white">
-              <h1 className="text-3xl font-bold mb-2">{project.name}</h1>
-              <p className="text-lg opacity-90">{project.description}</p>
+      {/* Main Content Grid */}
+      <div className="container mx-auto px-4 py-8">
+        <div className="project-content-grid grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Left Main Content */}
+          <main className="project-main-content lg:col-span-2 space-y-8">
+            {/* Expert Deep Analysis */}
+            <ExpertAnalysis project={project} />
+            
+            {/* Practical Tutorial Guide */}
+            <TutorialGuide project={project} />
+            
+            {/* Project Overview */}
+            <ProjectOverview project={project} />
+            
+            {/* Project Features */}
+            <ProjectFeatures project={project} />
+            
+            {/* Installation & Setup */}
+            <ProjectInstallation project={project} />
+            
+            {/* Usage Examples */}
+            <ProjectUsageExamples project={project} />
+            
+            {/* AI Analysis Section */}
+            <div className="bg-white dark:bg-gray-900 rounded-lg p-6">
+              <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">MCP Relevance Analysis</h2>
+              
+              <div className="mb-6">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Relevance Score</span>
+                  <span className={`text-sm font-medium px-2 py-1 rounded-full ${
+                    analysis.relevanceCategory === 'High' 
+                      ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' 
+                      : analysis.relevanceCategory === 'Medium'
+                      ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
+                      : 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
+                  }`}>
+                    {analysis.relevanceScore}/100 - {analysis.relevanceCategory} Relevance
+                  </span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                  <div 
+                    className={`h-2.5 rounded-full ${
+                      analysis.relevanceCategory === 'High' 
+                        ? 'bg-green-600' 
+                        : analysis.relevanceCategory === 'Medium'
+                        ? 'bg-yellow-500'
+                        : 'bg-blue-500'
+                    }`}
+                    style={{ width: `${analysis.relevanceScore}%` }}
+                  ></div>
+                </div>
+              </div>
+              
+              <div className="mb-4">
+                <h3 className="text-lg font-semibold mb-2 text-gray-800 dark:text-gray-200">Summary</h3>
+                <p className="text-gray-600 dark:text-gray-400">{analysis.summary}</p>
+              </div>
+              
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <h3 className="text-lg font-semibold mb-2 text-gray-800 dark:text-gray-200">Key Features</h3>
+                  <ul className="list-disc pl-5 text-gray-600 dark:text-gray-400">
+                    {analysis.keyFeatures.map((feature, index) => (
+                      <li key={index} className="mb-1">{feature}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold mb-2 text-gray-800 dark:text-gray-200">Use Cases</h3>
+                  <ul className="list-disc pl-5 text-gray-600 dark:text-gray-400">
+                    {analysis.useCases.map((useCase, index) => (
+                      <li key={index} className="mb-1">{useCase}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        
-        {/* Project metadata */}
-        <div className="p-6 border-b border-gray-200 dark:border-gray-700 flex flex-wrap justify-between items-center">
-          <div className="flex items-center mb-4 md:mb-0">
-            <Image 
-              src={project.ownerAvatar} 
-              alt={project.owner}
-              width={40}
-              height={40}
-              className="rounded-full mr-3"
-            />
-            <span className="text-gray-700 dark:text-gray-300">{project.owner}</span>
-          </div>
-          
-          <div className="flex space-x-6">
-            <div className="flex items-center">
-              <FaStar className="text-yellow-400 mr-2" />
-              <span className="text-gray-700 dark:text-gray-300">{project.stars} stars</span>
-            </div>
-            <div className="flex items-center">
-              <FaCodeBranch className="text-gray-500 mr-2" />
-              <span className="text-gray-700 dark:text-gray-300">{project.forks} forks</span>
-            </div>
-            <div>
-              <span className="px-3 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
-                {project.language}
-              </span>
-            </div>
-          </div>
-        </div>
-        
-        {/* AI 分析结果 */}
-        <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-          <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">MCP Relevance Analysis</h2>
-          
-          <div className="mb-6">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Relevance Score</span>
-              <span className={`text-sm font-medium px-2 py-1 rounded-full ${
-                analysis.relevanceCategory === 'High' 
-                  ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' 
-                  : analysis.relevanceCategory === 'Medium'
-                  ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
-                  : 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
-              }`}>
-                {analysis.relevanceScore}/100 - {analysis.relevanceCategory} Relevance
-              </span>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-              <div 
-                className={`h-2.5 rounded-full ${
-                  analysis.relevanceCategory === 'High' 
-                    ? 'bg-green-600' 
-                    : analysis.relevanceCategory === 'Medium'
-                    ? 'bg-yellow-500'
-                    : 'bg-blue-500'
-                }`}
-                style={{ width: `${analysis.relevanceScore}%` }}
-              ></div>
-            </div>
-          </div>
-          
-          <div className="mb-4">
-            <h3 className="text-lg font-semibold mb-2 text-gray-800 dark:text-gray-200">Summary</h3>
-            <p className="text-gray-600 dark:text-gray-400">{analysis.summary}</p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 gap-6">
-            <div>
-              <h3 className="text-lg font-semibold mb-2 text-gray-800 dark:text-gray-200">Key Features</h3>
-              <ul className="list-disc pl-5 text-gray-600 dark:text-gray-400">
-                {analysis.keyFeatures.map((feature, index) => (
-                  <li key={index} className="mb-1">{feature}</li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-2 text-gray-800 dark:text-gray-200">Use Cases</h3>
-              <ul className="list-disc pl-5 text-gray-600 dark:text-gray-400">
-                {analysis.useCases.map((useCase, index) => (
-                  <li key={index} className="mb-1">{useCase}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-        
-        {/* Project links */}
-        <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-          <a 
-            href={project.url} 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors"
-          >
-            <FaGithub className="mr-2" />
-            View on GitHub
-          </a>
-        </div>
-        
-        {/* README content */}
-        {project.readmeContent && (
-          <div className="p-6">
-            <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white border-l-4 border-purple-600 pl-3">
-              README
-            </h2>
+            
+            {/* README content */}
+            {project.readmeContent && (
+              <div className="bg-white dark:bg-gray-900 rounded-lg p-6">
+                <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white border-l-4 border-purple-600 pl-3">
+                  README
+                </h2>
             
             {/* Table of contents - only show when there are enough headings */}
             {hasTableOfContents && (
@@ -430,21 +508,31 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               </ReactMarkdown>
             </div>
             
-            {/* Back to top button */}
-            <div className="flex justify-end mt-8">
-              <a 
-                href="#" 
-                className="inline-flex items-center px-4 py-2 bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 rounded-md hover:bg-purple-200 dark:hover:bg-purple-800 transition-colors"
-              >
-                ↑ Back to top
-              </a>
-            </div>
-          </div>
-        )}
+                {/* Back to top button */}
+                <div className="flex justify-end mt-8">
+                  <a 
+                    href="#" 
+                    className="inline-flex items-center px-4 py-2 bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 rounded-md hover:bg-purple-200 dark:hover:bg-purple-800 transition-colors"
+                  >
+                    ↑ Back to top
+                  </a>
+                </div>
+              </div>
+            )}
+          </main>
+
+          {/* Right Sidebar */}
+          <aside className="project-sidebar lg:col-span-1">
+            <ProjectSidebar project={project} />
+          </aside>
+        </div>
       </div>
       
-      {/* Community comments */}
-      <CommunityComments project={project} />
-    </div>
+        {/* Community comments */}
+        <div className="container mx-auto px-4 pb-8">
+          <CommunityComments project={project} />
+        </div>
+      </div>
+    </>
   );
 } 

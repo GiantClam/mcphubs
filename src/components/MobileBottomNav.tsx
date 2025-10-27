@@ -9,14 +9,14 @@ export default function MobileBottomNav() {
   const pathname = usePathname();
   const [isVisible, setIsVisible] = useState(false);
 
-  // 监听滚动，在移动端显示/隐藏底部导航
+  // Listen to scroll, show/hide bottom navigation on mobile
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
       const windowHeight = window.innerHeight;
       const documentHeight = document.documentElement.scrollHeight;
       
-      // 在接近底部时隐藏导航
+      // Hide navigation when near bottom
       const isNearBottom = scrollY + windowHeight >= documentHeight - 100;
       setIsVisible(!isNearBottom);
     };
@@ -60,7 +60,7 @@ export default function MobileBottomNav() {
 
   return (
     <div 
-      className={`mobile-bottom-nav fixed bottom-0 left-0 right-0 h-16 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 flex justify-around items-center px-2 z-50 transition-transform duration-300 ${
+      className={`mobile-bottom-nav fixed bottom-0 left-0 right-0 h-16 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 flex justify-around items-center px-2 z-50 transition-transform duration-300 md:hidden ${
         isVisible ? 'translate-y-0' : 'translate-y-full'
       }`}
     >

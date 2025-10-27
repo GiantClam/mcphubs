@@ -87,7 +87,7 @@ export default function ResponsiveNavigation({ className = '' }: ResponsiveNavig
             <Link
               key={item.href}
               href={item.href}
-              className="flex items-center space-x-1 px-3 py-2 rounded-md hover:bg-gray-800 hover:text-purple-300 transition-colors text-sm whitespace-nowrap"
+              className="flex items-center space-x-1 px-3 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-purple-600 dark:hover:text-purple-300 transition-colors text-sm whitespace-nowrap"
             >
               <Icon className="w-4 h-4" />
               <span>{item.label}</span>
@@ -100,7 +100,7 @@ export default function ResponsiveNavigation({ className = '' }: ResponsiveNavig
       <nav className={`mobile-nav md:hidden ${className}`}>
         {/* 菜单切换按钮 */}
         <button
-          className="menu-toggle p-2 rounded-md hover:bg-gray-800 transition-colors"
+          className="menu-toggle p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle menu"
           aria-expanded={mobileMenuOpen}
@@ -110,9 +110,9 @@ export default function ResponsiveNavigation({ className = '' }: ResponsiveNavig
             transition={{ duration: 0.2 }}
           >
             {mobileMenuOpen ? (
-              <FaTimes className="w-5 h-5 text-white" />
+              <FaTimes className="w-5 h-5 text-gray-900 dark:text-white" />
             ) : (
-              <FaBars className="w-5 h-5 text-white" />
+              <FaBars className="w-5 h-5 text-gray-900 dark:text-white" />
             )}
           </motion.div>
         </button>

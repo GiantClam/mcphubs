@@ -76,10 +76,12 @@ export async function searchProjects(
       page: page.toString(),
       limit: limit.toString(),
       ...Object.entries(filters).reduce((acc, [key, value]) => {
-        if (value !== null && value !== undefined && value !== '') {
+        if (value !== null && value !== undefined) {
           if (Array.isArray(value)) {
-            acc[key] = value.join(',');
-          } else {
+            if (value.length > 0) {
+              acc[key] = value.join(',');
+            }
+          } else if (value !== '') {
             acc[key] = value.toString();
           }
         }
@@ -110,7 +112,7 @@ export function localSearch(
 
   const searchTerms = query.toLowerCase().split(/\s+/).filter(term => term.length > 0);
   
-  return projects
+  const filteredProjects = projects
     .map(project => {
       const matchedFields: string[] = [];
       let relevanceScore = 0;
@@ -193,7 +195,9 @@ export function localSearch(
         matchedFields
       };
     })
-    .filter((project): project is SearchResult => project !== null)
+    .filter((project): project is SearchResult & { relevanceScore: number; matchedFields: string[] } => project !== null);
+
+  return filteredProjects
     .sort((a, b) => {
       switch (filters.sortBy) {
         case 'stars':
