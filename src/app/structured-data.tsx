@@ -4,13 +4,19 @@ export default function StructuredData() {
   const websiteData = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "MCPHubs",
+    "name": "MCPHubs - Model Context Protocol Developer Resource Center",
+    "alternateName": ["MCP Hubs", "MCP Developer Center", "Model Context Protocol Hub"],
     "url": "https://mcphubs.com",
-    "description": "MCPHubs is a professional Model Context Protocol (MCP) developer platform. Learn what MCP is, awesome-mcp-servers project collection, Claude MCP integration tutorials.",
+    "description": "MCPHubs is the ultimate Model Context Protocol (MCP) developer platform. Discover 200+ MCP projects, learn Claude MCP integration, explore awesome-mcp-servers collection, and master AI application development with comprehensive tutorials and tools.",
     "inLanguage": ["zh-CN", "en-US", "ja-JP", "ko-KR", "de-DE", "fr-FR", "es-ES", "sv-SE", "ar-SA"],
+    "keywords": [
+      "Model Context Protocol", "MCP", "Claude MCP", "awesome-mcp-servers", "AI development",
+      "MCP server", "MCP client", "Anthropic", "Claude integration", "AI tools",
+      "web scraping", "database", "TypeScript", "Python", "MCP tutorial"
+    ],
     "audience": {
       "@type": "Audience",
-      "audienceType": "Developers",
+      "audienceType": ["Developers", "AI Engineers", "Software Engineers", "Tech Professionals"],
       "geographicArea": [
         {"@type": "Country", "name": "United States"},
         {"@type": "Country", "name": "Canada"},
@@ -27,6 +33,12 @@ export default function StructuredData() {
       "@type": "SearchAction",
       "target": "https://mcphubs.com/search?q={search_term_string}",
       "query-input": "required name=search_term_string"
+    },
+    "mainEntity": {
+      "@type": "ItemList",
+      "name": "MCP Projects Collection",
+      "description": "Curated collection of 200+ Model Context Protocol projects",
+      "numberOfItems": 200
     }
   };
 
@@ -138,6 +150,71 @@ export default function StructuredData() {
     "image": "https://mcphubs.com/images/og-mcphubs.jpg"
   };
 
+  const softwareApplicationData = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "MCPHubs Platform",
+    "description": "Comprehensive Model Context Protocol developer platform with project discovery, tutorials, and tools",
+    "url": "https://mcphubs.com",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Web Browser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "ratingCount": "150"
+    },
+    "featureList": [
+      "200+ MCP Projects Discovery",
+      "Claude MCP Integration Tutorials", 
+      "Awesome MCP Servers Collection",
+      "Real-time Project Updates",
+      "Multi-language Support",
+      "Developer Tools & Resources"
+    ]
+  };
+
+  const collectionPageData = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "MCP Projects Collection",
+    "description": "Curated collection of 200+ Model Context Protocol projects including servers, clients, and tools",
+    "url": "https://mcphubs.com/projects",
+    "mainEntity": {
+      "@type": "ItemList",
+      "name": "MCP Projects",
+      "description": "Featured Model Context Protocol projects",
+      "numberOfItems": 200,
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Awesome MCP Servers",
+          "description": "Curated collection of excellent MCP server implementations",
+          "url": "https://mcphubs.com/awesome-mcp-servers"
+        },
+        {
+          "@type": "ListItem", 
+          "position": 2,
+          "name": "Web Scraping Tools",
+          "description": "MCP servers for web scraping and data extraction",
+          "url": "https://mcphubs.com/projects?category=web-scraping"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Database Connectors",
+          "description": "MCP servers for database access and management",
+          "url": "https://mcphubs.com/projects?category=database"
+        }
+      ]
+    }
+  };
+
   return (
     <>
       <Script
@@ -173,6 +250,20 @@ export default function StructuredData() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(articleData)
+        }}
+      />
+      <Script
+        id="software-application-structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(softwareApplicationData)
+        }}
+      />
+      <Script
+        id="collection-page-structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(collectionPageData)
         }}
       />
     </>

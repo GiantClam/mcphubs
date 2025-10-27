@@ -1,70 +1,9 @@
 import { Suspense } from 'react';
-import Link from 'next/link';
-import { FaGithub, FaCode, FaUsers, FaLightbulb, FaRocket, FaBolt } from 'react-icons/fa';
+import { FaCode, FaUsers, FaBolt } from 'react-icons/fa';
 import ProjectShowcase from '@/components/ProjectShowcase';
-import FeaturedProjects from '@/components/FeaturedProjects';
-
-// Homepage static content component (server-side rendering)
-function HeroSection() {
-  return (
-    <section className="relative bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 text-white py-20">
-      <div className="absolute inset-0 bg-black opacity-10"></div>
-      <div className="relative container mx-auto px-4 text-center">
-        <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
-          MCPHubs
-        </h1>
-        <p className="text-xl md:text-2xl mb-8 text-purple-100 max-w-3xl mx-auto leading-relaxed">
-          Explore the endless possibilities of <span className="font-semibold text-yellow-300">Model Context Protocol</span>
-          <br />
-          Discover the latest MCP projects, tools and integration examples
-        </p>
-        
-        {/* Static statistics - display immediately */}
-        <div className="grid grid-cols-3 gap-8 mb-8 max-w-2xl mx-auto">
-          <div className="text-center">
-            <div className="text-3xl font-bold text-yellow-300">200+</div>
-            <div className="text-purple-200">Featured Projects</div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl font-bold text-green-300">⚡</div>
-            <div className="text-purple-200">Real-time Updates</div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl font-bold text-blue-300">
-              {new Date().toLocaleDateString('en-US', { 
-                timeZone: 'Asia/Shanghai',
-                month: '2-digit',
-                day: '2-digit'
-              })}
-            </div>
-            <div className="text-purple-200">Auto Updates</div>
-            <div className="text-xs text-purple-300 mt-1">
-              Next: Daily at 6:00 AM
-            </div>
-          </div>
-        </div>
-
-        {/* CTA buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <Link
-            href="/projects"
-            className="px-8 py-4 bg-white text-purple-600 rounded-lg font-semibold hover:bg-purple-50 transition-colors shadow-lg"
-          >
-            <FaRocket className="inline mr-2" />
-            Browse Projects
-          </Link>
-          <Link
-            href="/what-is-mcp"
-            className="px-8 py-4 border-2 border-white text-white rounded-lg font-semibold hover:bg-white hover:text-purple-600 transition-colors"
-          >
-            <FaLightbulb className="inline mr-2" />
-            Learn About MCP
-          </Link>
-        </div>
-      </div>
-    </section>
-  );
-}
+import Hero from '@/components/Hero';
+import EnhancedFeaturedProjects from '@/components/EnhancedFeaturedProjects';
+import QuickNavigation from '@/components/QuickNavigation';
 
 // Features introduction section (static content)
 function FeaturesSection() {
@@ -155,30 +94,35 @@ function ProjectShowcaseSkeleton() {
 export default function Homepage() {
   return (
     <>
-      {/* Immediately display static content */}
-      <HeroSection />
+      {/* 新的优化 Hero 区域 */}
+      <Hero />
+      
+      {/* 快速导航面板 */}
+      <QuickNavigation />
+      
+      {/* 特色功能介绍 */}
       <FeaturesSection />
       
-      {/* 推荐项目 */}
-      <section className="py-20 bg-white dark:bg-gray-800">
-        <div className="container mx-auto px-4">
-          <Suspense fallback={
+      {/* 增强的推荐项目展示 */}
+      <Suspense fallback={
+        <div className="py-20 bg-white dark:bg-gray-800">
+          <div className="container mx-auto px-4">
             <div className="flex items-center justify-center py-12">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-              <span className="ml-2 text-gray-600 dark:text-gray-400">加载推荐项目...</span>
+              <span className="ml-2 text-gray-600 dark:text-gray-400">Loading featured projects...</span>
             </div>
-          }>
-            <FeaturedProjects />
-          </Suspense>
+          </div>
         </div>
-      </section>
+      }>
+        <EnhancedFeaturedProjects />
+      </Suspense>
 
-      {/* Asynchronously load project data */}
+      {/* 异步加载项目数据 */}
       <Suspense fallback={<ProjectShowcaseSkeleton />}>
         <ProjectShowcase />
       </Suspense>
 
-      {/* Search keywords section */}
+      {/* SEO 关键词部分 */}
       <section className="py-16 bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="text-center">
@@ -189,11 +133,12 @@ export default function Homepage() {
               {[
                 'awesome-mcp-servers', 'claude-mcp', 'mcp-server', 'anthropic-mcp',
                 'mcp-client', 'mcp-protocol', 'context-protocol', 'ai-assistant',
-                'mcp-integration', 'model-context'
+                'mcp-integration', 'model-context', 'web scraping', 'database',
+                'typescript', 'python', 'claude desktop', 'cursor mcp'
               ].map((keyword) => (
                 <span
                   key={keyword}
-                  className="px-4 py-2 bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 rounded-full text-sm font-medium"
+                  className="px-4 py-2 bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 rounded-full text-sm font-medium hover:bg-purple-200 dark:hover:bg-purple-800 transition-colors cursor-pointer"
                 >
                   {keyword}
                 </span>

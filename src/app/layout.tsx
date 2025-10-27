@@ -22,8 +22,8 @@ const geistMono = Geist_Mono({
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.mcphubs.com';
 
 export const metadata: Metadata = {
-  title: "MCPHubs - What is MCP? Model Context Protocol Developer Resource Center",
-  description: "MCPHubs is a professional Model Context Protocol (MCP) developer platform. Learn what MCP is, awesome-mcp-servers project collection, Claude MCP integration tutorials, MCP server development guides. Discover the best MCP projects and learn the next-generation protocol for AI application development.",
+  title: "MCPHubs - Discover 200+ Model Context Protocol Projects | AI Development Platform",
+  description: "MCPHubs is the ultimate Model Context Protocol (MCP) developer platform. Discover 200+ MCP projects, learn Claude MCP integration, explore awesome-mcp-servers collection, and master AI application development with comprehensive tutorials, tools, and real-time updates.",
   keywords: [
     // High search volume Chinese keywords
     "mcp 是 什麼", "awesome-mcp-servers", "claude mcp", "mcp server教程", "mcp协议", "mcp客户端",
@@ -47,8 +47,8 @@ export const metadata: Metadata = {
     "Qué es MCP", "Model Context Protocol", "Claude MCP", "servidor MCP"
   ],
   openGraph: {
-    title: "MCPHubs - What is MCP? Model Context Protocol Resource Center",
-    description: "Explore MCP protocol, learn Claude MCP integration, discover awesome-mcp-servers projects. The most comprehensive Model Context Protocol developer resource platform.",
+    title: "MCPHubs - Discover 200+ Model Context Protocol Projects | AI Development Platform",
+    description: "The ultimate MCP developer platform. Discover 200+ projects, learn Claude integration, explore awesome-mcp-servers collection. Comprehensive tutorials, tools, and real-time updates for AI development.",
     url: siteUrl,
     siteName: "MCPHubs",
     images: [
@@ -64,8 +64,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "MCPHubs - MCP Protocol Developer Resources",
-    description: "Learn what MCP is, learn Claude MCP integration, discover the best MCP projects",
+    title: "MCPHubs - Discover 200+ Model Context Protocol Projects",
+    description: "The ultimate MCP developer platform. Discover projects, learn Claude integration, explore awesome-mcp-servers collection.",
     images: [`${siteUrl}/images/og-mcphubs.jpg`]
   },
   other: {
