@@ -145,6 +145,168 @@ export async function getMcpClients(): Promise<McpClient[]> {
   }
 }
 
+// ===== Claude Skills Types and Queries =====
+export interface ClaudeSkill {
+  id: string;
+  name: string;
+  path: string;
+  download_url: string;
+  github_url: string;
+  description?: string;
+  skill_md?: string;
+  sync_at: string;
+  created_at: string;
+  updated_at: string;
+}
+
+// 获取单个 Claude Skill
+export async function getClaudeSkillByName(name: string): Promise<ClaudeSkill | null> {
+  try {
+    if (!isSupabaseConfigured()) return null;
+    const { data, error } = await supabase
+      .from('claude_skills')
+      .select('*')
+      .eq('name', name)
+      .single();
+    if (error) {
+      console.error('Failed to fetch Claude Skill by name:', error);
+      return null;
+    }
+    return (data as ClaudeSkill) || null;
+  } catch (e) {
+    console.error('Error fetching Claude Skill by name:', e);
+    return null;
+  }
+}
+
+// Get all Claude Skills
+export async function getAllClaudeSkills(): Promise<ClaudeSkill[]> {
+  try {
+    if (!isSupabaseConfigured()) {
+      console.warn('Supabase not configured, cannot fetch Claude Skills');
+      return [];
+    }
+    
+    const { data, error } = await supabase
+      .from('claude_skills')
+      .select('*')
+      .order('name', { ascending: true });
+
+    if (error) {
+      console.error('Failed to fetch Claude Skills:', error);
+      return [];
+    }
+
+    return (data as ClaudeSkill[]) || [];
+  } catch (e) {
+    console.error('Error fetching Claude Skills:', e);
+    return [];
+  }
+}
+
+// Sync Claude Skills to database
+export async function syncClaudeSkills(skills: Array<{
+  name: string;
+  path: string;
+  downloadUrl: string;
+  githubUrl: string;
+  description?: string;
+  skillMd?: string;
+}>): Promise<{ inserted: number; updated: number; errors: number }> {
+  if (!isSupabaseConfigured()) {
+    console.warn('Supabase not configured, skipping Claude Skills sync');
+    return { inserted: 0, updated: 0, errors: 0 };
+  }
+
+  let inserted = 0;
+  let updated = 0;
+  let errors = 0;
+
+  for (const skill of skills) {
+    try {
+      // Check if skill exists
+      const { data: existing } = await supabase
+        .from('claude_skills')
+        .select('id')
+        .eq('name', skill.name)
+        .single();
+
+      // Build upsert data, conditionally include description if column exists
+      const upsertData: any = {
+        id: skill.name,
+        name: skill.name,
+        path: skill.path,
+        download_url: skill.downloadUrl,
+        github_url: skill.githubUrl,
+        sync_at: new Date().toISOString(),
+      };
+      
+      // Only include description if it's provided (column may not exist yet)
+      if (skill.description !== undefined) {
+        upsertData.description = skill.description || null;
+      }
+      // Only include skill_md if provided
+      if (skill.skillMd !== undefined) {
+        upsertData.skill_md = skill.skillMd || null;
+      }
+
+      const { error } = await supabase
+        .from('claude_skills')
+        .upsert(upsertData, {
+          onConflict: 'name',
+        });
+
+      if (error) {
+        // Check if error is due to missing description column
+        if (error.message?.includes("Could not find the 'description' column")) {
+          console.error(`❌ Database migration required! Please execute migration 004_add_claude_skills_description.sql in Supabase SQL Editor.`);
+          console.error(`   Error for skill ${skill.name}: ${error.message}`);
+          
+          // Try again without description field
+          const { error: retryError } = await supabase
+            .from('claude_skills')
+            .upsert({
+              id: skill.name,
+              name: skill.name,
+              path: skill.path,
+              download_url: skill.downloadUrl,
+              github_url: skill.githubUrl,
+              sync_at: new Date().toISOString(),
+            }, {
+              onConflict: 'name',
+            });
+          
+          if (retryError) {
+            console.error(`Failed to sync skill ${skill.name} (without description):`, retryError);
+            errors++;
+          } else {
+            // Successfully synced without description
+            if (existing) {
+              updated++;
+            } else {
+              inserted++;
+            }
+          }
+        } else {
+          console.error(`Failed to sync skill ${skill.name}:`, error);
+          errors++;
+        }
+      } else {
+        if (existing) {
+          updated++;
+        } else {
+          inserted++;
+        }
+      }
+    } catch (e) {
+      console.error(`Error syncing skill ${skill.name}:`, e);
+      errors++;
+    }
+  }
+
+  return { inserted, updated, errors };
+}
+
 // 数据库表结构类型
 export interface GitHubProject {
   id: string;

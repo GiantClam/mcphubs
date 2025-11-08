@@ -3,6 +3,11 @@
     {
       "path": "/api/sync",
       "schedule": "0 * * * *"
+    },
+    {
+      "path": "/api/sync/claude-skills",
+      "schedule": "0 2 * * *",
+      "description": "每日凌晨2点同步 Claude Skills"
     }
   ],
   "functions": {
@@ -14,6 +19,9 @@
     },
     "src/app/api/cron-test/route.ts": {
       "maxDuration": 10
+    },
+    "src/app/api/sync/claude-skills/route.ts": {
+      "maxDuration": 5
     }
   },
   "env": {

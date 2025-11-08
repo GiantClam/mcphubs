@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { signIn, signOut, useSession } from 'next-auth/react';
-import { FaBars, FaTimes, FaSearch, FaHome, FaQuestionCircle, FaCode, FaToolbox, FaUsers, FaRocket, FaBookOpen, FaGlobe, FaUser, FaSignOutAlt, FaGithub, FaPlusCircle, FaShieldAlt } from 'react-icons/fa';
+import { FaBars, FaTimes, FaSearch, FaHome, FaQuestionCircle, FaCode, FaToolbox, FaUsers, FaRocket, FaBookOpen, FaGlobe, FaUser, FaSignOutAlt, FaGithub, FaPlusCircle, FaShieldAlt, FaMagic } from 'react-icons/fa';
 import SearchBar from './SearchBar';
 import SignInModal from './SignInModal';
 
@@ -67,6 +67,7 @@ export default function ResponsiveNavigation({ className = '' }: ResponsiveNavig
     { href: '/projects', label: 'Projects', icon: FaCode },
     { href: '/clients', label: 'Clients', icon: FaToolbox },
     { href: '/servers', label: 'Servers', icon: FaRocket },
+    { href: '/claude-skills', label: 'Claude Skills', icon: FaMagic },
     { href: '/what-is-mcp', label: 'What is MCP?', icon: FaQuestionCircle },
   ];
 
@@ -74,6 +75,7 @@ export default function ResponsiveNavigation({ className = '' }: ResponsiveNavig
   const quickLinks = [
     { href: '/servers/tools', label: 'Quick Connect', icon: FaRocket },
     { href: '/development-guides', label: 'Guides', icon: FaBookOpen },
+    { href: '/claude-skills', label: 'Claude Skills', icon: FaMagic },
     { href: '/community', label: 'Community', icon: FaUsers },
   ];
 

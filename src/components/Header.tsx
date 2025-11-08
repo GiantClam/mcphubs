@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { signIn, signOut, useSession } from 'next-auth/react';
-import { FaQuestionCircle, FaUsers, FaChartLine, FaCode, FaToolbox, FaTimes, FaStar, FaGithub, FaUser, FaSignOutAlt, FaChevronDown, FaPlusCircle, FaShieldAlt } from 'react-icons/fa';
+import { FaQuestionCircle, FaUsers, FaChartLine, FaCode, FaToolbox, FaTimes, FaStar, FaGithub, FaUser, FaSignOutAlt, FaChevronDown, FaPlusCircle, FaShieldAlt, FaMagic } from 'react-icons/fa';
 import SignInModal from './SignInModal';
 import ResponsiveNavigation from './ResponsiveNavigation';
 
@@ -75,6 +75,7 @@ export default function Header() {
     { href: '/what-is-mcp', label: t('what-is-mcp'), icon: FaQuestionCircle },
     { href: '/clients', label: t('clients'), icon: FaCode },
     { href: '/servers', label: t('remote-servers'), icon: FaToolbox },
+    { href: '/claude-skills', label: 'Claude Skills', icon: FaMagic },
     { href: '/servers/tools', label: 'Quick Connect', icon: FaToolbox },
   ];
 
