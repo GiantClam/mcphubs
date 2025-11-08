@@ -6,8 +6,7 @@
     },
     {
       "path": "/api/sync/claude-skills",
-      "schedule": "0 2 * * *",
-      "description": "每日凌晨2点同步 Claude Skills"
+      "schedule": "0 2 * * *"
     }
   ],
   "functions": {
