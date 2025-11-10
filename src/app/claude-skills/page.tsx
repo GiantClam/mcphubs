@@ -87,7 +87,7 @@ export default async function ClaudeSkillsPage() {
               href="https://claude.com/blog/skills" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-blue-600 dark:text-blue-400 hover:underline"
+              className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
             >
               Claude Skills Official Blog
             </a>
@@ -96,7 +96,7 @@ export default async function ClaudeSkillsPage() {
               href="https://github.com/anthropics/skills" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-blue-600 dark:text-blue-400 hover:underline"
+              className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
             >
               GitHub Repository
             </a>

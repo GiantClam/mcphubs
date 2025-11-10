@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 import axios, { AxiosError } from 'axios';
+import { HttpsProxyAgent } from 'https-proxy-agent';
 
 // 检查Google凭据是否可用
 function checkCredentials() {
@@ -135,12 +136,27 @@ export async function POST(request: NextRequest) {
     
     // 调用 Vertex AI API
     // 注意：在实际应用中应该使用Google Cloud认证
-    const response = await axios.post(apiUrl, requestData, {
+    const axiosConfig: any = {
       headers: {
         'Content-Type': 'application/json',
         // 身份验证会由Google客户端库自动处理
       }
-    });
+    };
+    
+    // 添加代理支持（如果配置了 PROXY_HOST 和 PROXY_PORT）
+    const PROXY_HOST = process.env.PROXY_HOST;
+    const PROXY_PORT = process.env.PROXY_PORT;
+    if (PROXY_HOST && PROXY_PORT && HttpsProxyAgent) {
+      try {
+        const proxyAgent = new HttpsProxyAgent(`http://${PROXY_HOST}:${PROXY_PORT}`);
+        axiosConfig.httpsAgent = proxyAgent;
+        console.log(`🌐 Using proxy for Vertex AI API: ${PROXY_HOST}:${PROXY_PORT}`);
+      } catch (error) {
+        console.warn(`⚠️ Failed to create proxy agent for Vertex AI: ${error}`);
+      }
+    }
+    
+    const response = await axios.post(apiUrl, requestData, axiosConfig);
     
     // 返回 API 响应
     return NextResponse.json(response.data);

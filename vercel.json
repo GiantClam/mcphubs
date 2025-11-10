@@ -3,10 +3,6 @@
     {
       "path": "/api/sync",
       "schedule": "0 * * * *"
-    },
-    {
-      "path": "/api/sync/claude-skills",
-      "schedule": "0 2 * * *"
     }
   ],
   "functions": {
@@ -20,7 +16,7 @@
       "maxDuration": 10
     },
     "src/app/api/sync/claude-skills/route.ts": {
-      "maxDuration": 5
+      "maxDuration": 60
     }
   },
   "env": {

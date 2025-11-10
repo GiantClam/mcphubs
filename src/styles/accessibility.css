@@ -292,15 +292,17 @@
 /* 确保所有交互元素都有足够的对比度 */
 a {
   color: var(--link-color);
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 a:hover {
   color: var(--link-hover);
+  text-decoration: none;
 }
 
 a:visited {
   color: var(--link-visited);
+  text-decoration: none;
 }
 
 /* 确保按钮有足够的对比度 */

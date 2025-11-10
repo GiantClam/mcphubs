@@ -1,8 +1,9 @@
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
 import { ChatVertexAI } from '@langchain/google-vertexai';
-import { syncClaudeSkills } from './supabase';
+import { syncClaudeSkills, deleteClaudeSkill } from './supabase';
 import fs from 'fs';
 import path from 'path';
+import { HttpsProxyAgent } from 'https-proxy-agent';
 
 // GitHub API Types
 interface GitHubContentItem {
@@ -57,10 +58,12 @@ interface SyncResult {
 
 // Get configuration from environment variables
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+const PROXY_HOST = process.env.PROXY_HOST || '127.0.0.1';
+const PROXY_PORT = process.env.PROXY_PORT || '7890';
 
-// Create GitHub API client
-function createGitHubClient() {
-  const baseConfig = {
+// Create GitHub API client with proxy support
+function createGitHubClient(): AxiosInstance {
+  const baseConfig: any = {
     baseURL: 'https://api.github.com',
     timeout: 60000, // 增加到 60 秒超时
     headers: {
@@ -69,6 +72,21 @@ function createGitHubClient() {
       ...(GITHUB_TOKEN && { 'Authorization': `token ${GITHUB_TOKEN}` }),
     }
   };
+
+  // Add proxy support if PROXY_HOST and PROXY_PORT are configured
+  // This is useful for local scripts that need to use VPN
+  if (PROXY_HOST && PROXY_PORT && HttpsProxyAgent) {
+    const useProxy = process.env.USE_PROXY !== 'false'; // Default to true if not explicitly disabled
+    if (useProxy) {
+      try {
+        const proxyAgent = new HttpsProxyAgent(`http://${PROXY_HOST}:${PROXY_PORT}`);
+        baseConfig.httpsAgent = proxyAgent;
+        console.log(`🌐 Using proxy for GitHub API: ${PROXY_HOST}:${PROXY_PORT}`);
+      } catch (error) {
+        console.warn(`⚠️ Failed to create proxy agent: ${error}`);
+      }
+    }
+  }
 
   return axios.create(baseConfig);
 }
@@ -124,28 +142,51 @@ function getGoogleCredentials() {
   // Prioritize JSON credentials from environment variables (Vercel deployment)
   if (process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
     try {
-      // Check if it's a JSON string (starts with '{')
-      if (process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON.startsWith('{')) {
-        const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
-        console.log('✅ Using Google credentials from GOOGLE_APPLICATION_CREDENTIALS_JSON environment variable (JSON string)');
-        return { credentials };
-      } else {
-        // Treat as file path
-        const absolutePath = path.isAbsolute(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON)
-          ? process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON
-          : path.resolve(process.cwd(), process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
-        
-        if (fs.existsSync(absolutePath)) {
-          const fileContent = fs.readFileSync(absolutePath, 'utf-8');
-          const credentials = JSON.parse(fileContent);
-          console.log(`✅ Using Google credentials from JSON file: ${absolutePath}`);
+      const envValue = process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON.trim();
+      
+      // Check if it's a JSON string (starts with '{' and ends with '}')
+      if (envValue.startsWith('{') && envValue.endsWith('}')) {
+        try {
+          const credentials = JSON.parse(envValue);
+          console.log('✅ Using Google credentials from GOOGLE_APPLICATION_CREDENTIALS_JSON environment variable (JSON string)');
           return { credentials };
-        } else {
-          console.warn(`⚠️ Credentials file not found: ${absolutePath}`);
+        } catch (parseError) {
+          console.error("❌ Failed to parse GOOGLE_APPLICATION_CREDENTIALS_JSON as JSON:", parseError);
+          // Fall through to try as file path
         }
       }
+      
+      // If not a valid JSON string, treat as file path (only if it looks like a valid path)
+      // Skip if it looks like a partial/malformed JSON string
+      const looksLikePartialJson = envValue.startsWith('{') || 
+                                   envValue.startsWith('"') ||
+                                   (envValue.includes('"type"') && !envValue.includes('.json'));
+      
+      if (!looksLikePartialJson) {
+        const looksLikeFilePath = envValue.endsWith('.json') || 
+                                  envValue.includes('/') || 
+                                  envValue.includes('\\') ||
+                                  (envValue.length > 5 && !envValue.includes('{') && !envValue.includes('}'));
+        
+        if (looksLikeFilePath) {
+          const absolutePath = path.isAbsolute(envValue)
+            ? envValue
+            : path.resolve(process.cwd(), envValue);
+          
+          if (fs.existsSync(absolutePath)) {
+            const fileContent = fs.readFileSync(absolutePath, 'utf-8');
+            const credentials = JSON.parse(fileContent);
+            console.log(`✅ Using Google credentials from JSON file: ${absolutePath}`);
+            return { credentials };
+          } else {
+            // Only warn if it's a reasonable file path
+            console.warn(`⚠️ Credentials file not found: ${absolutePath}`);
+          }
+        }
+      }
+      // If it looks like partial JSON or invalid path, skip silently and try other methods below
     } catch (error) {
-      console.error("❌ Failed to parse GOOGLE_APPLICATION_CREDENTIALS_JSON:", error);
+      console.error("❌ Failed to process GOOGLE_APPLICATION_CREDENTIALS_JSON:", error);
     }
   }
   
@@ -246,10 +287,26 @@ function getVertexAIOptions() {
   };
   
   // Add credentials configuration - ensure credentials object is properly structured
-  // ChatVertexAI may still look for GOOGLE_APPLICATION_CREDENTIALS env var at runtime,
-  // so we ensure it's set if we found a file
+  // ChatVertexAI uses Google Auth Library which calls getApplicationDefaultAsync at runtime.
+  // This function looks for GOOGLE_APPLICATION_CREDENTIALS_JSON env var first.
+  // We need to ensure the credentials are passed correctly.
   if (credentials.credentials) {
+    // Pass credentials object directly
     baseOptions.credentials = credentials.credentials;
+    
+    // CRITICAL: Ensure GOOGLE_APPLICATION_CREDENTIALS_JSON is set for runtime lookup
+    // ChatVertexAI's underlying Google Auth Library will use this at invoke time
+    if (process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON && 
+        process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON.startsWith('{')) {
+      // Already set as JSON string, this is good
+      // But we need to ensure it's available when ChatVertexAI calls getApplicationDefaultAsync
+    } else {
+      // If not set, set it from the credentials object we parsed
+      // This ensures getApplicationDefaultAsync can find it
+      if (!process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
+        process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON = JSON.stringify(credentials.credentials);
+      }
+    }
   } else if (credentials.keyFilename) {
     baseOptions.keyFilename = credentials.keyFilename;
     // Ensure environment variable is set for ChatVertexAI's internal lookup
@@ -258,16 +315,33 @@ function getVertexAIOptions() {
     }
   }
 
-  // Add proxy configuration in development environment
-  if (process.env.NODE_ENV === 'development') {
+  // Add proxy configuration in development environment or when running as local script
+  // For local scripts, we can use the Next.js API proxy if available, or direct connection
+  const isLocalScript = process.env.NODE_ENV !== 'production' && !process.env.VERCEL;
+  const useApiProxy = process.env.USE_VERTEX_PROXY !== 'false'; // Default to true
+  
+  if ((process.env.NODE_ENV === 'development' || isLocalScript) && useApiProxy) {
     const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3000';
+    const apiEndpoint = `${baseUrl}/api/vertex`;
+    
+    // Check if Next.js server is running (for proxy)
+    // If not, we'll use direct connection with system proxy (via environment variables)
+    console.log(`🔧 Using Vertex AI proxy endpoint: ${apiEndpoint}`);
+    console.log(`   Note: If Next.js server is not running, set USE_VERTEX_PROXY=false to use direct connection with system proxy`);
+    
     return {
       ...baseOptions,
-      apiEndpoint: `${baseUrl}/api/vertex`, // Use complete URL proxy
+      apiEndpoint: apiEndpoint,
     };
   }
 
-  // Use Google API directly in production environment
+  // Use Google API directly (will use system proxy if HTTP_PROXY/HTTPS_PROXY env vars are set)
+  if (process.env.HTTP_PROXY || process.env.HTTPS_PROXY) {
+    console.log(`🌐 Using system proxy for Vertex AI: ${process.env.HTTPS_PROXY || process.env.HTTP_PROXY}`);
+  } else {
+    console.log('🔗 Using direct connection to Vertex AI (no proxy)');
+  }
+  
   return baseOptions;
 }
 
@@ -347,6 +421,20 @@ function getSkillSummaryModel(): ChatVertexAI | null {
  * Provider: Vertex AI Gemini 2.5 Flash. Falls back to heuristic extraction.
  */
 async function summarizeSkillWithAI(markdown: string): Promise<string> {
+  // Ensure GOOGLE_APPLICATION_CREDENTIALS_JSON is available before each call
+  // ChatVertexAI may call getApplicationDefaultAsync at runtime
+  if (process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON && 
+      process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON.startsWith('{')) {
+    // Environment variable is already set, ensure it's available
+    // This is critical for ChatVertexAI's runtime credential lookup
+  } else {
+    // Try to get credentials and set env var if not already set
+    const creds = getGoogleCredentials();
+    if (creds.credentials && !process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
+      process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON = JSON.stringify(creds.credentials);
+    }
+  }
+  
   const model = getSkillSummaryModel();
   
   if (!model) {
@@ -363,6 +451,8 @@ async function summarizeSkillWithAI(markdown: string): Promise<string> {
 ${input}`;
 
     // Call Gemini for summarization
+    // Note: ChatVertexAI may call getApplicationDefaultAsync internally,
+    // so GOOGLE_APPLICATION_CREDENTIALS_JSON must be available
     const response = await model.invoke(prompt);
     const summary = response.content.toString().trim();
 
@@ -375,6 +465,11 @@ ${input}`;
     return extractDescriptionFromSkillMd(markdown);
   } catch (e) {
     console.warn('Vertex AI summarization failed, falling back to heuristic:', e);
+    // Log if it's a credential error
+    if (e instanceof Error && e.message.includes('default credentials')) {
+      console.error('   Credential error - GOOGLE_APPLICATION_CREDENTIALS_JSON available:', 
+        !!process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
+    }
     return extractDescriptionFromSkillMd(markdown);
   }
 }
@@ -471,6 +566,31 @@ function extractDescriptionFromSkillMd(content: string): string {
 }
 
 /**
+ * Fetch directory contents from GitHub
+ */
+async function fetchDirectoryContents(dirPath: string): Promise<GitHubContentItem[]> {
+  try {
+    const response = await retryWithBackoff(
+      async () => {
+        return await githubClient.get<GitHubContentItem[]>(
+          `/repos/anthropics/skills/contents/${dirPath}`
+        );
+      },
+      2, // max 2 retries
+      1000 // start with 1 second delay
+    );
+    
+    return response.data.filter(item => item.type === 'dir' && !item.name.startsWith('.'));
+  } catch (error: any) {
+    if (error.response?.status === 404) {
+      return [];
+    }
+    console.warn(`⚠️ Failed to fetch directory contents for ${dirPath}:`, error.message);
+    return [];
+  }
+}
+
+/**
  * Fetch SKILL.md content for a specific skill with retry mechanism
  */
 async function fetchSkillMarkdown(skillPath: string): Promise<string | null> {
@@ -537,14 +657,81 @@ export async function fetchClaudeSkillsFromGitHub(): Promise<SkillInfo[]> {
 
     console.log(`📁 Found ${directories.length} skill directories`);
 
-    // Fetch SKILL.md for each directory with rate limiting
-    const skillsWithDescription = await Promise.all(
-      directories.map(async (item, index) => {
-        // Add small delay to avoid rate limiting (spread requests over time)
-        if (index > 0 && index % 5 === 0) {
-          await new Promise(resolve => setTimeout(resolve, 500));
-        }
+    // Process each directory and handle special cases
+    const allSkills: SkillInfo[] = [];
+    
+    for (let index = 0; index < directories.length; index++) {
+      const item = directories[index];
+      
+      // Add small delay to avoid rate limiting (spread requests over time)
+      if (index > 0 && index % 5 === 0) {
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
 
+      // Special handling for document-skills: split into sub-skills
+      if (item.name === 'document-skills') {
+        console.log(`📂 Processing special skill: ${item.name} - splitting into sub-skills`);
+        
+        // Get subdirectories
+        const subDirs = await fetchDirectoryContents(item.path);
+        
+        if (subDirs.length > 0) {
+          console.log(`   Found ${subDirs.length} sub-skills in ${item.name}`);
+          
+          // Process each subdirectory as a separate skill
+          for (const subDir of subDirs) {
+            // Add small delay
+            await new Promise(resolve => setTimeout(resolve, 200));
+            
+            const skillInfo: SkillInfo = {
+              name: `${item.name}-${subDir.name}`, // e.g., "document-skills-word"
+              path: subDir.path,
+              type: 'dir' as const,
+              downloadUrl: `https://downgit.github.io/#/home?url=https://github.com/anthropics/skills/${item.name}/${subDir.name}`,
+              githubUrl: subDir.html_url,
+            };
+
+            // Try to fetch SKILL.md and extract description
+            try {
+              const skillMdContent = await fetchSkillMarkdown(subDir.path);
+              if (skillMdContent) {
+                // AI summary preferred
+                const aiSummary = await summarizeSkillWithAI(skillMdContent);
+                skillInfo.description = aiSummary;
+                skillInfo.skillMd = skillMdContent;
+              }
+            } catch (error) {
+              console.warn(`⚠️ Failed to fetch description for ${skillInfo.name}:`, error);
+            }
+
+            allSkills.push(skillInfo);
+          }
+        } else {
+          // If no subdirectories found, treat as regular skill
+          console.log(`   No subdirectories found, treating ${item.name} as regular skill`);
+          const skillInfo: SkillInfo = {
+            name: item.name,
+            path: item.path,
+            type: item.type as 'file' | 'dir',
+            downloadUrl: `https://downgit.github.io/#/home?url=https://github.com/anthropics/skills/${item.name}`,
+            githubUrl: item.html_url,
+          };
+
+          try {
+            const skillMdContent = await fetchSkillMarkdown(item.path);
+            if (skillMdContent) {
+              const aiSummary = await summarizeSkillWithAI(skillMdContent);
+              skillInfo.description = aiSummary;
+              skillInfo.skillMd = skillMdContent;
+            }
+          } catch (error) {
+            console.warn(`⚠️ Failed to fetch description for ${item.name}:`, error);
+          }
+
+          allSkills.push(skillInfo);
+        }
+      } else {
+        // Regular skill processing
         const skillInfo: SkillInfo = {
           name: item.name,
           path: item.path,
@@ -566,15 +753,15 @@ export async function fetchClaudeSkillsFromGitHub(): Promise<SkillInfo[]> {
           console.warn(`⚠️ Failed to fetch description for ${item.name}:`, error);
         }
 
-        return skillInfo;
-      })
-    );
+        allSkills.push(skillInfo);
+      }
+    }
 
     // Sort by name
-    skillsWithDescription.sort((a, b) => a.name.localeCompare(b.name));
+    allSkills.sort((a, b) => a.name.localeCompare(b.name));
 
-    console.log(`✅ Processed ${skillsWithDescription.length} skills`);
-    return skillsWithDescription;
+    console.log(`✅ Processed ${allSkills.length} skills`);
+    return allSkills;
   } catch (error: any) {
     console.error('❌ Failed to fetch Claude Skills from GitHub:', error);
     
@@ -621,6 +808,17 @@ export async function syncClaudeSkillsToDatabase(force: boolean = false): Promis
     // Fetch latest data from GitHub
     const skills = await fetchClaudeSkillsFromGitHub();
     console.log(`✅ Fetched ${skills.length} skills from GitHub`);
+
+    // Clean up old document-skills record if it exists (since we split it into sub-skills)
+    const skillNames = new Set(skills.map(s => s.name));
+    if (!skillNames.has('document-skills')) {
+      // document-skills was split into sub-skills, delete the old record
+      console.log('🗑️  Cleaning up old document-skills record (split into sub-skills)...');
+      const deleted = await deleteClaudeSkill('document-skills');
+      if (deleted) {
+        console.log('   ✅ Deleted old document-skills record');
+      }
+    }
 
     // Sync to database
     const syncStats = await syncClaudeSkills(skills);

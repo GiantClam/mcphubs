@@ -307,6 +307,31 @@ export async function syncClaudeSkills(skills: Array<{
   return { inserted, updated, errors };
 }
 
+// Delete a Claude Skill by name
+export async function deleteClaudeSkill(name: string): Promise<boolean> {
+  if (!isSupabaseConfigured()) {
+    console.warn('Supabase not configured, cannot delete Claude Skill');
+    return false;
+  }
+
+  try {
+    const { error } = await supabase
+      .from('claude_skills')
+      .delete()
+      .eq('name', name);
+
+    if (error) {
+      console.error(`Failed to delete Claude Skill ${name}:`, error);
+      return false;
+    }
+
+    return true;
+  } catch (e) {
+    console.error(`Error deleting Claude Skill ${name}:`, e);
+    return false;
+  }
+}
+
 // 数据库表结构类型
 export interface GitHubProject {
   id: string;

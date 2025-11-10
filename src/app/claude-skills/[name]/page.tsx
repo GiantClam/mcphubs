@@ -21,7 +21,7 @@ export default async function SkillDetailPage({ params }: { params: Promise<{ na
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-2xl font-bold">Skill not found</h1>
         <p className="mt-2 text-gray-600">The requested skill does not exist.</p>
-        <Link href="/claude-skills" className="text-purple-600 hover:underline mt-4 inline-block">Back to Skills</Link>
+        <Link href="/claude-skills" className="text-purple-600 hover:text-purple-800 dark:hover:text-purple-400 mt-4 inline-block">Back to Skills</Link>
       </div>
     );
   }

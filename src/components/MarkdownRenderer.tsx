@@ -19,7 +19,7 @@ interface CodeProps {
 
 const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, className = '' }) => {
   return (
-    <div className={`prose prose-gray dark:prose-invert max-w-none ${className}`}>
+    <div className={`prose prose-gray dark:prose-invert max-w-none prose-a:no-underline ${className}`}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         rehypePlugins={[rehypeHighlight, rehypeRaw]}
@@ -79,6 +79,15 @@ const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, className 
             <blockquote className="border-l-4 border-blue-500 pl-4 italic text-gray-600 dark:text-gray-400 my-4">
               {children}
             </blockquote>
+          ),
+          a: ({ href, children, ...props }: any) => (
+            <a
+              href={href}
+              className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 no-underline"
+              {...props}
+            >
+              {children}
+            </a>
           ),
         }}
       >
